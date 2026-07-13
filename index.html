@@ -436,9 +436,10 @@ function fetchQuote(code){
 
 async function fetchViaProxy(code){
   try{
-    // Try Tencent through proxy
+    // Try Tencent through proxy (API returns GBK encoding)
     const res=await fetch(`https://qt.gtimg.cn/q=${code}`);
-    const text=await res.text();
+    const buf=await res.arrayBuffer();
+    const text=new TextDecoder('gbk').decode(buf);
     const match=text.match(/="(.+)"/);
     if(!match||!match[1]) return null;
     const p=match[1].split('~');
@@ -465,7 +466,8 @@ async function fetchViaProxy(code){
       // Fallback: Sina through CORS proxy
       const corsUrl='https://api.allorigins.win/raw?url='+encodeURIComponent(`https://hq.sinajs.cn/list=${code}`);
       const res2=await fetch(corsUrl);
-      const text2=await res2.text();
+      const buf2=await res2.arrayBuffer();
+      const text2=new TextDecoder('gbk').decode(buf2);
       const m2=text2.match(/="(.+)"/);
       if(!m2||!m2[1]) return null;
       const parts=m2[1].split(',');
