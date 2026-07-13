@@ -1,0 +1,3928 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta name="dc.title" content="仙仙星语助手（玄学直播分析）">
+<meta name="dc.date.created" content="2026-07-09T18:25:57+08:00">
+<meta name="dc.creator" content="Ruochan Studio">
+<meta name="dc.rights" content="Copyright 2026 Ruochan Studio. All rights reserved.">
+<meta name="application-name" content="仙仙星语助手（玄学直播分析）">
+<meta name="application-version" content="1.0.0">
+<meta name="application-created" content="2026-07-09T18:25:57+08:00">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>仙仙星语助手 - 抖音玄学直播辅助工具</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg-dark:#0d0a1a;
+--bg-purple:#1a1033;
+--accent:#9b6dff;
+--accent-light:#c4a1ff;
+--gold:#ffd700;
+--text-light:#f0e6ff;
+--text-dim:#8b7aa8;
+--success:#4ade80;
+--border:#2d2045;
+}
+body{
+font-family:'Microsoft YaHei','PingFang SC',sans-serif;
+background:var(--bg-dark);
+color:var(--text-light);
+min-height:100vh;
+overflow-x:hidden;
+}
+/* 星空背景 */
+.starry-bg{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:linear-gradient(135deg,#0d0a1a 0%,#1a1033 50%,#0d0a1a 100%);
+z-index:-2;
+}
+.stars{
+position:fixed;top:0;left:0;width:100%;height:100%;
+z-index:-1;pointer-events:none;
+}
+.star{
+position:absolute;
+background:#fff;
+border-radius:50%;
+animation:twinkle 3s infinite;
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 4px 20px rgba(255,107,157,.5);transform:scale(1)}
+  50%{box-shadow:0 4px 30px rgba(255,107,157,.8);transform:scale(1.05)}
+}
+@keyframes twinkle{
+0%,100%{opacity:.3}
+50%{opacity:1}
+}
+/* 头部 */
+header{
+background:linear-gradient(180deg,rgba(26,16,51,.95) 0%,rgba(13,10,26,.9) 100%);
+border-bottom:1px solid var(--border);
+padding:15px 30px;
+display:flex;align-items:center;justify-content:space-between;
+position:sticky;top:0;z-index:100;
+}
+.logo{
+display:flex;align-items:center;gap:12px;
+}
+.logo-icon{
+font-size:32px;
+text-shadow:0 0 20px var(--accent);
+}
+.logo h1{
+font-size:24px;
+font-weight:600;
+background:linear-gradient(90deg,var(--accent-light),var(--gold));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+.nav-tabs{
+display:flex;gap:8px;
+}
+.tab-btn{
+padding:10px 24px;
+border:none;border-radius:25px;
+background:rgba(155,109,255,.15);
+color:var(--text-dim);
+cursor:pointer;
+font-size:15px;
+transition:all .3s;
+border:1px solid transparent;
+}
+.tab-btn:hover{
+background:rgba(155,109,255,.25);
+color:var(--text-light);
+}
+.tab-btn.active{
+background:linear-gradient(135deg,var(--accent),#7c4dff);
+color:#fff;
+box-shadow:0 4px 20px rgba(155,109,255,.4);
+}
+.sidebar-toggle{
+background:rgba(155,109,255,.2);
+border:1px solid var(--border);
+color:var(--text-light);
+padding:10px 16px;
+border-radius:12px;
+cursor:pointer;
+font-size:14px;
+transition:all .3s;
+}
+.sidebar-toggle:hover{
+background:rgba(155,109,255,.35);
+}
+/* 主容器 */
+.main-container{
+display:flex;
+height:calc(100vh - 70px);
+}
+/* 左侧输入区 */
+.input-panel{
+flex:0 0 35%;
+padding:25px;
+overflow-y:auto;
+border-right:1px solid var(--border);
+}
+.section-title{
+font-size:14px;
+color:var(--text-dim);
+margin-bottom:12px;
+text-transform:uppercase;
+letter-spacing:1px;
+}
+.gender-btns{
+display:flex;gap:12px;margin-bottom:20px;
+}
+.direction-btns{
+display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;
+}
+.gender-btn,
+.mode-tabs{display:flex;gap:8px;margin:12px 0;padding:0 4px}
+.mode-tab{flex:1;padding:10px 12px;border:1px solid rgba(155,109,255,.3);border-radius:12px;background:rgba(155,109,255,.08);color:rgba(255,255,255,.7);font-size:14px;font-weight:600;cursor:pointer;transition:all .25s ease;letter-spacing:1px}
+.mode-tab:hover{background:rgba(155,109,255,.15);border-color:rgba(155,109,255,.5)}
+.mode-tab.active{background:linear-gradient(135deg,rgba(155,109,255,.3),rgba(196,161,255,.2));border-color:rgba(155,109,255,.7);color:#fff;box-shadow:0 0 15px rgba(155,109,255,.3)}
+.direction-btn{
+flex:1 1 auto;
+min-width:calc(33.33% - 8px);
+padding:14px 20px;
+border:2px solid var(--border);
+border-radius:14px;
+background:rgba(45,32,69,.5);
+color:var(--text-light);
+cursor:pointer;
+font-size:16px;
+transition:all .3s;
+display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.gender-btn:hover,.direction-btn:hover{
+border-color:var(--accent);
+background:rgba(155,109,255,.15);
+}
+.gender-btn.selected,.direction-btn.selected{
+border-color:var(--accent);
+background:linear-gradient(135deg,rgba(155,109,255,.3),rgba(124,77,255,.2));
+box-shadow:0 0 20px rgba(155,109,255,.3);
+}
+/* 星座宫格 */
+.zodiac-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+margin-bottom:20px;
+}
+.zodiac-btn{
+aspect-ratio:1;
+border:2px solid var(--border);
+border-radius:12px;
+background:rgba(45,32,69,.5);
+cursor:pointer;
+transition:all .3s;
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+gap:4px;
+padding:8px;
+}
+.zodiac-btn:hover{
+border-color:var(--accent-light);
+transform:scale(1.05);
+}
+.zodiac-btn.selected{
+border-color:var(--gold);
+background:linear-gradient(135deg,rgba(255,215,0,.2),rgba(155,109,255,.2));
+box-shadow:0 0 25px rgba(255,215,0,.3);
+}
+.zodiac-icon{
+font-size:28px;
+}
+.zodiac-name{
+font-size:12px;
+color:var(--text-light);
+}
+.zodiac-btn.selected .zodiac-name{
+color:var(--gold);
+}
+/* 下拉选择 */
+.select-group{
+display:flex;gap:10px;margin-bottom:15px;
+}
+select{
+flex:1;
+padding:12px 15px;
+border:2px solid var(--border);
+border-radius:12px;
+background:rgba(45,32,69,.8);
+color:var(--text-light);
+font-size:15px;
+cursor:pointer;
+appearance:none;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239b6dff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+background-repeat:no-repeat;
+background-position:right 12px center;
+}
+select:focus{
+outline:none;
+border-color:var(--accent);
+}
+/* 城市选择 */
+.city-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:8px;
+margin-bottom:15px;
+}
+.city-btn{
+padding:10px 8px;
+border:2px solid var(--border);
+border-radius:10px;
+background:rgba(45,32,69,.5);
+color:var(--text-light);
+cursor:pointer;
+font-size:13px;
+transition:all .3s;
+text-align:center;
+}
+.city-btn:hover{
+border-color:var(--accent-light);
+}
+.city-btn.selected{
+border-color:var(--accent);
+background:rgba(155,109,255,.25);
+}
+.city-more{
+grid-column:span 4;
+text-align:center;
+color:var(--accent);
+cursor:pointer;
+font-size:13px;
+padding:8px;
+border:1px dashed var(--border);
+border-radius:10px;
+transition:all .3s;
+}
+.city-more:hover{
+border-color:var(--accent);
+background:rgba(155,109,255,.1);
+}
+.city-more::before{
+content:'▶ ';
+font-size:10px;
+}
+.city-more.expanded::before{
+content:'▼ ';
+}
+/* 场景标签 */
+.scene-tags{
+display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;
+}
+.scene-tag{
+padding:8px 14px;
+border:2px solid var(--border);
+border-radius:20px;
+background:rgba(45,32,69,.5);
+color:var(--text-light);
+cursor:pointer;
+font-size:13px;
+transition:all .3s;
+}
+.scene-tag:hover{
+border-color:var(--accent-light);
+}
+.scene-tag.selected{
+border-color:var(--accent);
+background:rgba(155,109,255,.3);
+color:#fff;
+}
+/* 生成按钮 */
+.generate-btn{
+width:100%;
+padding:18px;
+border:none;
+border-radius:16px;
+background:linear-gradient(135deg,var(--accent),#7c4dff);
+color:#fff;
+font-size:18px;
+font-weight:600;
+cursor:pointer;
+transition:all .3s;
+box-shadow:0 6px 25px rgba(155,109,255,.4);
+margin-top:10px;
+}
+.generate-btn:hover{
+transform:translateY(-2px);
+box-shadow:0 8px 30px rgba(155,109,255,.5);
+}
+.generate-btn:disabled{
+opacity:.5;
+cursor:not-allowed;
+transform:none;
+}
+/* 中间结果区 */
+.result-panel{
+flex:1;
+padding:25px;
+overflow-y:auto;
+display:flex;flex-direction:row;gap:15px;
+}
+.ai-panel{
+width:35%;
+padding:25px;
+overflow-y:auto;
+display:none;
+border-left:1px solid rgba(155,109,255,.3);
+}
+.result-box{
+flex:0 0 50%;
+background:linear-gradient(135deg,rgba(45,32,69,.6),rgba(26,16,51,.8));
+border:1px solid var(--border);
+border-radius:20px;
+padding:25px;
+position:relative;
+min-height:400px;
+}
+.ai-result-box{
+flex:1;
+background:linear-gradient(135deg,rgba(45,32,69,.6),rgba(26,16,51,.8));
+border:1px solid rgba(155,109,255,.4);
+border-radius:20px;
+padding:25px;
+position:relative;
+min-height:400px;
+}
+.result-placeholder{
+height:100%;
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+color:var(--text-dim);
+gap:15px;
+}
+.result-placeholder-icon{
+font-size:64px;
+opacity:.5;
+}
+.result-content{
+margin-top:50px;
+font-size:16px;
+line-height:1.9;
+white-space:pre-wrap;
+}
+.result-content .highlight{
+color:var(--gold);
+font-weight:600;
+}
+.copy-btn{
+position:absolute;top:15px;right:15px;
+padding:10px 20px;
+border:2px solid var(--accent);
+border-radius:10px;
+background:rgba(155,109,255,.2);
+color:var(--accent-light);
+cursor:pointer;
+font-size:14px;
+transition:all .3s;
+}
+.copy-btn:hover{
+background:rgba(155,109,255,.4);
+}
+.copy-btn.copied{
+background:var(--success);
+border-color:var(--success);
+color:#fff;
+}
+/* 右侧历史记录 */
+.history-panel{
+width:280px;
+background:rgba(13,10,26,.95);
+border-left:1px solid var(--border);
+padding:20px;
+overflow-y:auto;
+transition:all .3s;
+}
+.history-panel.hidden{
+width:0;
+padding:0;
+overflow:hidden;
+opacity:0;
+}
+.history-title{
+font-size:16px;
+color:var(--text-light);
+margin-bottom:15px;
+display:flex;align-items:center;gap:8px;
+}
+.history-count{
+background:var(--accent);
+color:#fff;
+padding:2px 8px;
+border-radius:10px;
+font-size:12px;
+}
+.history-list{
+display:flex;flex-direction:column;gap:10px;
+}
+.history-item{
+background:rgba(45,32,69,.5);
+border:1px solid var(--border);
+border-radius:12px;
+padding:12px;
+cursor:pointer;
+transition:all .3s;
+}
+.history-item:hover{
+border-color:var(--accent);
+background:rgba(155,109,255,.15);
+}
+.history-item.active{
+border-color:var(--gold);
+background:rgba(255,215,0,.1);
+}
+.history-name{
+font-size:14px;
+color:var(--text-light);
+margin-bottom:4px;
+display:flex;align-items:center;gap:6px;
+}
+.history-meta{
+font-size:11px;
+color:var(--text-dim);
+}
+.history-tags{
+display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;
+}
+.history-tag{
+padding:2px 6px;
+background:rgba(155,109,255,.2);
+border-radius:4px;
+font-size:10px;
+color:var(--accent-light);
+}
+.history-empty{
+text-align:center;
+color:var(--text-dim);
+padding:40px 0;
+font-size:14px;
+}
+/* 备注弹窗 */
+.note-modal{
+position:fixed;
+top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,.7);
+display:none;align-items:center;justify-content:center;
+z-index:1000;
+}
+.note-modal.show{
+display:flex;
+}
+.note-modal-content{
+background:linear-gradient(135deg,var(--bg-purple),var(--bg-dark));
+border:1px solid var(--border);
+border-radius:20px;
+padding:30px;
+width:400px;
+max-width:90%;
+}
+.note-modal h3{
+font-size:18px;
+margin-bottom:15px;
+color:var(--text-light);
+}
+.note-modal input{
+width:100%;
+padding:12px 15px;
+border:2px solid var(--border);
+border-radius:12px;
+background:rgba(45,32,69,.8);
+color:var(--text-light);
+font-size:15px;
+margin-bottom:15px;
+}
+.note-modal input:focus{
+outline:none;
+border-color:var(--accent);
+}
+.note-labels{
+display:flex;flex-wrap:wrap;gap:8px;margin-bottom:15px;
+}
+.note-label{
+padding:6px 12px;
+border:1px solid var(--border);
+border-radius:8px;
+background:rgba(45,32,69,.5);
+color:var(--text-dim);
+cursor:pointer;
+font-size:13px;
+transition:all .3s;
+}
+.note-label:hover,.note-label.selected{
+border-color:var(--accent);
+background:rgba(155,109,255,.2);
+color:var(--text-light);
+}
+.note-modal-btns{
+display:flex;gap:10px;justify-content:flex-end;
+}
+.note-modal-btns button{
+padding:10px 20px;
+border-radius:10px;
+cursor:pointer;
+font-size:14px;
+transition:all .3s;
+}
+.note-cancel{
+border:1px solid var(--border);
+background:transparent;
+color:var(--text-dim);
+}
+.note-cancel:hover{
+background:rgba(255,255,255,.05);
+}
+.note-save{
+border:none;
+background:var(--accent);
+color:#fff;
+}
+.note-save:hover{
+background:#8b5cf6;
+}
+.delete-record{
+background:rgba(239,68,68,.2);
+border:1px solid #ef4444;
+color:#ef4444;
+margin-right:auto;
+}
+.delete-record:hover{
+background:rgba(239,68,68,.3);
+}
+/* 底部免责 */
+footer{
+text-align:center;
+padding:20px;
+color:var(--text-dim);
+font-size:13px;
+border-top:1px solid var(--border);
+background:rgba(13,10,26,.9);
+}
+/* 模式隐藏 */
+.mode-content{
+display:none;
+}
+.mode-content.active{
+display:block;
+}
+/* 响应式 */
+@media(max-width:1200px){
+.history-panel{
+width:240px;
+}
+}
+@media(max-width:900px){
+.main-container{
+flex-direction:column;
+}
+.input-panel,.result-panel{
+width:100% !important;
+height:auto;
+flex:none !important;
+}
+.history-panel{
+width:100%;
+max-height:300px;
+}
+.result-panel{
+flex-direction:column;
+}
+}
+
+
+.city-input{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:rgba(45,32,69,.5);color:var(--text-light);font-size:13px;outline:none;transition:border-color .3s}.city-input:focus{border-color:var(--accent);background:rgba(45,32,69,.8)}.city-input::placeholder{color:var(--text-dim)}
+.notes-section{margin-top:12px}.notes-textarea{width:100%;min-height:60px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:rgba(45,32,69,.5);color:var(--text-light);font-size:13px;outline:none;resize:vertical;transition:border-color .3s;font-family:inherit}.notes-textarea:focus{border-color:var(--accent);background:rgba(45,32,69,.8)}.notes-textarea::placeholder{color:var(--text-dim)}
+.nickname-input{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:rgba(45,32,69,.5);color:var(--text-light);font-size:14px;outline:none;transition:border-color .3s;margin-bottom:15px}
+.nickname-input:focus{border-color:var(--accent);background:rgba(45,32,69,.8)}
+.nickname-input::placeholder{color:var(--text-dim)}
+
+.birth-select{padding:8px 6px;border:1px solid var(--border);border-radius:8px;background:rgba(45,32,69,.5);color:var(--text-light);font-size:13px;outline:none;cursor:pointer}.birth-select:focus{border-color:var(--accent)}.birth-select option{background:#1a1033;color:var(--text-light)}
+.city-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.city-btn{padding:8px 4px;border:1px solid var(--border);border-radius:8px;background:rgba(45,32,69,.5);color:var(--text-light);font-size:12px;cursor:pointer;text-align:center;transition:all .3s}.city-btn:hover{border-color:var(--accent);background:rgba(155,109,255,.15)}.city-btn.selected{border-color:var(--accent);background:rgba(155,109,255,.3);color:var(--accent-light)}.city-more{grid-column:1/-1;text-align:center;padding:6px;color:var(--text-dim);font-size:12px;cursor:pointer;border:1px dashed var(--border);border-radius:8px}.city-more:hover{color:var(--accent);border-color:var(--accent)}
+.district-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:6px;padding:8px;background:rgba(155,109,255,.05);border-radius:8px;border:1px solid rgba(155,109,255,.2)}
+.district-btn{padding:5px 3px;border:1px solid var(--border);border-radius:6px;background:rgba(45,32,69,.4);color:var(--text-dim);font-size:11px;cursor:pointer;text-align:center;transition:all .3s}
+.district-btn:hover{border-color:var(--accent);color:var(--text-light);background:rgba(155,109,255,.1)}
+.district-btn.selected{border-color:var(--accent);background:rgba(155,109,255,.3);color:var(--accent-light)}
+.district-back{grid-column:1/-1;text-align:center;padding:4px;color:var(--text-dim);font-size:11px;cursor:pointer}
+.district-back:hover{color:var(--accent)}
+@media(max-width:768px){.district-grid{grid-template-columns:repeat(3,1fr)}}
+
+.same-zodiac-hint{text-align:center;padding:8px 16px;margin-bottom:12px;background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,107,157,.1));border:1px solid rgba(255,215,0,.4);border-radius:10px;color:var(--gold);font-size:14px;font-weight:700;animation:pulse-glow 2s infinite}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 10px rgba(255,215,0,.2)}50%{box-shadow:0 0 20px rgba(255,215,0,.4)}}
+
+/* 城市手动输入 */
+.city-manual-input{margin-top:8px;margin-bottom:15px;font-size:13px}
+
+/* V4: 快速问答星座分区 */
+.quick-zodiac-section{margin-bottom:15px;padding:12px;border-radius:14px;border:1px solid transparent;transition:border-color .3s}
+.quick-pair-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.quick-pair-wrap{grid-template-columns:1fr;gap:10px}}
+/* V6: pair-cards 极简独立布局 */
+.pair-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:600px){.pair-cards{grid-template-columns:1fr;gap:10px}}
+.person-card{padding:14px;border-radius:14px;border:2px solid transparent}
+.card-male{background:rgba(74,144,217,0.06);border-color:rgba(74,144,217,0.25)}
+.card-female{background:rgba(233,30,140,0.06);border-color:rgba(233,30,140,0.25)}
+.card-label{
+font-size:15px;
+font-weight:700;
+margin-bottom:12px;
+text-align:center;
+padding:10px;
+border-radius:10px;
+background:rgba(255,255,255,0.05);
+border:2px solid currentColor;
+cursor:pointer;
+transition:all 0.2s;
+}
+.card-label:hover{
+background:rgba(255,255,255,0.08);
+transform:scale(1.02);
+}
+.male-label{color:#4A90D9}
+.female-label{color:#E91E8C}
+.card-male .zodiac-btn.selected{background:rgba(74,144,217,0.2);border-color:#4A90D9;box-shadow:0 0 8px rgba(74,144,217,0.3)}
+.card-female .zodiac-btn.selected{background:rgba(233,30,140,0.2);border-color:#E91E8C;box-shadow:0 0 8px rgba(233,30,140,0.3)}
+.section-header-male{color:#4a9eff;font-weight:bold}
+.section-header-female{color:#ff6b9d;font-weight:bold}
+.nickname-male{border-color:rgba(74,158,255,.4)!important}
+.nickname-male:focus{border-color:#4a9eff!important;box-shadow:0 0 10px rgba(74,158,255,.2)}
+.nickname-female{border-color:rgba(255,107,157,.4)!important}
+.nickname-female:focus{border-color:#ff6b9d!important;box-shadow:0 0 10px rgba(255,107,157,.2)}
+.zodiac-male{border-color:rgba(74,158,255,.2)}
+.zodiac-female{border-color:rgba(255,107,157,.2)}
+
+/* V2: 男女星座选中颜色 */
+.zodiac-male .zodiac-btn.selected{border-color:#4a9eff;background:linear-gradient(135deg,rgba(74,158,255,.2),rgba(74,158,255,.1));box-shadow:0 0 25px rgba(74,158,255,.3)}
+.zodiac-male .zodiac-btn.selected .zodiac-name{color:#4a9eff}
+
+.zodiac-female .zodiac-btn.selected{border-color:#ff6b9d;background:linear-gradient(135deg,rgba(255,107,157,.2),rgba(255,107,157,.1));box-shadow:0 0 25px rgba(255,107,157,.3)}
+.zodiac-female .zodiac-btn.selected .zodiac-name{color:#ff6b9d}
+
+/* V2: 折叠面板 */
+.collapsible-header{padding:12px 16px;background:rgba(155,109,255,.1);border:1px solid var(--border);border-radius:12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;transition:all .3s}
+.collapsible-header:hover{background:rgba(155,109,255,.2);border-color:var(--accent)}
+.collapsible-header.open{border-radius:12px 12px 0 0;margin-bottom:0}
+.collapse-arrow{transition:transform .3s;font-size:12px}
+.collapsible-header.open .collapse-arrow{transform:rotate(180deg)}
+.collapsible-body{border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:15px;background:rgba(45,32,69,.3);margin-bottom:15px}
+
+/* V2: 快速问答补充输入 */
+.quick-input{width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:10px;background:rgba(45,32,69,.8);color:var(--text-light);font-size:14px;outline:none;transition:border-color .3s}
+.quick-input:focus{border-color:var(--accent)}
+.quick-input::placeholder{color:var(--text-dim)}
+.deep-info-row{display:flex;gap:15px}
+.deep-info-col{flex:1}
+.deep-info-label{font-size:13px;color:var(--text-dim);margin-bottom:6px}
+
+/* V3: 观众提问输入框 */
+.question-input{width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:12px;background:rgba(45,32,69,.6);color:var(--text-light);font-size:14px;resize:vertical;min-height:50px;outline:none;transition:border-color .3s;margin-bottom:15px;font-family:inherit}
+.question-input:focus{border-color:var(--accent);background:rgba(45,32,69,.8)}
+.question-input::placeholder{color:var(--text-dim)}
+
+/* V3: 双版本按钮 */
+.version-btns{display:flex;gap:12px;margin-top:15px}
+.version-btn{flex:1;padding:16px 20px;border:2px solid transparent;border-radius:14px;cursor:pointer;font-size:16px;font-weight:600;transition:all .3s;text-align:center}
+.warm-btn{background:linear-gradient(135deg,rgba(255,107,157,.25),rgba(255,107,157,.1));border-color:#ff6b9d;color:#ffb3cc}
+.warm-btn:hover{background:linear-gradient(135deg,rgba(255,107,157,.4),rgba(255,107,157,.2));box-shadow:0 0 20px rgba(255,107,157,.3)}
+.direct-btn{background:linear-gradient(135deg,rgba(74,158,255,.25),rgba(74,158,255,.1));border-color:#4a9eff;color:#99caff}
+.direct-btn:hover{background:linear-gradient(135deg,rgba(74,158,255,.4),rgba(74,158,255,.2));box-shadow:0 0 20px rgba(74,158,255,.3)}
+
+/* V3: 高频问题 */
+.hot-questions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:15px}
+.hot-question-tag{padding:6px 12px;border-radius:16px;background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.3);color:var(--gold);font-size:12px;cursor:pointer;transition:all .3s}
+.hot-question-tag:hover{background:rgba(255,215,0,.2);border-color:var(--gold)}
+
+/* V3: 历史记录版本标记 */
+.history-style-tag{padding:2px 6px;border-radius:4px;font-size:10px;margin-left:4px}
+.history-style-tag.warm{background:rgba(255,107,157,.2);color:#ffb3cc}
+.history-style-tag.direct{background:rgba(74,158,255,.2);color:#99caff}
+
+/* V5: 配对评分展示 */
+.pair-score-display{text-align:center;margin:16px 0;padding:20px;background:linear-gradient(135deg,rgba(155,109,255,.15),rgba(255,215,0,.08));border:1px solid rgba(155,109,255,.3);border-radius:20px}
+.score-circle{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(155,109,255,.25) 0%,rgba(13,10,26,.8) 100%);border:3px solid var(--accent);box-shadow:0 0 30px rgba(155,109,255,.3),inset 0 0 20px rgba(155,109,255,.15);position:relative}
+.score-circle::before{content:'';position:absolute;width:134px;height:134px;border-radius:50%;border:2px solid rgba(155,109,255,.15);top:50%;left:50%;transform:translate(-50%,-50%)}
+.score-number{font-size:36px;font-weight:700;background:linear-gradient(180deg,var(--gold),var(--accent-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.score-label{font-size:12px;color:var(--text-dim);margin-top:4px;letter-spacing:1px}
+.score-bar-wrap{margin-top:14px;padding:0 20px}
+.score-bar-bg{height:8px;background:rgba(45,32,69,.8);border-radius:4px;overflow:hidden;position:relative}
+.score-bar-fill{height:100%;border-radius:4px;transition:width 1s ease;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.score-bar-labels{display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--text-dim)}
+.pair-element-mode-summary{margin-top:12px;font-size:13px;color:var(--accent-light);line-height:1.7}
+
+/* 咨询档案面板 */
+.archive-overlay{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,.7);z-index:200;
+display:none;justify-content:center;align-items:center;
+backdrop-filter:blur(4px);
+}
+.archive-overlay.show{display:flex}
+.archive-panel{
+width:90%;max-width:900px;max-height:85vh;
+background:var(--bg-purple);border:1px solid var(--border);
+border-radius:16px;overflow:hidden;
+display:flex;flex-direction:column;
+box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.archive-header{
+display:flex;align-items:center;justify-content:space-between;
+padding:20px 24px;border-bottom:1px solid var(--border);
+flex-shrink:0;
+}
+.archive-header h2{
+font-size:20px;color:var(--accent-light);margin:0;
+}
+.archive-header-btns{display:flex;align-items:center;gap:10px}
+.archive-search{
+background:rgba(255,255,255,.08);border:1px solid var(--border);
+color:var(--text-light);padding:8px 14px;border-radius:20px;
+font-size:14px;width:200px;outline:none;
+}
+.archive-search:focus{border-color:var(--accent)}
+.archive-export-btn,.archive-close-btn{
+background:rgba(155,109,255,.2);border:1px solid var(--border);
+color:var(--text-light);padding:8px 14px;border-radius:12px;
+cursor:pointer;font-size:14px;transition:all .3s;
+}
+.archive-close-btn:hover{background:rgba(255,80,80,.3)}
+.archive-export-btn:hover{background:rgba(155,109,255,.4)}
+.archive-stats{
+padding:10px 24px;font-size:13px;color:var(--text-dim);
+border-bottom:1px solid rgba(45,32,69,.5);flex-shrink:0;
+}
+.archive-list{
+overflow-y:auto;flex:1;padding:12px;
+}
+.archive-empty{
+text-align:center;padding:60px 20px;color:var(--text-dim);
+font-size:15px;line-height:2;
+}
+.archive-card{
+background:rgba(255,255,255,.04);border:1px solid var(--border);
+border-radius:12px;padding:16px;margin-bottom:10px;
+cursor:pointer;transition:all .3s;
+}
+.archive-card:hover{
+background:rgba(155,109,255,.1);border-color:var(--accent);
+transform:translateY(-1px);
+}
+.archive-card-header{
+display:flex;justify-content:space-between;align-items:center;
+margin-bottom:8px;
+}
+.archive-card-name{
+font-size:16px;font-weight:600;color:var(--accent-light);
+}
+.archive-card-time{font-size:12px;color:var(--text-dim)}
+.archive-card-info{
+font-size:13px;color:var(--text-dim);line-height:1.8;
+}
+.archive-card-info span{
+display:inline-block;margin-right:12px;
+}
+.archive-card-tags{margin-top:6px}
+.archive-card-tags span{
+display:inline-block;padding:2px 8px;margin:2px 4px 2px 0;
+background:rgba(155,109,255,.15);border-radius:10px;
+font-size:11px;color:var(--accent-light);
+}
+.archive-card-notes{
+margin-top:6px;padding:8px 12px;
+background:rgba(255,215,0,.06);border-radius:8px;
+font-size:13px;color:var(--gold);line-height:1.6;
+border-left:3px solid rgba(255,215,0,.3);
+}
+/* 档案详情 */
+.archive-detail{
+overflow-y:auto;flex:1;padding:20px 24px;
+}
+.archive-detail-header{
+display:flex;justify-content:space-between;align-items:center;
+margin-bottom:20px;
+}
+.archive-back-btn{
+background:rgba(155,109,255,.2);border:1px solid var(--border);
+color:var(--text-light);padding:8px 16px;border-radius:10px;
+cursor:pointer;font-size:14px;transition:all .3s;
+}
+.archive-back-btn:hover{background:rgba(155,109,255,.35)}
+.archive-delete-btn{
+background:rgba(255,80,80,.15);border:1px solid rgba(255,80,80,.3);
+color:#ff6b6b;padding:8px 16px;border-radius:10px;
+cursor:pointer;font-size:14px;transition:all .3s;
+}
+.archive-delete-btn:hover{background:rgba(255,80,80,.3)}
+.archive-section{margin-bottom:20px}
+.archive-section-title{
+font-size:14px;color:var(--accent);font-weight:600;
+margin-bottom:10px;padding-bottom:6px;
+border-bottom:1px solid rgba(45,32,69,.8);
+}
+.archive-info-grid{
+display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;
+}
+.archive-info-item{
+padding:8px 12px;background:rgba(255,255,255,.04);
+border-radius:8px;font-size:13px;
+}
+.archive-info-item .label{
+color:var(--text-dim);font-size:11px;margin-bottom:2px;
+}
+.archive-info-item .value{
+color:var(--text-light);font-weight:500;
+}
+.archive-notes-box{
+padding:12px 16px;background:rgba(255,215,0,.06);
+border-radius:10px;border-left:3px solid rgba(255,215,0,.3);
+font-size:14px;color:var(--gold);line-height:1.8;
+white-space:pre-wrap;
+}
+.archive-result-box{
+padding:16px;background:rgba(255,255,255,.03);
+border-radius:10px;border:1px solid var(--border);
+font-size:14px;line-height:1.8;color:var(--text-light);
+white-space:pre-wrap;max-height:400px;overflow-y:auto;
+}
+.archive-result-box .highlight{color:var(--accent-light);font-weight:600}
+/* 手机端适配 */
+@media(max-width:768px){
+.archive-panel{width:96%;max-height:90vh}
+.archive-header{flex-direction:column;gap:10px;padding:16px}
+.archive-header-btns{width:100%}
+.archive-search{flex:1;width:auto}
+.archive-info-grid{grid-template-columns:1fr}
+}
+
+/* 用户反馈栏 */
+.feedback-section {
+  margin: 20px auto;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+.feedback-title {
+  color: var(--accent-light);
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  text-align: center;
+}
+.feedback-recent {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 16px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.feedback-empty {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 13px;
+  padding: 12px;
+}
+.feedback-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.feedback-item:last-child { border-bottom: none; }
+.feedback-item-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #7c4dff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.feedback-item-body { flex: 1; min-width: 0; }
+.feedback-item-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+.feedback-item-name {
+  color: var(--text-light);
+  font-size: 12px;
+  font-weight: 500;
+}
+.feedback-item-stars {
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+.feedback-item-time {
+  color: var(--text-dim);
+  font-size: 11px;
+  margin-left: auto;
+}
+.feedback-item-text {
+  color: var(--text-dim);
+  font-size: 13px;
+  line-height: 1.5;
+  word-break: break-all;
+}
+.feedback-form {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 16px;
+}
+.feedback-form-title {
+  color: var(--text-light);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.feedback-rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.fb-rate-btn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.fb-rate-btn:hover { transform: scale(1.2); }
+.fb-rate-btn.selected {
+  background: rgba(155,109,255,0.2);
+  border-color: var(--accent);
+  transform: scale(1.15);
+}
+.feedback-input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: var(--text-light);
+  padding: 8px 12px;
+  font-size: 13px;
+  resize: vertical;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+}
+.feedback-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.feedback-submit {
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent), #7c4dff);
+  border: none;
+  color: #fff;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+.feedback-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+.feedback-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+@media (max-width: 900px) {
+  .feedback-section { padding: 0 10px; }
+  .feedback-rating { gap: 2px; }
+  .fb-rate-btn { padding: 4px 6px; font-size: 16px; }
+}
+
+/* 步骤引导条 */
+.step-guide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 12px 20px;
+  margin: 0 auto 8px;
+  max-width: 600px;
+}
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-dim);
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.step-item.active {
+  color: var(--accent-light);
+  font-weight: 600;
+}
+.step-item.done {
+  color: #4caf50;
+}
+.step-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.step-item.active .step-num {
+  background: linear-gradient(135deg, var(--accent), #7c4dff);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(155,109,255,0.4);
+}
+.step-item.done .step-num {
+  background: #4caf50;
+  color: #fff;
+}
+.step-arrow {
+  color: var(--text-dim);
+  font-size: 12px;
+  margin: 0 8px;
+  opacity: 0.4;
+}
+/* 生成按钮隐藏态+动画 */
+.version-btns { 
+  display: flex; 
+  gap: 12px; 
+  margin-top: 15px;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.4s ease, max-height 0.4s ease, margin 0.3s ease;
+  margin-top: 0;
+}
+.version-btns.visible {
+  opacity: 1;
+  max-height: 100px;
+  margin-top: 15px;
+}
+/* 首次出现时的脉冲动画 */
+.version-btns.pulse-appear {
+  animation: btnPulse 0.6s ease;
+}
+@keyframes btnPulse {
+  0% { transform: scale(0.95); opacity: 0; }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@media (max-width: 900px) {
+  .step-guide { padding: 10px 12px; gap: 0; }
+  .step-item { font-size: 12px; }
+  .step-arrow { margin: 0 4px; }
+}
+
+@keyframes btn-glow{
+0%,100%{box-shadow:0 0 25px rgba(255,215,0,.7),0 0 50px rgba(255,107,0,.5),0 0 80px rgba(255,215,0,.3);transform:scale(1.05)}
+50%{box-shadow:0 0 40px rgba(255,215,0,1),0 0 80px rgba(255,107,0,.8),0 0 120px rgba(255,215,0,.5);transform:scale(1.1)}
+}
+</style>
+</head>
+<body>
+<!--
+  ╔══════════════════════════════════════════════════════════╗
+  ║  INTELLECTUAL PROPERTY NOTICE                          ║
+  ║  Project: 仙仙星语助手（玄学直播分析）
+  ║  Original Creation Date: 2026-07-09T18:25:57+08:00
+  ║  Author: Ruochan Studio                                ║
+  ║  Version: 1.0.0                                     ║
+  ║  Copyright (c) 2026 Ruochan Studio. All rights reserved.║
+  ║                                                          ║
+  ║  This work including but not limited to the concepts,    ║
+  ║  design, algorithms, strategy, code, and visual          ║
+  ║  presentation contained herein constitutes original      ║
+  ║  intellectual property. Unauthorized reproduction,       ║
+  ║  copying, or derivation is strictly prohibited.         ║
+  ║  本项目所有创意、设计、算法、策略、代码及视觉呈现      ║
+  ║  均为原创知识产权，受法律保护，未经授权不得转载或抄袭。 ║
+  ╚══════════════════════════════════════════════════════════╝
+-->
+<div class="starry-bg"></div>
+<div class="stars" id="stars"></div>
+
+<header>
+<div class="logo">
+<span class="logo-icon">✨</span>
+<h1>仙仙星语助手</h1>
+</div>
+<nav class="nav-tabs">
+<button class="tab-btn active" data-mode="deep">深度分析</button>
+<button class="tab-btn" data-mode="quick">快速问答</button>
+</nav>
+<button id="aiUpgradeBtn" onclick="openAIUpgrade()" style="background:linear-gradient(135deg,#FFD700,#FF6B00);border:2.5px solid #FFD700;color:#000;padding:16px 36px;border-radius:35px;cursor:pointer;font-size:18px;font-weight:800;display:flex;align-items:center;gap:10px;box-shadow:0 0 25px rgba(255,215,0,.7),0 0 50px rgba(255,107,0,.5),0 0 80px rgba(255,215,0,.3);transition:all .3s;margin-right:12px;letter-spacing:2px;animation:btn-glow 1.5s ease-in-out infinite;text-shadow:0 1px 3px rgba(255,255,255,.5);transform:scale(1.05)" title="升级为AI大模型分析">🔥 AI深度解析</button>
+<button class="sidebar-toggle" id="toggleArchive" style="margin-right:8px">📁 咨询档案</button>
+<button class="sidebar-toggle" id="toggleSidebar">📋 历史记录</button>
+</header>
+
+<div class="step-guide" id="stepGuide">
+  <div class="step-item active" id="step1">
+    <span class="step-num">1</span>
+    <span>选星座</span>
+  </div>
+  <span class="step-arrow">▸</span>
+  <div class="step-item" id="step2">
+    <span class="step-num">2</span>
+    <span>选方向</span>
+  </div>
+  <span class="step-arrow">▸</span>
+  <div class="step-item" id="step3">
+    <span class="step-num">3</span>
+    <span>看分析</span>
+  </div>
+</div>
+
+<div class="main-container">
+
+<div class="input-panel">
+
+<div class="mode-content active" id="deepMode">
+<div class="notes-section">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px"><span style="color:var(--accent-light);font-size:14px;font-weight:500">📝 事件/备注（选填）</span><button id="saveArchiveBtn" style="background:linear-gradient(135deg,var(--accent),#7c4dff);border:none;color:#fff;padding:6px 16px;border-radius:8px;cursor:pointer;font-size:13px;transition:all .3s;white-space:nowrap;flex-shrink:0">💾 保存档案</button></div>
+  
+  <textarea id="deepNotes" class="notes-textarea" placeholder="记录重要事件、特殊经历或补充说明...&#10;点击上方时间段按钮可快速插入时间标记"></textarea>
+</div>
+<div class="pair-cards">
+  <div class="person-card card-male">
+    <input type="text" id="deepMaleNickname" class="nickname-input" placeholder="✏️ 男方昵称（选填）" maxlength="20">
+    <div class="card-label male-label">♂ 男方星座</div>
+    <div class="zodiac-grid" id="zodiacGridMale"></div>
+    <div class="card-label male-label" style="margin-top:10px">📅 男方生辰（选填）</div>
+    <div style="display:flex;gap:6px;margin-bottom:10px">
+      <select id="deepMaleBirthYear" class="birth-select" style="flex:1"><option value="">年</option></select>
+      <select id="deepMaleBirthMonth" class="birth-select" style="flex:1"><option value="">月</option></select>
+      <select id="deepMaleBirthDay" class="birth-select" style="flex:1"><option value="">日</option></select>
+      <select id="deepMaleBirthHour" class="birth-select" style="flex:1"><option value="">时</option><option value="子时(00:00-00:30)">子时 00:00-00:30</option><option value="子时(00:30-01:00)">子时 00:30-01:00</option><option value="丑时(01:00-01:30)">丑时 01:00-01:30</option><option value="丑时(01:30-02:00)">丑时 01:30-02:00</option><option value="丑时(02:00-02:30)">丑时 02:00-02:30</option><option value="丑时(02:30-03:00)">丑时 02:30-03:00</option><option value="寅时(03:00-03:30)">寅时 03:00-03:30</option><option value="寅时(03:30-04:00)">寅时 03:30-04:00</option><option value="寅时(04:00-04:30)">寅时 04:00-04:30</option><option value="寅时(04:30-05:00)">寅时 04:30-05:00</option><option value="卯时(05:00-05:30)">卯时 05:00-05:30</option><option value="卯时(05:30-06:00)">卯时 05:30-06:00</option><option value="卯时(06:00-06:30)">卯时 06:00-06:30</option><option value="卯时(06:30-07:00)">卯时 06:30-07:00</option><option value="辰时(07:00-07:30)">辰时 07:00-07:30</option><option value="辰时(07:30-08:00)">辰时 07:30-08:00</option><option value="辰时(08:00-08:30)">辰时 08:00-08:30</option><option value="辰时(08:30-09:00)">辰时 08:30-09:00</option><option value="巳时(09:00-09:30)">巳时 09:00-09:30</option><option value="巳时(09:30-10:00)">巳时 09:30-10:00</option><option value="巳时(10:00-10:30)">巳时 10:00-10:30</option><option value="巳时(10:30-11:00)">巳时 10:30-11:00</option><option value="午时(11:00-11:30)">午时 11:00-11:30</option><option value="午时(11:30-12:00)">午时 11:30-12:00</option><option value="午时(12:00-12:30)">午时 12:00-12:30</option><option value="午时(12:30-13:00)">午时 12:30-13:00</option><option value="未时(13:00-13:30)">未时 13:00-13:30</option><option value="未时(13:30-14:00)">未时 13:30-14:00</option><option value="未时(14:00-14:30)">未时 14:00-14:30</option><option value="未时(14:30-15:00)">未时 14:30-15:00</option><option value="申时(15:00-15:30)">申时 15:00-15:30</option><option value="申时(15:30-16:00)">申时 15:30-16:00</option><option value="申时(16:00-16:30)">申时 16:00-16:30</option><option value="申时(16:30-17:00)">申时 16:30-17:00</option><option value="酉时(17:00-17:30)">酉时 17:00-17:30</option><option value="酉时(17:30-18:00)">酉时 17:30-18:00</option><option value="酉时(18:00-18:30)">酉时 18:00-18:30</option><option value="酉时(18:30-19:00)">酉时 18:30-19:00</option><option value="戌时(19:00-19:30)">戌时 19:00-19:30</option><option value="戌时(19:30-20:00)">戌时 19:30-20:00</option><option value="戌时(20:00-20:30)">戌时 20:00-20:30</option><option value="戌时(20:30-21:00)">戌时 20:30-21:00</option><option value="亥时(21:00-21:30)">亥时 21:00-21:30</option><option value="亥时(21:30-22:00)">亥时 21:30-22:00</option><option value="亥时(22:00-22:30)">亥时 22:00-22:30</option><option value="亥时(22:30-23:00)">亥时 22:30-23:00</option><option value="子时(23:00-23:30)">子时 23:00-23:30</option><option value="子时(23:30-00:00)">子时 23:30-00:00</option></select>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:6px;margin-bottom:8px">
+      <span style="font-size:12px;color:var(--text-dim);white-space:nowrap">⏰ 精确时间：</span>
+      <input type="time" id="deepMaleBirthExactTime" style="padding:5px 8px;border-radius:8px;border:1px solid rgba(155,109,255,.3);background:rgba(45,32,69,.5);color:var(--text-light);font-size:13px;outline:none;color-scheme:dark;flex:1;max-width:140px" title="精确到分钟，优先于上方选择">
+    </div>
+    <div class="card-label male-label">🏠 男方出生地（选填）</div>
+    <div class="city-grid" id="deepMaleBirthCity" style="margin-bottom:8px"></div>
+    <div class="district-grid" id="deepMaleBirthCityDistrict" style="display:none"></div>
+    <div class="card-label male-label">📍 男方现居地（选填）</div>
+    <div class="city-grid" id="deepMaleCurrentCity"></div>
+    <div class="district-grid" id="deepMaleCurrentCityDistrict" style="display:none"></div>
+  </div>
+  <div class="person-card card-female">
+    <input type="text" id="deepFemaleNickname" class="nickname-input" placeholder="✏️ 女方昵称（选填）" maxlength="20">
+    <div class="card-label female-label">♀ 女方星座</div>
+    <div class="zodiac-grid" id="zodiacGridFemale"></div>
+    <div class="card-label female-label" style="margin-top:10px">📅 女方生辰（选填）</div>
+    <div style="display:flex;gap:6px;margin-bottom:10px">
+      <select id="deepFemaleBirthYear" class="birth-select" style="flex:1"><option value="">年</option></select>
+      <select id="deepFemaleBirthMonth" class="birth-select" style="flex:1"><option value="">月</option></select>
+      <select id="deepFemaleBirthDay" class="birth-select" style="flex:1"><option value="">日</option></select>
+      <select id="deepFemaleBirthHour" class="birth-select" style="flex:1"><option value="">时</option><option value="子时(00:00-00:30)">子时 00:00-00:30</option><option value="子时(00:30-01:00)">子时 00:30-01:00</option><option value="丑时(01:00-01:30)">丑时 01:00-01:30</option><option value="丑时(01:30-02:00)">丑时 01:30-02:00</option><option value="丑时(02:00-02:30)">丑时 02:00-02:30</option><option value="丑时(02:30-03:00)">丑时 02:30-03:00</option><option value="寅时(03:00-03:30)">寅时 03:00-03:30</option><option value="寅时(03:30-04:00)">寅时 03:30-04:00</option><option value="寅时(04:00-04:30)">寅时 04:00-04:30</option><option value="寅时(04:30-05:00)">寅时 04:30-05:00</option><option value="卯时(05:00-05:30)">卯时 05:00-05:30</option><option value="卯时(05:30-06:00)">卯时 05:30-06:00</option><option value="卯时(06:00-06:30)">卯时 06:00-06:30</option><option value="卯时(06:30-07:00)">卯时 06:30-07:00</option><option value="辰时(07:00-07:30)">辰时 07:00-07:30</option><option value="辰时(07:30-08:00)">辰时 07:30-08:00</option><option value="辰时(08:00-08:30)">辰时 08:00-08:30</option><option value="辰时(08:30-09:00)">辰时 08:30-09:00</option><option value="巳时(09:00-09:30)">巳时 09:00-09:30</option><option value="巳时(09:30-10:00)">巳时 09:30-10:00</option><option value="巳时(10:00-10:30)">巳时 10:00-10:30</option><option value="巳时(10:30-11:00)">巳时 10:30-11:00</option><option value="午时(11:00-11:30)">午时 11:00-11:30</option><option value="午时(11:30-12:00)">午时 11:30-12:00</option><option value="午时(12:00-12:30)">午时 12:00-12:30</option><option value="午时(12:30-13:00)">午时 12:30-13:00</option><option value="未时(13:00-13:30)">未时 13:00-13:30</option><option value="未时(13:30-14:00)">未时 13:30-14:00</option><option value="未时(14:00-14:30)">未时 14:00-14:30</option><option value="未时(14:30-15:00)">未时 14:30-15:00</option><option value="申时(15:00-15:30)">申时 15:00-15:30</option><option value="申时(15:30-16:00)">申时 15:30-16:00</option><option value="申时(16:00-16:30)">申时 16:00-16:30</option><option value="申时(16:30-17:00)">申时 16:30-17:00</option><option value="酉时(17:00-17:30)">酉时 17:00-17:30</option><option value="酉时(17:30-18:00)">酉时 17:30-18:00</option><option value="酉时(18:00-18:30)">酉时 18:00-18:30</option><option value="酉时(18:30-19:00)">酉时 18:30-19:00</option><option value="戌时(19:00-19:30)">戌时 19:00-19:30</option><option value="戌时(19:30-20:00)">戌时 19:30-20:00</option><option value="戌时(20:00-20:30)">戌时 20:00-20:30</option><option value="戌时(20:30-21:00)">戌时 20:30-21:00</option><option value="亥时(21:00-21:30)">亥时 21:00-21:30</option><option value="亥时(21:30-22:00)">亥时 21:30-22:00</option><option value="亥时(22:00-22:30)">亥时 22:00-22:30</option><option value="亥时(22:30-23:00)">亥时 22:30-23:00</option><option value="子时(23:00-23:30)">子时 23:00-23:30</option><option value="子时(23:30-00:00)">子时 23:30-00:00</option></select>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:6px;margin-bottom:8px">
+      <span style="font-size:12px;color:var(--text-dim);white-space:nowrap">⏰ 精确时间：</span>
+      <input type="time" id="deepFemaleBirthExactTime" style="padding:5px 8px;border-radius:8px;border:1px solid rgba(155,109,255,.3);background:rgba(45,32,69,.5);color:var(--text-light);font-size:13px;outline:none;color-scheme:dark;flex:1;max-width:140px" title="精确到分钟，优先于上方选择">
+    </div>
+    <div class="card-label female-label">🏠 女方出生地（选填）</div>
+    <div class="city-grid" id="deepFemaleBirthCity" style="margin-bottom:8px"></div>
+    <div class="district-grid" id="deepFemaleBirthCityDistrict" style="display:none"></div>
+    <div class="card-label female-label">📍 女方现居地（选填）</div>
+    <div class="city-grid" id="deepFemaleCurrentCity"></div>
+    <div class="district-grid" id="deepFemaleCurrentCityDistrict" style="display:none"></div>
+  </div>
+</div>
+<div style="font-size:18px;font-weight:700;color:#fff;text-align:center;margin:16px 0 10px;text-shadow:0 0 12px rgba(155,109,255,.6),0 0 24px rgba(155,109,255,.3);letter-spacing:1px">🔮 选择分析方向</div>
+<div class="mode-tabs">
+<button id="modeTabSingle" class="mode-tab active" data-mode="single">👤 个人运势</button>
+<button id="modeTabDouble" class="mode-tab" data-mode="double">👥 双人合盘</button>
+</div>
+<div id="directionSingle" class="direction-btns direction-single">
+<button class="direction-btn" data-dir="最近运势">✨ 最近运势</button>
+<button class="direction-btn" data-dir="财运走势">💰 财运走势</button>
+<button class="direction-btn" data-dir="爱情运势">❤️ 爱情运势</button>
+</div>
+<div id="directionDouble" class="direction-btns direction-double" style="display:none">
+<button class="direction-btn" data-dir="吸引特质">🧲 吸引特质</button>
+<button class="direction-btn" data-dir="亲密关系">💕 亲密关系</button>
+<button class="direction-btn" data-dir="关系走向">🧭 关系走向</button>
+<button class="direction-btn" data-dir="情感矛盾">⚡ 情感矛盾</button>
+<button class="direction-btn" data-dir="真心解剖">🔍 真心解剖</button>
+<button class="direction-btn" data-dir="近期关系">📅 近期关系</button>
+<button class="direction-btn" data-dir="结婚匹配">💍 结婚匹配</button>
+</div>
+<div class="custom-preference" style="margin:16px 0 12px;padding:16px;background:rgba(155,109,255,.08);border:1px solid rgba(155,109,255,.25);border-radius:14px;">
+<div style="font-size:14px;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:10px;display:flex;align-items:center;gap:6px">✨ 自定义偏好 <span style="font-size:12px;color:rgba(255,255,255,.5);font-weight:400">(选填，告诉AI你想要的风格)</span></div>
+<div class="pref-tags" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+<button class="pref-tag" onclick="addPref(this)" style="padding:6px 12px;border:1px solid rgba(155,109,255,.3);border-radius:20px;background:rgba(155,109,255,.1);color:rgba(255,255,255,.7);font-size:13px;cursor:pointer;transition:all .2s">详细展开</button>
+<button class="pref-tag" onclick="addPref(this)" style="padding:6px 12px;border:1px solid rgba(155,109,255,.3);border-radius:20px;background:rgba(155,109,255,.1);color:rgba(255,255,255,.7);font-size:13px;cursor:pointer;transition:all .2s">简洁扼要</button>
+<button class="pref-tag" onclick="addPref(this)" style="padding:6px 12px;border:1px solid rgba(155,109,255,.3);border-radius:20px;background:rgba(155,109,255,.1);color:rgba(255,255,255,.7);font-size:13px;cursor:pointer;transition:all .2s">重点给建议</button>
+<button class="pref-tag" onclick="addPref(this)" style="padding:6px 12px;border:1px solid rgba(155,109,255,.3);border-radius:20px;background:rgba(155,109,255,.1);color:rgba(255,255,255,.7);font-size:13px;cursor:pointer;transition:all .2s">分析原因</button>
+<button class="pref-tag" onclick="addPref(this)" style="padding:6px 12px;border:1px solid rgba(155,109,255,.3);border-radius:20px;background:rgba(155,109,255,.1);color:rgba(255,255,255,.7);font-size:13px;cursor:pointer;transition:all .2s">给具体话术</button>
+</div>
+<input type="text" id="customPrefInput" placeholder="或输入自定义要求，如：重点分析事业方向、多给实操建议..." style="width:100%;padding:10px 14px;border:1px solid rgba(155,109,255,.3);border-radius:10px;background:rgba(45,32,69,.5);color:var(--text-light);font-size:14px;outline:none;box-sizing:border-box">
+</div>
+<div class="query-preview" id="queryPreview" style="margin:16px 0;padding:16px 20px;background:linear-gradient(135deg,rgba(255,215,0,.12),rgba(155,109,255,.18));border:2px solid rgba(255,215,0,.5);border-radius:16px;text-align:center;font-size:16px;font-weight:600;color:var(--gold);min-height:52px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 0 20px rgba(255,215,0,.15),inset 0 0 15px rgba(155,109,255,.1);text-shadow:0 0 8px rgba(255,215,0,.4);letter-spacing:1px;animation:previewGlow 2.5s ease-in-out infinite">
+  <span>👆🏻 选择选择分析方向后点击 👇🏻 按钮开始分析</span>
+</div>
+<style>
+@keyframes previewGlow{
+0%,100%{box-shadow:0 0 20px rgba(255,215,0,.15),inset 0 0 15px rgba(155,109,255,.1)}
+50%{box-shadow:0 0 30px rgba(255,215,0,.3),inset 0 0 20px rgba(155,109,255,.2)}
+}
+@keyframes glow-pulse{
+0%,100%{opacity:1;transform:scale(1)}
+50%{opacity:.6;transform:scale(1.3)}
+}
+
+@keyframes btn-glow{
+0%,100%{box-shadow:0 0 25px rgba(255,215,0,.7),0 0 50px rgba(255,107,0,.5),0 0 80px rgba(255,215,0,.3);transform:scale(1.05)}
+50%{box-shadow:0 0 40px rgba(255,215,0,1),0 0 80px rgba(255,107,0,.8),0 0 120px rgba(255,215,0,.5);transform:scale(1.1)}
+}
+</style>
+<div class="version-btns">
+  <button class="version-btn warm-btn" id="generateDeepWarm">📊 结果分析</button>
+  <button class="version-btn direct-btn" id="generateDeepDirect">🔮 深度结果分析</button>
+</div>
+</div>
+
+
+<div class="mode-content" id="quickMode">
+<div id="sameZodiacHint" class="same-zodiac-hint" style="display:none">
+  ✨ 双方同属<span id="sameZodiacName"></span>！同星座配对有特殊默契哦~
+</div>
+<div class="pair-cards">
+  <div class="person-card card-male">
+    <input type="text" id="maleNickname" class="nickname-input" placeholder="✏️ 男方昵称（选填）" maxlength="20">
+    <div class="card-label male-label">♂ 男方星座</div>
+    <div class="zodiac-grid" id="zodiacGrid2"></div>
+  </div>
+  <div class="person-card card-female">
+    <input type="text" id="femaleNickname" class="nickname-input" placeholder="✏️ 女方昵称（选填）" maxlength="20">
+    <div class="card-label female-label">♀ 女方星座</div>
+    <div class="zodiac-grid" id="zodiacGrid3"></div>
+  </div>
+</div>
+<div class="section-title">💬 观众提问（选填）</div>
+<textarea id="viewerQuestion" class="question-input" placeholder="输入观众的具体问题，如：他最近对我忽冷忽热是什么意思？" rows="2"></textarea>
+<div class="section-title" id="hotQuestionsTitle" style="display:none">🔥 高频问题</div>
+<div class="hot-questions" id="hotQuestions"></div>
+<div class="section-title">🎯 场景标签（可多选）</div>
+<div class="scene-tags" id="sceneTags"></div>
+<div class="version-btns">
+  <button class="version-btn warm-btn" id="generateQuickWarm">📊 结果分析</button>
+  <button class="version-btn direct-btn" id="generateQuickDirect">🔮 深度结果分析</button>
+</div>
+</div>
+
+<div class="result-panel">
+<div class="result-box">
+<div class="result-placeholder" id="resultPlaceholder">
+<span class="result-placeholder-icon">🌙</span>
+<p>选择星座，点击生成<br>即可获得专业分析话术</p>
+</div>
+<div class="result-content" id="resultContent" style="display:none"></div>
+<button class="copy-btn" id="copyBtn" style="display:none">📋 复制话术</button>
+</div>
+<div class="ai-result-box" id="aiPanel" style="display:none">
+<div class="result-placeholder" id="aiPlaceholder">
+<span class="result-placeholder-icon">✨</span>
+<p>AI深度分析<br>授权后显示</p>
+</div>
+<div class="result-content" id="aiResultContent" style="display:none"></div>
+<button class="copy-btn" id="copyAiBtn" style="display:none">📋 复制AI分析</button>
+</div>
+</div>
+
+
+<div class="history-panel" id="historyPanel">
+<div class="history-title">
+📜 历史记录 <span class="history-count" id="historyCount">0</span>
+</div>
+<div class="history-list" id="historyList">
+<div class="history-empty">暂无记录<br>开始分析吧~</div>
+</div>
+</div>
+</div>
+
+
+
+
+<!-- 咨询档案面板 -->
+<div class="archive-overlay" id="archiveOverlay">
+<div class="archive-panel">
+  <div class="archive-header">
+    <h2>📁 咨询档案</h2>
+    <div class="archive-header-btns">
+      <input type="text" id="archiveSearch" class="archive-search" placeholder="🔍 搜索昵称、星座...">
+      <button class="archive-export-btn" id="archiveExport" title="导出所有档案">📤 导出</button>
+      <button class="archive-close-btn" id="archiveClose">✕</button>
+    </div>
+  </div>
+  <div class="archive-stats" id="archiveStats"></div>
+  <div class="archive-list" id="archiveList">
+    <div class="archive-empty">暂无咨询档案<br>完成深度分析后会自动建档</div>
+  </div>
+  <!-- 档案详情 -->
+  <div class="archive-detail" id="archiveDetail" style="display:none">
+    <div class="archive-detail-header">
+      <button class="archive-back-btn" id="archiveBack">← 返回列表</button>
+      <button class="archive-delete-btn" id="archiveDeleteBtn">🗑️ 删除</button>
+    </div>
+    <div class="archive-detail-content" id="archiveDetailContent"></div>
+  </div>
+</div>
+</div>
+
+<div class="note-modal" id="noteModal">
+<div class="note-modal-content">
+<h3>📝 添加备注</h3>
+<div class="note-labels" id="noteLabels">
+<span class="note-label" data-tag="想跳槽">想跳槽</span>
+<span class="note-label" data-tag="感情困惑">感情困惑</span>
+<span class="note-label" data-tag="最近焦虑">最近焦虑</span>
+<span class="note-label" data-tag="老客户">老客户</span>
+</div>
+<input type="text" id="noteInput" placeholder="输入自定义备注...">
+<div class="note-modal-btns">
+<button class="note-cancel delete-record" id="deleteRecord">删除</button>
+<button class="note-cancel" id="noteCancel">取消</button>
+<button class="note-save" id="noteSave">保存</button>
+</div>
+</div>
+</div>
+
+<!-- 用户反馈栏 -->
+<div class="feedback-section" id="feedbackSection">
+  <div class="feedback-title">💬 用户反馈</div>
+  <div class="feedback-recent" id="feedbackRecent">
+    <div class="feedback-empty">暂无反馈，来留下第一条吧~</div>
+  </div>
+  <div class="feedback-form">
+    <div class="feedback-form-title">📝 留下你的反馈</div>
+    <div class="feedback-rating" id="feedbackRating">
+      <span style="color:var(--text-dim);font-size:13px;margin-right:8px">这次分析有帮助吗？</span>
+      <button class="fb-rate-btn" data-rate="5" title="非常有帮助">😍</button>
+      <button class="fb-rate-btn" data-rate="4" title="有帮助">😊</button>
+      <button class="fb-rate-btn" data-rate="3" title="一般">😐</button>
+      <button class="fb-rate-btn" data-rate="2" title="不太准">😕</button>
+      <button class="fb-rate-btn" data-rate="1" title="不准">😞</button>
+    </div>
+    <textarea id="feedbackContent" class="feedback-input" placeholder="说说你的感受，或者你想分析的内容准不准~（选填）" rows="2"></textarea>
+    <button id="feedbackSubmitBtn" class="feedback-submit">提交反馈</button>
+    <div id="feedbackMsg" style="text-align:center;font-size:12px;color:var(--text-dim);min-height:18px;margin-top:4px"></div>
+  </div>
+</div>
+
+<footer>
+⚠️ 本内容仅供娱乐参考，基于传统文化趣味解读
+</footer>
+
+<script>
+// Mode切换（个人/双人）
+
+function addPref(btn){
+  btn.classList.toggle('selected');
+  if(btn.classList.contains('selected')){
+    btn.style.background='rgba(155,109,255,.3)';
+    btn.style.borderColor='rgba(155,109,255,.7)';
+    btn.style.color='#fff';
+  }else{
+    btn.style.background='rgba(155,109,255,.1)';
+    btn.style.borderColor='rgba(155,109,255,.3)';
+    btn.style.color='rgba(255,255,255,.7)';
+  }
+  updateQueryPreview();
+}
+function getCustomPref(){
+  const tags=[...document.querySelectorAll('.pref-tag.selected')].map(b=>b.textContent);
+  const custom=document.getElementById('customPrefInput')?.value?.trim()||'';
+  return [...tags,custom].filter(Boolean).join('，');
+}
+
+
+const ZODIACS = [
+{name:'白羊座',symbol:'♈',element:'火',date:'3.21-4.19'},
+{name:'金牛座',symbol:'♉',element:'土',date:'4.20-5.20'},
+{name:'双子座',symbol:'♊',element:'风',date:'5.21-6.21'},
+{name:'巨蟹座',symbol:'♋',element:'水',date:'6.22-7.22'},
+{name:'狮子座',symbol:'♌',element:'火',date:'7.23-8.22'},
+{name:'处女座',symbol:'♍',element:'土',date:'8.23-9.22'},
+{name:'天秤座',symbol:'♎',element:'风',date:'9.23-10.23'},
+{name:'天蝎座',symbol:'♏',element:'水',date:'10.24-11.22'},
+{name:'射手座',symbol:'♐',element:'火',date:'11.23-12.21'},
+{name:'摩羯座',symbol:'♑',element:'土',date:'12.22-1.19'},
+{name:'水瓶座',symbol:'♒',element:'风',date:'1.20-2.18'},
+{name:'双鱼座',symbol:'♓',element:'水',date:'2.19-3.20'}
+];
+
+const CITIES_BASIC = ['北京','上海','广州','深圳','杭州','成都','南京','武汉','西安','重庆'];
+const CITIES_MORE = ['天津','苏州','长沙','郑州','济南','青岛','大连','沈阳','厦门','福州','宁波','无锡','哈尔滨','长春','石家庄','合肥','昆明','南昌','贵阳','南宁','太原','兰州','海口','呼和浩特','乌鲁木齐','拉萨','银川','西宁'];
+
+const CITY_DISTRICTS = {
+'北京':['东城区','西城区','朝阳区','海淀区','丰台区','石景山区','通州区','顺义区','房山区','大兴区','昌平区','怀柔区','平谷区','密云区','延庆区','门头沟区'],
+'上海':['黄浦区','徐汇区','长宁区','静安区','普陀区','虹口区','杨浦区','闵行区','宝山区','嘉定区','浦东新区','金山区','松江区','青浦区','奉贤区','崇明区'],
+'广州':['越秀区','海珠区','荔湾区','天河区','白云区','黄埔区','花都区','番禺区','南沙区','从化区','增城区'],
+'深圳':['福田区','罗湖区','南山区','盐田区','宝安区','龙岗区','龙华区','坪山区','光明区'],
+'杭州':['上城区','拱墅区','西湖区','滨江区','萧山区','余杭区','临平区','钱塘区','富阳区','临安区','桐庐县','淳安县','建德市'],
+'成都':['锦江区','青羊区','金牛区','武侯区','成华区','龙泉驿区','青白江区','新都区','温江区','双流区','郫都区','新津区'],
+'南京':['玄武区','秦淮区','建邺区','鼓楼区','浦口区','栖霞区','雨花台区','江宁区','六合区','溧水区','高淳区'],
+'武汉':['江岸区','江汉区','硚口区','汉阳区','武昌区','青山区','洪山区','东西湖区','蔡甸区','江夏区','黄陂区','新洲区','汉南区'],
+'西安':['新城区','碑林区','莲湖区','灞桥区','未央区','雁塔区','阎良区','临潼区','长安区','高陵区','鄠邑区'],
+'重庆':['万州区','涪陵区','渝中区','大渡口区','江北区','沙坪坝区','九龙坡区','南岸区','北碚区','渝北区','巴南区','长寿区'],
+'天津':['和平区','河东区','河西区','南开区','河北区','红桥区','东丽区','西青区','津南区','北辰区','武清区','宝坻区'],
+'苏州':['姑苏区','虎丘区','吴中区','相城区','吴江区','昆山市','太仓市','常熟市','张家港市'],
+'长沙':['芙蓉区','天心区','岳麓区','开福区','雨花区','望城区','长沙县','浏阳市','宁乡市'],
+'郑州':['中原区','二七区','管城区','金水区','上街区','惠济区','中牟县','巩义市','荥阳市','新密市','新郑市','登封市'],
+'济南':['历下区','市中区','槐荫区','天桥区','历城区','长清区','章丘区','济阳区','莱芜区','钢城区'],
+'青岛':['市南区','市北区','黄岛区','崂山区','李沧区','城阳区','即墨区','胶州市','平度市','莱西市'],
+'大连':['中山区','西岗区','沙河口区','甘井子区','旅顺口区','金州区','普兰店区'],
+'沈阳':['和平区','沈河区','大东区','皇姑区','铁西区','苏家屯区','浑南区','沈北新区','于洪区'],
+'厦门':['思明区','湖里区','集美区','海沧区','同安区','翔安区'],
+'福州':['鼓楼区','台江区','仓山区','马尾区','晋安区','长乐区','闽侯县'],
+'宁波':['海曙区','江北区','北仑区','镇海区','鄞州区','奉化区'],
+'无锡':['锡山区','惠山区','滨湖区','梁溪区','新吴区','江阴市','宜兴市'],
+'哈尔滨':['道里区','南岗区','道外区','平房区','松北区','香坊区','呼兰区'],
+'长春':['南关区','宽城区','朝阳区','二道区','绿园区','双阳区','九台区'],
+'石家庄':['长安区','桥西区','新华区','井陉矿区','裕华区','藁城区','鹿泉区','栾城区'],
+'合肥':['瑶海区','庐阳区','蜀山区','包河区','长丰县','肥东县','肥西县','庐江县'],
+'昆明':['五华区','盘龙区','官渡区','西山区','东川区','呈贡区','晋宁区'],
+'南昌':['东湖区','西湖区','青云谱区','青山湖区','新建区','红谷滩区'],
+'贵阳':['南明区','云岩区','花溪区','乌当区','白云区','观山湖区'],
+'南宁':['兴宁区','青秀区','江南区','西乡塘区','良庆区','邕宁区','武鸣区'],
+'太原':['小店区','迎泽区','杏花岭区','尖草坪区','万柏林区','晋源区'],
+'兰州':['城关区','七里河区','西固区','安宁区','红古区'],
+'海口':['秀英区','龙华区','琼山区','美兰区'],
+'呼和浩特':['新城区','回民区','玉泉区','赛罕区'],
+'乌鲁木齐':['天山区','沙依巴克区','新市区','水磨沟区','头屯河区','米东区'],
+'拉萨':['城关区','堆龙德庆区','达孜区'],
+'银川':['兴庆区','西夏区','金凤区'],
+'西宁':['城东区','城中区','城西区','城北区']
+};
+
+const SCENES = [
+'忽冷忽热','冷战不回','吵架想分','暧昧不确定',
+'想复合','对方有桃花','异地恋','刚认识想了解',
+'感情冷淡期','总是吵架','家长反对','暗恋不敢说','如何修复关系',
+'正缘什么时候出现','这段感情有没有未来','他到底怎么想的','能不能复合',
+'内耗严重','断联了怎么办','火象星座','水象星座','土象星座','风象星座',
+'夫妻宫','桃花运','缘分深浅','性格匹配','冷战处理','相亲对象','前任回头',
+'姐弟恋','办公室恋情','网恋奔现','感情内耗','如何吸引对方','怎么看出他喜欢你'
+];
+
+const ELEMENTS = {火:{name:'火',symbols:['白羊座','狮子座','射手座']},土:{name:'土',symbols:['金牛座','处女座','摩羯座']},风:{name:'风',symbols:['双子座','天秤座','水瓶座']},水:{name:'水',symbols:['巨蟹座','天蝎座','双鱼座']}};
+
+
+const PERSONALITY = {
+白羊座:{desc:'白羊座的朋友性格直爽热情，行动力超强，说干就干，但也容易冲动。骨子里有股不服输的劲儿，喜欢当老大。',energy:'近期整体状态比较旺盛，像个小太阳一样，走哪儿都是焦点。',fortune:'财运上会有一些新的机会冒出来，大胆去抓住。',love:'感情方面，单身的白羊最近社交运不错，多出去走走。已有伴侣的，注意别太强势，多听听对方想法。'},
+金牛座:{desc:'金牛座稳重踏实，对感情很专一，一旦认定就很执着。有点小固执，但这种坚持也很可爱。',energy:'近期整体状态比较平稳，像储蓄罐一样在积累。',fortune:'财运方面稳扎稳打，不适合冒险，保守理财更稳妥。',love:'感情上遇到问题不要急，给自己和对方一点时间，耐心是金牛最大的武器。'},
+双子座:{desc:'双子座机灵有趣，思维活跃，聊天永远不会冷场。但有时候想法太多，容易三分钟热度。',energy:'近期思维特别活跃，各种好点子冒出来，但要注意专注。',fortune:'财运有点波动，投资要谨慎，别被表面迷惑。',love:'感情上多听听自己的内心，别只顾着有趣，真实更重要。'},
+巨蟹座:{desc:'巨蟹座温柔顾家，第六感超强，对在乎的人掏心掏肺。有点敏感，需要被好好呵护。',energy:'近期情感状态很细腻，适合整理内心，和家人联系会有好事。',fortune:'财运方面可能有意外开销，提前做好预算。',love:'感情上多表达自己，别闷着，你不说对方怎么懂呢。'},
+狮子座:{desc:'狮子座自信满满，天生有主角光环，喜欢被关注和赞美。对朋友很仗义。',energy:'近期状态闪闪发光，容易成为人群中的亮点。',fortune:'财运有上升趋势，但要避免大手大脚。',love:'感情上适当收敛一下光芒，给对方表现的机会。'},
+处女座:{desc:'处女座细心挑剔，追求完美，对细节很敏感。做事靠谱，是值得信赖的伙伴。',energy:'近期状态平稳，适合做计划、整理东西。',fortune:'财运上稳中有进，适合学习新技能增加收入。',love:'感情上别太追求完美，人无完人，多看优点。'},
+天秤座:{desc:'天秤座优雅有品位，善于社交，讨厌冲突。喜欢和谐的环境，会为了和平牺牲自己。',energy:'近期人际关系运不错，适合社交、谈合作。',fortune:'财运上可能有合作带来的机会。',love:'感情上勇敢做决定，别犹豫太久，犹豫反而容易错过。'},
+天蝎座:{desc:'天蝎座神秘深沉，第六感极强，对感情超级认真。爱恨分明，一旦投入就很深。',energy:'近期状态偏内敛，适合思考、沉淀。',fortune:'财运上有暗藏的机会，多观察少行动。',love:'感情上直接点，别绕弯子，想要什么说出来。'},
+射手座:{desc:'射手座乐观自由，喜欢冒险和旅行。热爱真理，有颗永远年轻的心。',energy:'近期状态很开阔，适合学习、旅行、见世面。',fortune:'财运上有多元化的可能，尝试新方向。',love:'感情上收收心，太飘忽会让对方没有安全感。'},
+摩羯座:{desc:'摩羯座务实有担当，目标明确，一步一个脚印。外表冷但内心火热。',energy:'近期状态稳步上升，适合推进长期计划。',fortune:'财运上稳扎稳打是优势，坚持下去会有回报。',love:'感情上主动一点，别总是等对方来敲门。'},
+水瓶座:{desc:'水瓶座独立独特，脑洞大开，总有新奇想法。重视友情，也渴望精神层面的连接。',energy:'近期创意灵感爆棚，适合搞创作、想方案。',fortune:'财运上可能有意外惊喜来自意想不到的地方。',love:'感情上接受与众不同，TA可能不是你想象中的样子。'},
+双鱼座:{desc:'双鱼座浪漫敏感，有艺术气质，同理心超强。有点迷糊但很可爱。',energy:'近期状态比较放松，适合创作、艺术、灵性相关的活动。',fortune:'财运上直觉不错，但别太理想化。',love:'感情上设立边界很重要，不然容易受伤。'}
+};
+
+
+
+const ELEMENT_MODE_MATRIX = {
+  '白羊座': { element: '火', mode: '创始', keywords: '先锋行动力', deep: '火象让你温暖鼓舞、有远见有冲劲，创始模式让你善于开拓新局。你是一个天生的行动派，遇到问题第一个冲上去。', trap: '三分钟热度——火象给你热情，创始让你急于开新局，但很难在一件事上深耕。' },
+  '金牛座': { element: '土', mode: '固定', keywords: '稳定持有者', deep: '土象让你务实可靠、注重安全感，固定模式让你有极强的耐心和坚持力。你是那种一旦决定就不会轻易放弃的人。', trap: '过度固执——土象+固定的组合让你很难接受变化，有时候"不变"本身就是最大的风险。' },
+  '双子座': { element: '风', mode: '变动', keywords: '信息收集者', deep: '风象让你善于交流、思维敏捷，变动模式让你灵活适应、多点开花。你的大脑永远在高速运转，同时处理好几件事。', trap: '注意力分散——风象的好奇+变动的善变，容易什么都知道一点但什么都不精。' },
+  '巨蟹座': { element: '水', mode: '创始', keywords: '滋养守护者', deep: '水象让你直觉敏锐、重视情感连接，创始模式让你主动去照顾和保护身边的人。你是朋友圈里的"情感港湾"。', trap: '过度付出——水象的敏感+创始的主动，容易把别人的情绪背在自己身上，忘了照顾自己。' },
+  '狮子座': { element: '火', mode: '固定', keywords: '核心创造者', deep: '火象给你强大的生命力和感染力，固定模式让你对自己的信念坚定不移。你天生有王者气场，走到哪里都是焦点。', trap: '自我中心——火象+固定的组合容易让你太坚持"我是对的"，听不进不同声音。' },
+  '处女座': { element: '土', mode: '变动', keywords: '服务型完善者', deep: '土象让你注重细节和实际效果，变动模式让你善于调整和优化。你是那种能把事情做到极致的人，总在寻找更好的方式。', trap: '过度挑剔——土象的完美主义+变动的不满足，容易对自己和身边人都太苛刻。' },
+  '天秤座': { element: '风', mode: '创始', keywords: '优雅协调者', deep: '风象让你理性客观、善于沟通，创始模式让你主动去建立平衡和和谐。你是天生的调解人，能看到每件事的两面。', trap: '决策困难——风象的权衡+创始的"想面面俱到"，容易在关键选择上犹豫不决。' },
+  '天蝎座': { element: '水', mode: '固定', keywords: '深度掌控者', deep: '水象给你极强的洞察力和情感深度，固定模式让你一旦投入就全情投入。你能看到别人看不到的层面，对人性有深刻理解。', trap: '控制欲过强——水象的占有+固定的执着，容易在关系中抓得太紧，反而把对方推远。' },
+  '射手座': { element: '火', mode: '变动', keywords: '理想主义行动者', deep: '火象让你乐观热情、有远见，变动模式让你灵活变通、追求更大的意义。你是理想主义的行动派，永远在追寻更广阔的天地。', trap: '承诺困难——火象的自由+变动的善变，让你在需要"扎根"的时候总想逃跑。' },
+  '摩羯座': { element: '土', mode: '创始', keywords: '务实建设者', deep: '土象让你脚踏实地、有责任感，创始模式让你善于规划长远目标并一步步实现。你是那种能扛大事的人。', trap: '过度压抑——土象的克制+创始的目标导向，容易忽略自己的情感需求，活得太"重"。' },
+  '水瓶座': { element: '风', mode: '固定', keywords: '理念坚守者', deep: '风象让你思维前卫、独立思考，固定模式让你对自己相信的理念坚定不移。你是那种"众人皆醉我独醒"的人。', trap: '情感疏离——风象的理性+固定的"我就是这样"，容易在亲密关系中显得冷漠。' },
+  '双鱼座': { element: '水', mode: '变动', keywords: '灵性感知者', deep: '水象给你超强的共情能力和直觉，变动模式让你灵活融入各种情境。你能感受到别人感受不到的东西，像海绵一样吸收周围的能量。', trap: '边界模糊——水象的融合+变动的不设限，容易被别人的情绪淹没，分不清"你的感受"和"我的感受"。' }
+};
+
+
+const EMPOWERING_MAP = {
+  '婚姻不顺': '需在责任与爱之间寻找平衡，耐心磨合是感情成长的路',
+  '伴侣控制': '赋予你深度转化关系的能力，可主动建立信任',
+  '缺乏自信': '你的直觉需要更温柔的对待，试着每天给自己一个小小的肯定',
+  '情绪暴躁': '情感与行动之间存在摩擦力，学会在行动前给情绪一个出口',
+  '容易分手': '关系在提醒你有些模式需要调整，觉察本身就是改变的开始',
+  '财运不好': '财运节奏需要调整，不妨重新审视你的价值感',
+  '注定孤独': '你需要的不是更多社交，而是一段真正能让你放松的关系',
+  '事业不顺': '你正处在一个需要重新校准方向的阶段，停下来想清楚比盲目冲更有价值',
+  '烂桃花': '你的吸引力没有问题，需要升级的是筛选标准',
+  '被辜负': '你的付出没有错，只是还没遇到懂得珍惜的人'
+};
+
+function empowerTransform(text) {
+  let result = text;
+  for(const [neg, pos] of Object.entries(EMPOWERING_MAP)) {
+    if(result.includes(neg)) {
+      result = result.replace(new RegExp(neg, 'g'), pos);
+    }
+  }
+  return result;
+}
+
+
+function calculatePairScore(maleZodiac, femaleZodiac) {
+  const male = ELEMENT_MODE_MATRIX[maleZodiac];
+  const female = ELEMENT_MODE_MATRIX[femaleZodiac];
+  if(!male || !female) return 50;
+  
+  let score = 60;
+  
+  
+  const maleEl = male.element, femaleEl = female.element;
+  if(maleEl === femaleEl) score += 10;
+  else if((maleEl==='火'&&femaleEl==='风')||(maleEl==='风'&&femaleEl==='火')) score += 20;
+  else if((maleEl==='土'&&femaleEl==='水')||(maleEl==='水'&&femaleEl==='土')) score += 20;
+  else if((maleEl==='火'&&femaleEl==='土')||(maleEl==='土'&&femaleEl==='火')) score -= 5;
+  else if((maleEl==='风'&&femaleEl==='水')||(maleEl==='水'&&femaleEl==='风')) score -= 5;
+  else score += 5;
+  
+  
+  const maleMd = male.mode, femaleMd = female.mode;
+  if(maleMd === femaleMd) score += 5;
+  if((maleMd==='创始'&&femaleMd==='变动')||(maleMd==='变动'&&femaleMd==='创始')) score += 10;
+  if((maleMd==='固定'&&femaleMd==='固定')) score -= 10;
+  if((maleMd==='创始'&&femaleMd==='固定')) score -= 5;
+  
+  
+  if(maleZodiac === femaleZodiac) score += 5;
+  
+  score = Math.max(30, Math.min(95, score));
+  return score;
+}
+
+function getModeAnalysis(mode1, mode2, sign1, sign2) {
+  const modeTraits = { '创始': '开创、引领', '固定': '坚守、深耕', '变动': '灵活、适应' };
+  let analysis = '';
+  
+  if(mode1 === mode2) {
+    analysis = `你们都是${modeTraits[mode1]}型，${getRandomPhrase(['节奏同步，做事很默契','理解对方的方式，不需要太多解释','行动频率差不多，一拍即合'])}。`;
+    if(mode1 === '固定') {
+      analysis += `不过双${mode1}组合要${getRandomPhrase(['注意别在僵局里较劲','给对方留点灵活空间','偶尔让步不是认输'])}。`;
+    } else if(mode1 === '变动') {
+      analysis += `但双${mode1}可能${getRandomPhrase(['都太灵活反而拿不定主意','需要有个人先定下来','避免飘忽不定'])}。`;
+    }
+  } else if((mode1==='创始'&&mode2==='变动')||(mode1==='变动'&&mode2==='创始')) {
+    analysis = `${sign1}的${modeTraits[mode1]}遇上${sign2}的${modeTraits[mode2]}，${getRandomPhrase(['是一个很好的搭档组合','一个开路一个配合','能一起搞出不少事情'])}。${getRandomPhrase(['创始的出方向，变动来落地执行','灵活配合开创，效率高','互补性很强'])}。`;
+  } else if((mode1==='创始'&&mode2==='固定')||(mode1==='固定'&&mode2==='创始')) {
+    analysis = `${sign1}的${modeTraits[mode1]}遇上${sign2}的${modeTraits[mode2]}，${getRandomPhrase(['一开始可能会有点摩擦','节奏上需要互相适应','一个想快一个想稳'])}。${getRandomPhrase(['但如果磨合好了，开创+坚守是很强的组合','给对方一点时间，其实彼此需要的东西是一样的','学着欣赏对方的节奏'])}。`;
+  } else if((mode1==='固定'&&mode2==='变动')||(mode1==='变动'&&mode2==='固定')) {
+    analysis = `${sign1}的${modeTraits[mode1]}遇上${sign2}的${modeTraits[mode2]}，${getRandomPhrase(['一个求稳一个求变','需要找到平衡点','差异不小但也能互补'])}。${getRandomPhrase(['固定的给变动一个锚点，变动的给固定带来新鲜空气','互相学习对方的长处','磨合好了会非常有默契'])}。`;
+  }
+  return analysis;
+}
+
+function renderPairScoreHTML(score) {
+  const color = score >= 80 ? '#4ade80' : score >= 60 ? '#ffd700' : '#ff6b6b';
+  const label = score >= 85 ? '天作之合' : score >= 70 ? '高默契度' : score >= 55 ? '需要磨合' : '挑战系数';
+  return `<div class="pair-score-display">
+  <div class="score-circle">
+    <span class="score-number">${score}</span>
+    <span class="score-label">默契指数</span>
+  </div>
+  <div class="score-bar-wrap">
+    <div class="score-bar-bg">
+      <div class="score-bar-fill" style="width:${score}%;background:linear-gradient(90deg,var(--accent),${color})"></div>
+    </div>
+    <div class="score-bar-labels"><span>${label}</span><span>${score}/100</span></div>
+  </div>
+</div>`;
+}
+
+
+function getElement(name){return ZODIACS.find(z=>z.name===name)?.element||'';}
+function getZodiac(name){return ZODIACS.find(z=>z.name===name);}
+
+function filterWord(text){
+const replaces={
+'八字':'出厂设置','命盘':'时间密码',
+'算命':'性格分析','占卜':'传统文化解读',
+'运势':'近期运势','运气':'运气状态',
+'财运':'财运走势','事业运':'事业发展',
+'感情运':'感情运势','桃花运':'桃花指数',
+'合盘':'配对分析','合婚':'默契度测试',
+'改运':'改善生活建议','转运':'调整状态',
+'化解':'调整改善','保佑':'祝福',
+'开光':'祈福','法事':'仪式',
+'通灵':'直觉感应','风水':'环境布局',
+'招财':'吸引资源','血光之灾':'需要小心',
+'注定':'比较契合','一定':'比较有机会',
+'必然':'很可能','必须':'建议可以'
+};
+let result=text;
+for(const[bad,good]of Object.entries(replaces)){
+result=result.replace(new RegExp(bad,'g'),good);
+}
+
+const sensitive=['算命','占卜','转运','招财','风水','法事','通灵','八字','命盘','血光之灾','注定','一定','必然','改命','化解','保佑','开光'];
+for(const word of sensitive){
+if(result.includes(word))result=result.replace(new RegExp(word,'g'),'___');
+}
+return result;
+}
+
+function generateNickname(){
+const prefixes=['星光','银河','月光','紫微','星语','星辰'];
+const suffixes=['宝宝','朋友','小伙伴','家人','宝贝'];
+return prefixes[Math.floor(Math.random()*prefixes.length)]+suffixes[Math.floor(Math.random()*suffixes.length)];
+}
+
+function getRandomPhrase(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+function generatePeriod(){
+const periods=['近期','这段时间','接下来','最近一段'];
+return getRandomPhrase(periods);
+}
+
+function generateTimeRange(){
+const ranges=['月底前后','下周','未来两周内','这个月'];
+return getRandomPhrase(ranges);
+}
+
+
+
+const STYLE_WARM = {
+  openings: ['亲爱的','宝贝','我能感受到你的困惑','别担心','没关系的'],
+  transitions: ['其实你已经做得很好了','这不是你的问题','你值得被温柔对待','你已经很棒了'],
+  advice: ['先照顾好自己的感受','给自己一些时间','慢慢来不着急','你值得更好的','对自己好一点']
+};
+const STYLE_DIRECT = {
+  openings: ['直说了','咱们不绕弯','说真话','实话说'],
+  transitions: ['说白了就是','别给自己找理由了','事实就是这样','不粉饰了'],
+  advice: ['直接问TA','不行就撤','与其猜不如做','用行动说话','别犹豫了']
+};
+
+function applyStyle(text, style) {
+  if (style === 'warm') {
+    const opening = getRandomPhrase(STYLE_WARM.openings);
+    const transition = getRandomPhrase(STYLE_WARM.transitions);
+    const advice = getRandomPhrase(STYLE_WARM.advice);
+    
+    text = text.replace(/^(好，我们来看看|来看看这位|这位)/, `${opening}，${text.match(/^(好，我们来看看|来看看这位|这位)/)?.[0] || ''}`);
+    
+    if (!text.includes(opening)) {
+      text = `${opening}，${text}`;
+    }
+    
+    text += `\n\n${transition}。${advice}。`;
+  } else if (style === 'direct') {
+    const opening = getRandomPhrase(STYLE_DIRECT.openings);
+    const transition = getRandomPhrase(STYLE_DIRECT.transitions);
+    const advice = getRandomPhrase(STYLE_DIRECT.advice);
+    text = text.replace(/^(好，我们来看看|来看看这位|这位)/, `${opening}，${text.match(/^(好，我们来看看|来看看这位|这位)/)?.[0] || ''}`);
+    if (!text.includes(opening)) {
+      text = `${opening}，${text}`;
+    }
+    text += `\n\n${transition}。${advice}。`;
+  }
+  return text;
+}
+
+function applyStyleWithQuestion(text, style, question) {
+  if (!question) return applyStyle(text, style);
+  
+  if (style === 'warm') {
+    const opening = getRandomPhrase(STYLE_WARM.openings);
+    const transition = getRandomPhrase(STYLE_WARM.transitions);
+    const advice = getRandomPhrase(STYLE_WARM.advice);
+    text = `${opening}，你说的这个情况我理解了，来，咱们一起看看~\n\n` + text;
+    text += `\n\n关于你说的"${question.substring(0,30)}${question.length>30?'...':''}"——${transition}。${advice}。`;
+  } else if (style === 'direct') {
+    const opening = getRandomPhrase(STYLE_DIRECT.openings);
+    const transition = getRandomPhrase(STYLE_DIRECT.transitions);
+    const advice = getRandomPhrase(STYLE_DIRECT.advice);
+    text = `${opening}，你这个问题很典型，直接说——\n\n` + text;
+    text += `\n\n关于你说的"${question.substring(0,30)}${question.length>30?'...':''}"——${transition}。${advice}。`;
+  }
+  return text;
+}
+
+
+function trackQuestion(question) {
+  if (!question || question.trim().length < 4) return;
+  let questions = JSON.parse(localStorage.getItem('metaphysics_questions') || '{}');
+  const key = question.trim().substring(0, 20);
+  if (questions[key]) {
+    questions[key].count++;
+    questions[key].lastTime = Date.now();
+  } else {
+    questions[key] = { count: 1, question: question.trim(), lastTime: Date.now() };
+  }
+  localStorage.setItem('metaphysics_questions', JSON.stringify(questions));
+}
+
+function renderHotQuestions() {
+  const questions = JSON.parse(localStorage.getItem('metaphysics_questions') || '{}');
+  const sorted = Object.values(questions).sort((a,b) => b.count - a.count).slice(0, 6);
+  const container = document.getElementById('hotQuestions');
+  const title = document.getElementById('hotQuestionsTitle');
+  
+  if (!container || !title) return;
+  
+  if (sorted.length === 0) {
+    title.style.display = 'none';
+    container.innerHTML = '';
+    return;
+  }
+  
+  title.style.display = '';
+  container.innerHTML = sorted.map(q => 
+    `<span class="hot-question-tag" onclick="fillQuestion('${q.question.replace(/'/g, "\\'")}')"> ${q.question.substring(0,15)}${q.question.length>15?'...':''} (${q.count})</span>`
+  ).join('');
+  
+  // 同步更新场景标签（高频问题自动生成场景标签）
+  initScenes();
+}
+
+function fillQuestion(text) {
+  document.getElementById('viewerQuestion').value = text;
+}
+
+
+
+// ========== AI授权分析模块 ==========
+const AI_BASE = 'https://metaphyai-api-v-cwpuwzgtdx.cn-shanghai.fcapp.run';
+const AI_API_URL = AI_BASE + '/';
+const AI_COST_LIMIT = 1000;
+const AI_COST_PER_CALL = 1;
+
+function getAIAuth() {
+  try {
+    const auth = JSON.parse(localStorage.getItem('metaphysics_ai_auth') || '{}');
+    return { key: auth.key||'', valid: auth.valid||false, remaining: auth.remaining||0, consumed: auth.consumed||0 };
+  } catch(e) { return {key:'',valid:false,remaining:0,consumed:0}; }
+}
+
+function saveAIAuth(auth) {
+  localStorage.setItem('metaphysics_ai_auth', JSON.stringify(auth));
+}
+
+function formatTokens(num) {
+  if (num >= 10000) return Math.floor(num / 10000) + '万';
+  if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
+  return num.toString();
+}
+
+function openAIUpgrade() {
+  const auth = getAIAuth();
+  if(auth.valid && auth.remaining > 0) {
+    document.getElementById('aiKeyInput').style.display = 'none';
+    document.getElementById('aiKeyStatus').style.display = 'block';
+    document.getElementById('aiKeyStatus').innerHTML = `
+      <div style="text-align:center;padding:20px 0;">
+        <div style="font-size:48px;margin-bottom:16px;">✨</div>
+        <div style="font-size:18px;font-weight:600;color:#4caf50;margin-bottom:12px;">AI分析已激活</div>
+        <div style="color:var(--text-dim);margin-bottom:8px;">剩余额度：${formatTokens(auth.remaining)} tokens</div>
+        <div style="color:var(--text-dim);margin-bottom:8px;">已消耗：${formatTokens(auth.consumed||0)} tokens</div>
+        
+        <button onclick="logoutAIKey()" style="margin-top:16px;padding:8px 20px;background:rgba(255,82,82,.2);border:1px solid rgba(255,82,82,.3);color:#ff5252;border-radius:8px;cursor:pointer;font-size:13px;">退出登录</button>
+      </div>
+    `;
+  } else {
+    document.getElementById('aiKeyInput').style.display = 'block';
+    document.getElementById('aiKeyStatus').style.display = 'none';
+    document.getElementById('aiKeyInputField').value = '';
+    document.getElementById('aiKeyMsg').textContent = '';
+  }
+  document.getElementById('aiUpgradeModal').style.display = 'flex';
+}
+
+function closeAIUpgrade() {
+  document.getElementById('aiUpgradeModal').style.display = 'none';
+}
+
+async function submitAIKey() {
+  const key = document.getElementById('aiKeyInputField').value.trim();
+  const msg = document.getElementById('aiKeyMsg');
+  if(!key) { msg.textContent='❌ 请输入Key'; msg.style.color='#ff5252'; return; }
+  msg.textContent = '🔄 验证中...';
+  msg.style.color = 'var(--accent-light)';
+  
+  try {
+    const resp = await fetch(AI_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json' },
+      body: JSON.stringify({ action:'key_validate', key })
+    });
+    const data = await resp.json();
+    if(data.valid) {
+      saveAIAuth({ key, valid:true, remaining: data.remaining||AI_COST_LIMIT, used: 0 });
+      msg.textContent = '✅ 验证成功！AI分析已激活';
+      msg.style.color = '#4caf50';
+      setTimeout(() => { openAIUpgrade(); updateAIButton(); }, 1500);
+    } else {
+      msg.textContent = '❌ ' + (data.error||'Key无效或已过期');
+      msg.style.color = '#ff5252';
+    }
+  } catch(e) {
+    msg.textContent = '❌ 网络错误，请稍后重试';
+    msg.style.color = '#ff5252';
+  }
+}
+
+function logoutAIKey() {
+  if(confirm('确定要退出AI分析吗？')) {
+    localStorage.removeItem('metaphysics_ai_auth');
+    closeAIUpgrade();
+    updateAIButton();
+  }
+}
+
+function updateAIButton() {
+  const auth = getAIAuth();
+  const btn = document.getElementById('aiUpgradeBtn');
+  if(!btn) return;
+  if(auth.valid && auth.remaining > 0) {
+    btn.innerHTML = '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;margin-right:8px;animation:glow-pulse 1.5s ease-in-out infinite"></span>智能分析已就绪';
+    btn.style.background = 'linear-gradient(135deg,rgba(16,185,129,.25),rgba(52,211,153,.15))';
+    btn.style.borderColor = 'rgba(52,211,153,.6)';
+    btn.style.boxShadow = '0 0 20px rgba(52,211,153,.3), inset 0 0 12px rgba(52,211,153,.1)';
+    btn.style.letterSpacing = '1px';
+    btn.style.animation = 'none';
+  } else {
+    btn.innerHTML = '<span style="font-size:16px;margin-right:4px"></span>解锁AI深度解析';
+    btn.style.background = 'linear-gradient(135deg,rgba(168,85,247,.25),rgba(219,39,119,.15))';
+    btn.style.borderColor = 'rgba(168,85,247,.6)';
+    btn.style.boxShadow = '0 0 20px rgba(168,85,247,.3), inset 0 0 12px rgba(168,85,247,.1)';
+    btn.style.letterSpacing = '1px';
+  }
+}
+
+function getAPIConfig() {
+  const auth = getAIAuth();
+  if(auth.valid && auth.remaining > AI_COST_PER_CALL) {
+    return { authorized:true };
+  }
+  return { authorized:false };
+}
+
+function buildMetaSystemPrompt() {
+  return `你是一位专业的星座命理分析师，服务于直播间的命理主播。你的分析核心原则是【一针见血 + 场景共情】：
+
+【核心要求】
+1. 一针见血：开头直接点出核心问题或关键矛盾，不要绕弯子。每段分析的第一句话就要让对方觉得"说到点上了"
+2. 痛点共鸣：每个分析点必须配一个具体的生活场景，让用户一看就"被戳中"。场景要真实、有画面感，比如：
+   - "你是不是经常这样：发了条消息给他，等了半小时没回，你已经把最坏的结果想了三遍"
+   - "明明是你受委屈了，最后反而是你先低头说'算了没事'"
+   - "嘴上说着不在乎，但看到他跟别人聊得开心，心里就是不舒服"
+3. 场景分析：在关键分析段落中，用"你是不是经常..."、"有没有过这种情况..."、"典型场景就是..."这类句式引入具体场景，让用户产生"这说的就是我"的强烈共情
+4. 犀利洞察：精准指出性格中自己没意识到的盲点。不要说"可能""也许"，要敢说"就是这里出了问题"
+5. 实操落地：建议必须具体到可以马上做的事、可以马上说的话。不要说"多沟通"，要说"下次他冷战时你直接发这句：..."
+
+【格式要求】
+6. 内容丰富，每次分析至少800-1200字，但每一句都要有信息量，不要注水凑字数
+7. 结合西洋星座（元素、模式、守护星）和东方命理思维
+8. 严禁出现消极负面定性，所有"问题"都转化为"成长课题"——但成长课题要说得直白，不要美化到失去锋芒
+9. 不要出现"理财""股票""炒股""投资""持仓"等词，用"资金规划""标的""做交易""配置""布局"替代
+10. 适当使用emoji让内容更生动
+
+星座核心知识库：
+【元素四象】
+- 火象(白羊/狮子/射手)：热情行动力、远见冲劲、温暖鼓舞
+- 土象(金牛/处女/摩羯)：务实可靠、注重安全、脚踏实地
+- 风象(双子/天秤/水瓶)：善于交流、理性客观、思维敏捷
+- 水象(巨蟹/天蝎/双鱼)：直觉敏锐、情感深度、共情力强
+
+【模式三态】
+- 创始(白羊/巨蟹/天秤/摩羯)：主动开拓、启动新局
+- 固定(金牛/狮子/天蝎/水瓶)：坚持深耕、稳定守护
+- 变动(双子/处女/射手/双鱼)：灵活适应、多元调整
+
+【12星座深度画像】
+白羊座(火·创始)：天生行动派，遇事先冲再说，热情感染力强。成长课题是学会坚持深耕，不要三分钟热度。
+金牛座(土·固定)：稳重踏实，对感情专一执着，有极强耐心。成长课题是接受变化，"不变"本身可能是最大风险。
+双子座(风·变动)：思维敏捷善于交流，大脑永远高速运转。成长课题是专注，别什么都知道一点但什么都不精。
+巨蟹座(水·创始)：直觉敏锐重视情感，朋友圈的"情感港湾"。成长课题是别把别人情绪背在自己身上。
+狮子座(火·固定)：王者气场，天生焦点，对朋友仗义。成长课题是学会倾听，别太坚持"我是对的"。
+处女座(土·变动)：注重细节追求完美，能把事情做到极致。成长课题是接受不完美，别对自己和身边人太苛刻。
+天秤座(风·创始)：理性客观善于沟通，天生调解人。成长课题是果断决策，别在关键选择上犹豫太久。
+天蝎座(水·固定)：洞察力极强，一旦投入就全情投入，对人性理解深刻。成长课题是放下控制，抓太紧反而推远对方。
+射手座(火·变动)：乐观自由有远见，永远追寻更广阔的天地。成长课题是学会承诺和扎根。
+摩羯座(土·创始)：脚踏实地有责任感，能扛大事的人。成长课题是别压抑情感需求。
+水瓶座(风·固定)：思维前卫独立思考，"众人皆醉我独醒"。成长课题是在亲密中打开心扉。
+双鱼座(水·变动)：超强共情和直觉，像海绵吸收周围能量。成长课题是建立边界，别被别人的情绪淹没。
+
+【元素互动规律】
+- 火+火：热情满满但容易燃烧过度
+- 火+土：互补但需耐心，火给激情土帮落地
+- 火+风：最有化学反应，互相点燃热情
+- 火+水：需要找平衡，火太猛水蒸，水太多火灭
+- 土+土：稳定但可能太闷，需加新鲜感
+- 土+风：认知差异大，互相欣赏则互补
+- 土+水：最稳定组合之一，互相滋养
+- 风+风：思维碰撞沟通顺畅，但缺行动力
+- 风+水：理性vs感性，需要耐心理解对方
+- 水+水：情感深度极强，但别一起沉在情绪里
+
+【双人深度合盘知识库】
+当选择分析方向为"关系走向"时，需结合以下维度深度分析：
+
+组合盘(Composite Chart)：
+- 代表两人关系的"本质"和"宿命感"
+- 组合盘中太阳星座=这段关系的核心特质，月亮星座=关系中双方的情感需求
+- 组合盘金星的落座和相位=两人在关系中的吸引力和爱的表达方式
+- 组合盘土星=关系中需要承担的课题，火星=关系中的行动力和冲突点
+
+时空盘(Davison Chart)：
+- 代表这段关系在现实中"长什么样"，关系的最终走向
+- 时空盘太阳=关系在外部世界的表现，月亮=关系中真实的内心感受
+- 时空盘天王星暗示关系中的突变和转折，海王星暗示理想化或幻灭
+
+马克思盘(Marx Chart)：
+- 代表某一方在关系中的真实心理状态和感受
+- 马克思盘的太阳落座=这个人在这段关系中呈现的自我形象
+- 马克思盘月亮落座=这个人在这段关系中真实的内心感受和情感需求
+- 马克思盘金星=这个人对对方的爱的表达方式
+- 马克思盘土星=这个人在关系中感受到的压力和束缚
+
+马盘三限(Marx Tertiary Progressions)：
+- 代表关系中某个时间段的动态变化趋势
+- 三限推运的月亮走到的星座和宫位=当前阶段关系的核心议题
+- 三限推运的金星相位变化=感情温度的变化
+- 三限推运中如果出现天王星硬相位=关系即将出现突变或分离
+- 三限推运中出现冥王星硬相位=关系正在经历深层转化
+
+【关系走向分析要点】
+- 先说组合盘揭示的关系本质和宿命感
+- 再说时空盘揭示的关系实际走向和外在表现
+- 然后分述马克思盘中男方和女方各自在关系中的真实感受、彼此眼中的对方、各自的情感需求
+- 最后用马盘三限判断当前阶段的关系动态和未来走向
+- 给出明确结论：这段关系目前的卡点在哪，未来会往哪个方向发展，双方需要怎么做
+
+【十天干与十二地支·东方命理策略】
+分析时融合十天干、十二地支作为辅助策略维度，让分析更有深度：
+
+十天干（五行属性）：
+- 甲乙(木)：生发向上、仁慈温和；甲为阳木如大树挺拔，乙为阴木如花草柔韧
+- 丙丁(火)：热情光明、礼仪周全；丙为阳火如太阳炽烈，丁为阴火如烛光温婉
+- 戊己(土)：厚重承载、诚信稳固；戊为阳土如高山厚实，己为阴土如田园肥沃
+- 庚辛(金)：刚毅果断、义气分明；庚为阳金如刀剑锋利，辛为阴金如珠宝精致
+- 壬癸(水)：智慧灵动、流动变通；壬为阳水如江河奔涌，癸为阴水如雨露滋润
+
+十二地支与星座对应：
+- 子(鼠·水)↔水瓶座，丑(牛·土)↔摩羯座，寅(虎·木)↔射手座
+- 卯(兔·木)↔天蝎座，辰(龙·土)↔天秤座，巳(蛇·火)↔处女座
+- 午(马·火)↔狮子座，未(羊·土)↔巨蟹座，申(猴·金)↔双子座
+- 酉(鸡·金)↔金牛座，戌(狗·土)↔白羊座，亥(猪·水)↔双鱼座
+
+五行生克策略应用：
+- 相生(木→火→土→金→水→木)：分析时说"你们之间存在生养关系，一方在滋养另一方"
+- 相克(木→土→水→火→金→木)：分析时说"你们之间存在制约张力，这种摩擦如果转化为动力就是互补"
+- 根据当年天干地支（如2026丙午年，火旺），判断对各个星座的五行影响
+- 举例：丙午年火旺，对水象星座（巨蟹/天蝎/双鱼）形成水火相克压力，需特别注意情绪管理和关系平衡
+
+东方命理分析话术示范：
+- "从地支来看，你们是寅午戌三合火局的组合，天生就有默契和吸引力"
+- "今年丙午年火气旺盛，你是水象星座正好受克制，感情上容易感到被压制或消耗"
+- "你们一个属木一个属火，木生火的关系意味着你在这段关系里一直在付出滋养对方，但火太旺木会被烧尽"
+- "从十干来看对方是庚金性格，刚毅果断但不善表达柔情，不是不爱你，是表达方式不一样"`;
+}
+
+function buildPairUserPrompt(data, style) {
+  const styleDesc = style === 'warm' ? '专业分析风格（完整呈现结果，语气客观但有温度）' : '深度分析风格（揭示核心痛点，制造悬念钩子，引导付费深度解读）';
+  
+  let prompt = `请为以下配对做详细的星座分析：
+
+`;
+  if(data.maleZodiac) prompt += `♂ ${data.maleNickname||'男方'}：${data.maleZodiac}`;
+  if(data.maleBirthDate) prompt += `，生辰${data.maleBirthDate}`;
+  if(data.maleBirthCity) prompt += `，出生地${data.maleBirthCity}`;
+  if(data.maleCurrentCity) prompt += `，现居${data.maleCurrentCity}`;
+  prompt += '\n';
+  
+  if(data.femaleZodiac) prompt += `♀ ${data.femaleNickname||'女方'}：${data.femaleZodiac}`;
+  if(data.femaleBirthDate) prompt += `，生辰${data.femaleBirthDate}`;
+  if(data.femaleBirthCity) prompt += `，出生地${data.femaleBirthCity}`;
+  if(data.femaleCurrentCity) prompt += `，现居${data.femaleCurrentCity}`;
+  prompt += '\n';
+  
+  if(data.directions && data.directions.length) prompt += `选择分析方向：${data.directions.join('、')}
+`;
+  if(data.notes) prompt += `主播备注：${data.notes}
+`;
+  if(data.question) prompt += `观众提问：${data.question}
+`;
+  
+  prompt += `
+输出风格：${styleDesc}
+
+【重要：场景共情要求】
+每个分析点都要带入具体的生活场景，让用户产生强烈的代入感和情感共鸣。例如：
+- 不要只说"你们容易有沟通问题"，要说"你是不是经常发了一条消息给他，等半天没回复，然后开始胡思乱想：他是不是不在乎我了？但其实他可能只是在忙..."
+- 不要只说"你财运不错"，要说"最近你可能会遇到一个机会，比如朋友介绍一个项目，或者突然有人找你合作..."
+- 不要只说"你最近感情有波动"，要说"这几天你可能会因为一些小事和对方吵架，比如他忘了回你消息，或者约会时心不在焉..."
+
+让分析像讲故事一样，有画面感，有细节，让人读着就觉得"说的就是我"。
+`;
+  let structure = `
+请按以下结构输出（每个部分至少2-3段）：
+1. 🌟 开场：用有趣的方式点明这个配对的相处特质
+2. 💯 默契指数及解读
+3. 🔥 元素互动深度分析（结合双方元素，讲清化学反应）
+4. ⚡ 模式碰撞分析（相处节奏、冲突点、互补点）`;
+  
+  if(data.directions && data.directions.length) {
+    if(data.directions.includes('亲密关系')) {
+      structure += `
+5. 💕 亲密关系分析（相处模式、需要注意的地方、具体建议）`;
+    }
+    if(data.directions.includes('财运走势')) {
+      structure += `
+5. 💰 合财分析（双方合作的财运、适合的合作方式、财务建议）`;
+    }
+    if(data.directions.includes('近期运势')) {
+      structure += `
+5. ✨ 合运势分析（双方近期的整体运势、互相影响、共同发展方向）`;
+    }
+    if(data.directions.includes('关系走向')) {
+      structure += `
+5. 🧭 关系走向深度分析（这是重点，请用最大篇幅展开）：
+   - 🔮 组合盘揭示：这段关系的本质和宿命感，太阳星座代表关系核心，月亮代表共同情感需求，金星代表彼此吸引力和爱的表达
+   - 🌍 时空盘走向：这段关系在现实中长什么样，最终会走向哪里，外在表现和内在真实感受
+   - ♂ 男方马克思盘：他在这段关系中的真实样子，他的感受、需求和压力点
+   - ♀ 女方马克思盘：她在这段关系中的真实样子，她的感受、需求和压力点
+   - 📈 马盘三限趋势：当前阶段关系的动态变化，感情温度走向，是否有突变或转折的信号
+   - 🎯 核心结论：这段关系的卡点在哪、未来走向、双方各自需要怎么做`;
+    }
+    if(data.directions.includes('俘获芳心')) {
+      structure += `
+6. 💘 俘获芳心攻略（核心重点，请用最大篇幅展开）：
+   - 🔍 对方性格画像：根据对方星座深度分析TA的内心需求、感情偏好、容易被什么打动、最反感什么
+   - 💖 致命吸引力：什么样的行为和特质最能吸引TA，TA会心动但不说出口的瞬间有哪些
+   - 🎯 行动指南：具体可操作的追求策略，分阶段给出建议（初识阶段→好感培养→表白时机）
+   - ⚠️ 雷区警告：哪些行为会让TA反感甚至远离，绝对不能做的事
+   - 💡 关键话术：针对不同星座给出具体的聊天话术示范（2-3句可以直接用的）`;
+    }
+  } else {
+    structure += `
+5. 💕 亲密关系分析（相处模式、需要注意的地方、具体建议）
+6. 💰 合财分析（双方合作的财运、适合的合作方式、财务建议）
+7. ✨ 合运势分析（双方近期的整体运势、互相影响、共同发展方向）
+8. 🧭 关系走向深度分析（组合盘揭示关系本质、时空盘揭示走向、马克思盘看各自感受和需求、马盘三限看趋势）
+9. 💘 俘获芳心攻略（根据对方星座深度分析如何打动TA的心，追求策略和行动指南）`;
+  }
+  
+  structure += `
+${data.directions && data.directions.length ? (data.directions.length + 5) : 8}. 💡 给双方的具体相处建议（各3-5条实操建议）
+
+每个部分都要详细展开，结合星座特质给出有深度的分析，不要泛泛而谈。`;
+
+  if(data.question) {
+    structure += `
+
+🔴 重点！针对观众提问「${data.question}」，请务必单独用较大篇幅深入分析：
+【🔍 问题根源分析】从双方星座性格特质出发，分析为什么会产生这个问题，背后的性格原因、相处模式原因是什么（至少3个可能的原因）
+【✅ 解决方案】针对每个原因给出具体可操作的解决方法，主播可以直接拿来用的话术和建议
+这部分是观众最关心的，请作为核心重点输出，内容要详细、接地气、可操作。`;
+  }
+
+  prompt += structure;
+  const userPref = getCustomPref();
+  if(userPref) prompt += '\n\n【用户特别要求】' + userPref + '，请在分析中特别注意和满足这个需求。';
+  return prompt;
+}
+
+function buildSingleUserPrompt(data, style) {
+  const styleDesc = style === 'warm' ? '温柔鼓励风格（先共情再点醒，温暖但不含糊）' : '直白犀利风格（不绕弯子，直击核心问题）';
+  const zodiac = data.maleZodiac || data.femaleZodiac;
+  const gender = data.maleZodiac ? '男' : '女';
+  const nickname = data.maleNickname || data.femaleNickname || '';
+  
+  let prompt = `请为以下用户做详细的个人星座分析：
+
+`;
+  prompt += `${gender==='男'?'♂':'♀'} ${nickname||zodiac}：${zodiac}`;
+  if(data.maleBirthDate || data.femaleBirthDate) prompt += `，生辰${data.maleBirthDate||data.femaleBirthDate}`;
+  if(data.maleBirthCity || data.femaleBirthCity) prompt += `，出生地${data.maleBirthCity||data.femaleBirthCity}`;
+  if(data.maleCurrentCity || data.femaleCurrentCity) prompt += `，现居${data.maleCurrentCity||data.femaleCurrentCity}`;
+  prompt += '\n';
+  
+  if(data.directions && data.directions.length) prompt += `选择分析方向：${data.directions.join('、')}
+`;
+  if(data.notes) prompt += `主播备注：${data.notes}
+`;
+  if(data.question) prompt += `观众提问：${data.question}
+`;
+  
+  prompt += `
+输出风格：${styleDesc}
+
+【重要：场景共情要求】
+每个分析点都要带入具体的生活场景，让用户产生强烈的代入感和情感共鸣。例如：
+- 不要只说"你容易焦虑"，要说"你是不是经常晚上躺在床上翻来覆去睡不着，脑子里全是明天要做的事..."
+- 不要只说"你财运不错"，要说"最近你可能会遇到一个机会，比如朋友介绍一个项目，或者突然有人找你合作..."
+- 不要只说"你感情有桃花"，要说"最近你在社交场合可能会遇到一个让你眼前一亮的人..."
+
+让分析像讲故事一样，有画面感，有细节，让人读着就觉得"说的就是我"。
+`;
+  prompt += `
+请按以下结构输出（每个部分至少2-3段）：
+1. 🌟 开场：点明这个星座的核心性格特质
+2. 🔑 深度性格解析（元素+模式结合分析）
+3. ⚠️ 成长课题（真诚但不伤人地指出）
+4. 💕 感情分析（恋爱观、相处模式、适合的伴侣类型）
+5. ✨ 近期运势走向
+6. 💰 财运走势分析
+7. 💡 具体建议（5条以上实操建议）
+
+内容要丰富详实，每个部分详细展开。`;
+
+  if(data.question) {
+    prompt += `
+
+🔴 重点！针对观众提问「${data.question}」，请务必单独用较大篇幅深入分析：
+【🔍 问题根源分析】从该星座的性格特质出发，分析为什么会产生这个问题，背后的性格原因、行为模式原因是什么（至少3个可能的原因）
+【✅ 解决方案】针对每个原因给出具体可操作的解决方法，主播可以直接拿来用的话术和建议
+这部分是观众最关心的，请作为核心重点输出，内容要详细、接地气、可操作。`;
+  }
+
+  const userPref = getCustomPref();
+  if(userPref) prompt += '\n\n【用户特别要求】' + userPref + '，请在分析中特别注意和满足这个需求。';
+  return prompt;
+}
+
+async function callAIAnalysis(systemPrompt, userPrompt, mode='full') {
+  const auth = getAIAuth();
+  const isPreview = mode === 'preview' || (!auth.valid || auth.remaining <= 0);
+  
+  const payload = {
+    action: 'analyze',
+    system_prompt: systemPrompt,
+    user_prompt: userPrompt,
+    mode: isPreview ? 'preview' : 'full'
+  };
+  
+  if(!isPreview) {
+    payload.key = auth.key;
+  }
+  
+  const resp = await fetch(AI_API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type':'application/json' },
+    body: JSON.stringify(payload)
+  });
+  
+  if(!resp.ok) {
+    const err = await resp.json().catch(() => ({}));
+    throw new Error(err.error || 'API错误: ' + resp.status);
+  }
+  const json = await resp.json();
+  
+  // 完整模式：更新本地key余额
+  if(json.mode === 'full' && json.token_remaining !== undefined) {
+    const auth = getAIAuth();
+    saveAIAuth({ ...auth, remaining: json.token_remaining, consumed: (auth.consumed||0) + (json.tokens_used||0) });
+  }
+  
+  return json.analysis || json.content || null;
+}
+
+async function generateAIAnalysis(data, style, mode='full') {
+  const systemPrompt = buildMetaSystemPrompt();
+  let userPrompt;
+  
+  if(data.maleZodiac && data.femaleZodiac) {
+    userPrompt = buildPairUserPrompt(data, style);
+  } else {
+    userPrompt = buildSingleUserPrompt(data, style);
+  }
+  
+  return await callAIAnalysis(systemPrompt, userPrompt, mode);
+}
+
+async function generateAIQuickAnalysis(userZodiac, taZodiac, gender, scenes, style, question) {
+  const systemPrompt = buildMetaSystemPrompt();
+  const data = {
+    maleZodiac: gender === '男' ? userZodiac : taZodiac,
+    femaleZodiac: gender === '女' ? userZodiac : taZodiac,
+    maleNickname: '',
+    femaleNickname: '',
+    directions: scenes,
+    question: question
+  };
+  
+  if(taZodiac) {
+    return await callAIAnalysis(systemPrompt, buildPairUserPrompt(data, style));
+  } else {
+    return await callAIAnalysis(systemPrompt, buildSingleUserPrompt(data, style));
+  }
+}
+
+function generateDeepAnalysis(data, style){
+const{maleZodiac,femaleZodiac,maleNickname,femaleNickname,directions,maleBirthDate,femaleBirthDate,maleBirthCity,femaleBirthCity,maleCurrentCity,femaleCurrentCity,notes}=data;
+let result='';
+
+
+if(maleZodiac && femaleZodiac) {
+  const maleMatrix = ELEMENT_MODE_MATRIX[maleZodiac];
+  const femaleMatrix = ELEMENT_MODE_MATRIX[femaleZodiac];
+  const pairScore = calculatePairScore(maleZodiac, femaleZodiac);
+  const maleName = maleNickname || '男方';
+  const femaleName = femaleNickname || '女方';
+  
+  result += `🌟 ${maleName}（${maleZodiac}）× ${femaleName}（${femaleZodiac}）\n💕 配对分析\n\n`;
+  if(maleBirthDate||femaleBirthDate||maleBirthCity||femaleBirthCity||maleCurrentCity||femaleCurrentCity||notes){
+    result+='📋 基础信息\n';
+    if(maleBirthDate)result+=`  ♂ ${maleName}生辰：${maleBirthDate}\n`;
+    if(femaleBirthDate)result+=`  ♀ ${femaleName}生辰：${femaleBirthDate}\n`;
+    if(maleBirthCity)result+=`  ♂ ${maleName}出生地：${maleBirthCity}\n`;
+    if(femaleBirthCity)result+=`  ♀ ${femaleName}出生地：${femaleBirthCity}\n`;
+    if(maleCurrentCity)result+=`  ♂ ${maleName}现居地：${maleCurrentCity}\n`;
+    if(femaleCurrentCity)result+=`  ♀ ${femaleName}现居地：${femaleCurrentCity}\n`;
+    if(notes)result+=`📝 备注：${notes}\n`;
+    result+='\n';
+  }
+  result += `💯 默契指数：${pairScore}分\n\n`;
+  
+  
+  const maleElem = maleMatrix.element, femaleElem = femaleMatrix.element;
+  result += `🔥 元素互动：${maleName}是${maleElem}象，${femaleName}是${femaleElem}象。\n`;
+  result += `${getElementPairDesc(maleElem, femaleElem)}\n\n`;
+  
+  
+  const maleMode = maleMatrix.mode, femaleMode = femaleMatrix.mode;
+  result += `⚡ 模式碰撞：${maleName}是${maleMode}型，${femaleName}是${femaleMode}型。\n`;
+  result += `${getModePairDesc(maleMode, femaleMode)}\n\n`;
+  
+  
+  result += `♂ ${maleName}（${maleZodiac}）：${maleMatrix.deep}\n`;
+  result += `⚠️ 成长课题：${maleMatrix.trap}\n\n`;
+  result += `♀ ${femaleName}（${femaleZodiac}）：${femaleMatrix.deep}\n`;
+  result += `⚠️ 成长课题：${femaleMatrix.trap}\n\n`;
+  
+  
+  if(directions.includes('亲密关系') || directions.length===0) {
+    result += `💕 亲密关系：${getPairLoveDesc(maleZodiac, femaleZodiac, maleMatrix, femaleMatrix)}\n`;
+  }
+  if(directions.includes('财运走势') || directions.length===0) {
+    const fortuneDesc = pairScore >= 75 ? '双方合作财运势头很好，适合一起做事业或投资' : pairScore >= 60 ? '合作财运不错，但需要注意财务分工和决策' : '合作财运有挑战，建议财务上保持独立或谨慎合作';
+    result += `💰 合财分析：${fortuneDesc}。\n`;
+  }
+  if(directions.includes('近期运势') || directions.length===0) {
+    const luckDesc = pairScore >= 75 ? '近期双方整体运势和谐，互相助力，适合一起规划未来' : pairScore >= 60 ? '近期运势需要磨合，但共同努力会有好的发展' : '近期运势有挑战，需要更多沟通和理解才能共同成长';
+    result += `✨ 合运势：${luckDesc}。\n`;
+  }
+  
+} else {
+  
+  const zodiac = maleZodiac || femaleZodiac;
+  const gender = maleZodiac ? '男' : '女';
+  const nickname = maleNickname || femaleNickname || '';
+  const matrix = ELEMENT_MODE_MATRIX[zodiac];
+  const label = gender === '男' ? '♂' : '♀';
+  
+  result += `${label} ${nickname || zodiac}的深度分析\n\n`;
+  result += `🔑 元素密码：${matrix.element}象·${matrix.mode}型——${matrix.keywords}\n`;
+  result += `${matrix.deep}\n\n`;
+  result += `⚠️ 成长课题：${matrix.trap}\n\n`;
+  
+  if(directions.includes('近期运势') || directions.length===0) {
+    const person = getPersonality(zodiac, gender);
+    result += `✨ 近期运势：${generatePeriod()}的整体运势${getRandomPhrase(['相当不错哦','比较活跃','稳步上升','比较平稳'])}。\n`;
+    result += `${person.energy}\n\n`;
+  }
+  if(directions.includes('财运走势') || directions.length===0) {
+    const person = getPersonality(zodiac, gender);
+    result += `💰 财运走势：${generatePeriod()}${getRandomPhrase(['有一个小高峰正在靠近','有些新机会在酝酿','好运在慢慢积累'])}。\n`;
+    result += `${person.fortune}\n\n`;
+  }
+  if(directions.includes('亲密关系') || directions.length===0) {
+    const person = getPersonality(zodiac, gender);
+    result += `💕 亲密关系：${generatePeriod()}${getRandomPhrase(['桃花运在上升','感情状态在调整中','人际关系运不错'])}。\n`;
+    result += `${person.love}\n`;
+  }
+}
+
+result = style ? applyStyle(result, style) : result;
+return empowerTransform(filterWord(result));
+}
+
+
+function getElementPairDesc(el1, el2) {
+  const pairs = {
+    '火+火': '两个火象在一起，热情满满但容易燃烧过度，需要有人学会踩刹车。',
+    '火+土': '火象给土象带来激情和行动力，土象帮火象落地扎根。互补但需要耐心。',
+    '火+风': '火借风势，风助火旺！这是最有化学反应的组合，互相点燃对方的热情。',
+    '火+水': '火让水温暖，水让火温柔。但火太猛水会蒸发，水太多火会熄灭，需要找到平衡点。',
+    '土+土': '两个土象在一起，稳定可靠但可能太闷，需要主动给关系加点新鲜感。',
+    '土+风': '土象务实，风象灵动。认知有差异但如果能互相欣赏，反而能互补成长。',
+    '土+水': '土水相生，最稳定的组合之一。土给水安全感，水让土更柔软有温度。',
+    '风+风': '两个风象在一起，思维碰撞火花四溅，沟通顺畅但可能缺乏行动力。',
+    '风+水': '风象理性，水象感性。需要更多耐心去理解对方的"语言"，但学会了就是最深的成长。',
+    '水+水': '两个水象在一起，情感深度无人能及，但要注意不要一起沉在情绪里出不来。'
+  };
+  const key1 = `${el1}+${el2}`, key2 = `${el2}+${el1}`;
+  return pairs[key1] || pairs[key2] || '两个不同元素的人在一起，需要更多理解和包容，但也能互相补足。';
+}
+
+
+function getModePairDesc(mode1, mode2) {
+  const pairs = {
+    '创始+创始': '两个开创型在一起，永远有新想法新计划，但也需要有人负责执行和收尾。',
+    '创始+固定': '一个想冲一个想守，节奏不同但互补——开创者负责开疆拓土，固定者负责守业深耕。',
+    '创始+变动': '开创者启动，变动者灵活调整。很好的搭档组合，但变动者有时会让开创者觉得不够靠谱。',
+    '固定+固定': '两个固执型在一起，一旦达成共识就坚不可摧，但吵架时也谁都不让步。需要学会"先倾听再坚持"。',
+    '固定+变动': '一个要稳定一个要变化，核心节奏不同。但如果能欣赏对方的节奏，固定者给安全感，变动者给新鲜感。',
+    '变动+变动': '两个灵活型在一起，适应力超强，但可能缺乏"锚点"。需要一起建立一些稳定的仪式感。'
+  };
+  const key1 = `${mode1}+${mode2}`, key2 = `${mode2}+${mode1}`;
+  return pairs[key1] || pairs[key2] || '不同的模式带来不同的节奏，互相理解就是最好的相处方式。';
+}
+
+
+function getPairLoveDesc(z1, z2, m1, m2) {
+  const score = calculatePairScore(z1, z2);
+  if(score >= 80) return '你们的亲密关系默契非常强，天然就有默契和吸引力。珍惜这份缘分，同时也要主动经营，别让天赋变成惰性。';
+  if(score >= 70) return '你们的亲密关系有很好的基础，元素和模式的互动让彼此都有成长空间。关键是在差异中学会欣赏而不是改造对方。';
+  if(score >= 60) return '你们的亲密关系需要一些磨合，但正是这些摩擦让你们成长得更快。不要把冲突当成"不合适"，而是"一起升级的机会"。';
+  return '你们的亲密关系挑战不小，但挑战越大成长越大。这段关系需要你更多的觉察和耐心，如果你愿意投入，收获也会是最深的。';
+}
+
+
+function getPersonality(zodiac,gender){
+const base=PERSONALITY[zodiac]||PERSONALITY['白羊座'];
+const suffix=gender==='女'?'的女孩子':'男孩子';
+return{
+desc:`${zodiac}${suffix}${base.desc}`,
+energy:base.energy,
+fortune:base.fortune,
+love:base.love
+};
+}
+
+
+function generateQuickAnalysis(userZodiac,taZodiac,scenes,style){
+const user=getZodiac(userZodiac);
+const ta=getZodiac(taZodiac);
+const userElem=getElement(userZodiac);
+const taElem=getElement(taZodiac);
+const userMatrix=ELEMENT_MODE_MATRIX[userZodiac];
+const taMatrix=ELEMENT_MODE_MATRIX[taZodiac];
+
+
+const pairScore = calculatePairScore(userZodiac, taZodiac);
+const scoreLabel = pairScore >= 85 ? '天作之合' : pairScore >= 70 ? '高默契度' : pairScore >= 55 ? '需要磨合' : '挑战系数';
+
+let result='';
+result+=`好，我们来看看${userZodiac}和${taZodiac}的配对~ \n\n`;
+
+
+result+=`🔮 默契速评：${pairScore}/100（${scoreLabel}）\n\n`;
+
+
+if(userMatrix && taMatrix) {
+  result+=`♂ ${userZodiac}（${userMatrix.element}象·${userMatrix.mode}）：${userMatrix.keywords}\n`;
+  result+=`♀ ${taZodiac}（${taMatrix.element}象·${taMatrix.mode}）：${taMatrix.keywords}\n\n`;
+  
+  
+  result+=`【元素碰撞：${userMatrix.element}+${taMatrix.element}】\n`;
+  result+=getElementAnalysis(userElem,taElem,userZodiac,taZodiac);
+  result+='\n';
+  
+  
+  result+=`【模式互动：${userMatrix.mode}+${taMatrix.mode}】\n`;
+  result+=getModeAnalysis(userMatrix.mode, taMatrix.mode, userZodiac, taZodiac);
+  result+='\n';
+} else {
+  
+  result+=getElementAnalysis(userElem,taElem,userZodiac,taZodiac);
+  result+='\n';
+}
+
+
+for(const scene of scenes){
+result+=getSceneAnalysis(scene,userZodiac,taZodiac);
+result+='\n';
+}
+
+result = style ? applyStyle(result, style) : result;
+return empowerTransform(filterWord(result));
+}
+
+function getElementAnalysis(elem1,elem2,sign1,sign2){
+const same=elem1===elem2;
+let analysis='';
+
+if(same){
+analysis=`同属${elem1}元素的你们，${getRandomPhrase(['天然有共鸣','骨子里很合拍','节奏比较一致'])}，${getRandomPhrase(['沟通起来比较顺畅','想法容易想到一块去','互相能理解对方的点'])}。\n`;
+if(elem1==='火')analysis+=`不过呢，${getRandomPhrase(['两个火在一起有时候会有点小火花，注意别太冲','火象朋友都挺有主见的，有时候各执己见要协调一下'])}。\n`;
+else if(elem1==='土')analysis+=`就是有时候呢，${getRandomPhrase(['节奏偏慢，要互相等等对方','可能比较务实，浪漫少了点意思'])}。\n`;
+else if(elem1==='风')analysis+=`需要注意的是，${getRandomPhrase(['想法都很多，要落地到实际','风象有时候飘忽，需要有个人定一定'])}。\n`;
+else if(elem1==='水')analysis+=`但水象都比较敏感，${getRandomPhrase(['有时候情绪会互相影响','需要给对方一些独立空间'])}。\n`;
+}else{
+const relation=getElementRelation(elem1,elem2);
+if(relation==='互补'){
+analysis=`${sign1}和${sign2}呢，虽然分属${elem1}和${elem2}元素，但${getRandomPhrase(['天然有吸引力','其实挺互补的','配合起来会有惊喜'])}。\n`;
+analysis+=`${getRandomPhrase([`${elem1}的${getElemTrait(elem1)}配上${elem2}的${getElemTrait(elem2)}，`,''])}`;
+analysis+=`${getRandomPhrase(['你们能互相学习对方的长处','取长补短，效果不错','虽然不一样，但这种差异反而是加分项'])}。\n`;
+}else if(relation==='相生'){
+analysis=`${sign1}和${sign2}呢，${getRandomPhrase(['相处上很互补','容易互相促进','在一起挺舒服的'])}。\n`;
+analysis+=`${getRandomPhrase(['你们步调比较合拍','互相支持的感觉不错','虽然性格不完全一样，但相处起来比较和谐'])}。\n`;
+}else if(relation==='相克'){
+analysis=`${sign1}和${sign2}呢，${getRandomPhrase(['相处起来可能需要多磨合','挑战系数会高一些','需要彼此多包容'])}。\n`;
+analysis+=`不过呢，${getRandomPhrase(['只要愿意为对方调整，其实成长空间也很大','不同反而能互相学习','磨合成之后会很稳固'])}。\n`;
+}else{
+analysis=`${sign1}和${sign2}呢，${getRandomPhrase(['有共同话题','能聊到一块去','互动起来比较自然'])}。\n`;
+}
+}
+return analysis;
+}
+
+function getElemTrait(elem){
+const traits={火:'热情冲动',土:'务实稳定',风:'聪明灵活',水:'温柔敏感'};
+return traits[elem]||'';
+}
+
+function getElementRelation(elem1,elem2){
+if((elem1==='火'&&elem2==='土')||(elem1==='土'&&elem2==='火'))return'相生';
+if((elem1==='风'&&elem2==='水')||(elem1==='水'&&elem2==='风'))return'相生';
+if((elem1==='火'&&elem2==='水')||(elem1==='水'&&elem2==='火'))return'相克';
+if((elem1==='土'&&elem2==='风')||(elem1==='风'&&elem2==='土'))return'相克';
+if((elem1==='火'&&elem2==='风')||(elem1==='风'&&elem2==='火'))return'互补';
+if((elem1==='土'&&elem2==='水')||(elem1==='水'&&elem2==='土'))return'互补';
+return'中性';
+}
+
+function getSceneAnalysis(scene,userZodiac,taZodiac){
+const advice={
+'忽冷忽热':`遇到忽冷忽热的情况，${getRandomPhrase(['不要急着下结论','先观察一段时间','给彼此一点空间'])}。${getRandomPhrase(['可能是对方在思考','也可能是性格使然','可以试着主动关心一下'])}。${getRandomPhrase(['但别太黏着','但不要卑微','保持自己的节奏最重要'])}。`,
+'冷战不回':`冷战的话，${getRandomPhrase(['先冷静下来','等情绪过了再沟通','找个台阶下'])}比较重要。${getRandomPhrase(['可以试着打破僵局','有时候主动不是认输','一个小动作就能破冰'])}。`,
+'吵架想分':`吵架想分的时候，${getRandomPhrase(['先冷静一下','别在气头上做决定','睡一觉再说'])}。${getRandomPhrase(['吵架有时候是因为在乎','但也要看问题的本质','如果真的不合适，早点说清楚也好'])}。`,
+'暧昧不确定':`暧昧期不确定的话，${getRandomPhrase(['可以试探一下对方','不要猜来猜去','直接一点可能更有效'])}。${getRandomPhrase(['有时候对方也在等你主动','但也要保护好自己','真诚最重要'])}。`,
+'想复合':`想复合啊，${getRandomPhrase(['先想想当初为什么分开','是不是可以解决的问题','两个人都愿意改变吗'])}。${getRandomPhrase(['如果想清楚了','可以试着联系','但不要死缠烂打'])}。`,
+'对方有桃花':`对方有桃花的话，${getRandomPhrase(['先别慌','可能只是普通朋友','但也要注意信号'])}。${getRandomPhrase(['与其猜不如问','沟通最重要','做好自己才是王道'])}。`,
+'异地恋':`异地恋确实不容易，${getRandomPhrase(['信任是基础','保持联系很重要','但也要有自己的生活'])}。${getRandomPhrase(['有条件的话多见面','制造一些小惊喜','规划未来在一起的可能'])}。`,
+'刚认识想了解':`刚认识想了解的话，${getRandomPhrase(['多聊天多相处','从细节看人','不要太急'])}。${getRandomPhrase(['观察TA对别人怎么样','看遇到事情的反应','时间会给你答案'])}。`,
+'感情冷淡期':`感情冷淡期很正常，${getRandomPhrase(['可能是必经阶段','试着制造点新鲜感','沟通一下彼此的感受'])}。${getRandomPhrase(['可以安排约会','换换相处方式','给感情加点糖'])}。`,
+'总是吵架':`总是吵架的话，${getRandomPhrase(['先找找吵架的原因','是不是沟通方式有问题','还是核心诉求没被满足'])}。${getRandomPhrase(['换个方式表达','学会倾听','吵完要和好'])}。`,
+'家长反对':`家长反对确实头疼，${getRandomPhrase(['理解父母的顾虑','用行动证明','耐心沟通'])}很重要。${getRandomPhrase(['但也要看对方的态度','是不是妈宝','你自己要想清楚'])}。`,
+'暗恋不敢说':`暗恋不敢说的话，${getRandomPhrase(['其实可以先试探','释放一些信号','看对方反应'])}。${getRandomPhrase(['说出来可能没那么可怕','就算被拒也不后悔','万一TA也喜欢你呢'])}。`
+};
+return `【${scene}】\n${advice[scene]||'建议先多了解，情况不同处理方式也不同哦~'}\n`;
+}
+
+
+
+
+
+function toggleCollapsible(header) {
+  const body = header.nextElementSibling;
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  header.classList.toggle('open', !isOpen);
+}
+
+function initQuickBirthSelects() {
+  const ids = ['quickMaleBirthYear','quickFemaleBirthYear'];
+  const monthIds = ['quickMaleBirthMonth','quickFemaleBirthMonth'];
+  const dayIds = ['quickMaleBirthDay','quickFemaleBirthDay'];
+  const now = new Date().getFullYear();
+  
+  ids.forEach(id => {
+    const sel = document.getElementById(id);
+    if(!sel) return;
+    sel.innerHTML = '<option value="">年</option>';
+    for(let y = now; y >= 1950; y--) sel.options.add(new Option(y+'年', y));
+  });
+  monthIds.forEach(id => {
+    const sel = document.getElementById(id);
+    if(!sel) return;
+    sel.innerHTML = '<option value="">月</option>';
+    for(let m = 1; m <= 12; m++) sel.options.add(new Option(m+'月', m));
+  });
+  dayIds.forEach(id => {
+    const sel = document.getElementById(id);
+    if(!sel) return;
+    sel.innerHTML = '<option value="">日</option>';
+    for(let d = 1; d <= 31; d++) sel.options.add(new Option(d+'日', d));
+  });
+}
+
+
+
+
+
+function generatePairAnalysis(maleZodiac, femaleZodiac, scenes, extra, style, question) {
+  const male = getZodiac(maleZodiac);
+  const female = getZodiac(femaleZodiac);
+  const maleElem = getElement(maleZodiac);
+  const femaleElem = getElement(femaleZodiac);
+  const maleMatrix = ELEMENT_MODE_MATRIX[maleZodiac];
+  const femaleMatrix = ELEMENT_MODE_MATRIX[femaleZodiac];
+  
+  
+  const pairScore = calculatePairScore(maleZodiac, femaleZodiac);
+  
+  let result = '';
+  
+  
+  if(question) {
+    result += `关于你问的"${question}"——\n\n`;
+  }
+  
+  result += `好，我们来看看${maleZodiac}（男方）和${femaleZodiac}（女方）的配对分析~ \n\n`;
+  
+  
+  const scoreLabel = pairScore >= 85 ? '天作之合' : pairScore >= 70 ? '高默契度' : pairScore >= 55 ? '需要磨合' : '挑战系数';
+  result += `🔮 默契指数：${pairScore}/100（${scoreLabel}）\n\n`;
+  
+  
+  if(maleMatrix && femaleMatrix) {
+    result += `♂ ${maleZodiac}核心性格——${maleMatrix.keywords}：${maleMatrix.deep}\n\n`;
+    result += `♀ ${femaleZodiac}核心性格——${femaleMatrix.keywords}：${femaleMatrix.deep}\n\n`;
+  }
+  
+  
+  if(maleZodiac === femaleZodiac) {
+    result += `✨ 注意！双方都是${maleZodiac}！同星座配对的默契非常特别：\n`;
+    result += `你们就像照镜子一样，${getRandomPhrase(['彼此太了解了','优点缺点都心知肚明','默契是天生的'])}。\n`;
+    result += `${getRandomPhrase(['好处是天然共鸣，坏处是缺点也会放大','同样的节奏让相处很舒服，但也容易一起犯同一个错','默契很强，要注意别把对方的毛病也"学"过来'])}。\n`;
+    if(maleMatrix) {
+      result += `同星座要一起注意的是：${maleMatrix.trap}\n`;
+    }
+    result += `同星座的相处之道：${getRandomPhrase(['保持各自的独立性，别因为太像而失去新鲜感','互相提醒对方容易忽略的盲区','把共同的优点发挥到极致'])}。\n\n`;
+  }
+  
+  
+  if(extra.maleBirth && extra.maleBirth !== '年月日') {
+    result += `♂ 男方生日：${extra.maleBirth}${extra.maleCity ? '，现居' + extra.maleCity : ''}\n`;
+  }
+  if(extra.femaleBirth && extra.femaleBirth !== '年月日') {
+    result += `♀ 女方生日：${extra.femaleBirth}${extra.femaleCity ? '，现居' + extra.femaleCity : ''}\n`;
+  }
+  if(extra.maleBirth !== '年月日' || extra.femaleBirth !== '年月日') result += '\n';
+  
+  
+  result += `【元素配对：${maleMatrix?.element||maleElem}象 + ${femaleMatrix?.element||femaleElem}象】\n`;
+  result += getElementAnalysis(maleElem, femaleElem, maleZodiac, femaleZodiac);
+  result += '\n';
+  
+  
+  if(maleMatrix && femaleMatrix) {
+    result += `【模式互动：${maleMatrix.mode} + ${femaleMatrix.mode}】\n`;
+    result += getModeAnalysis(maleMatrix.mode, femaleMatrix.mode, maleZodiac, femaleZodiac);
+    result += '\n';
+  }
+  
+  
+  for(const scene of scenes) {
+    result += getSceneAnalysis(scene, maleZodiac, femaleZodiac);
+    result += '\n';
+  }
+  
+  result = style ? applyStyle(result, style) : result;
+  return empowerTransform(filterWord(result));
+}
+
+
+function generateSingleAnalysis(zodiac, gender, scenes, style, question) {
+  const person = getPersonality(zodiac, gender);
+  const genderText = gender === '女' ? '女生' : '男生';
+  const matrixData = ELEMENT_MODE_MATRIX[zodiac];
+  
+  let result = '';
+  
+  
+  if(question) {
+    result += `关于你问的"${question}"——\n\n`;
+  }
+  
+  result += `来看看这位${zodiac}${genderText}的性格解读~ \n\n`;
+  
+  
+  if(matrixData) {
+    result += `✨ 核心性格：${matrixData.keywords}\n`;
+    result += `${matrixData.deep}\n\n`;
+    result += `⚠️ 需要注意的地方：${matrixData.trap}\n\n`;
+  } else {
+    result += `✨ 性格特质：${person.desc}\n\n`;
+  }
+  
+  result += `🌟 近期运势：${person.energy}\n\n`;
+  result += `💰 财运走势：${person.fortune}\n\n`;
+  result += `💕 亲密关系：${person.love}\n`;
+  
+  
+  if(scenes.length > 0) {
+    result += '\n';
+    for(const scene of scenes) {
+      result += getSceneAnalysis(scene, zodiac, '');
+      result += '\n';
+    }
+  }
+  
+  
+  const birthField = gender === '女' ? 'quickFemaleBirth' : 'quickMaleBirth';
+  const cityField = gender === '女' ? 'quickFemaleCity' : 'quickMaleCity';
+  const birth = (document.getElementById(birthField+'Year')?.value||'') + '年' + (document.getElementById(birthField+'Month')?.value||'') + '月' + (document.getElementById(birthField+'Day')?.value||'') + '日';
+  const city = document.getElementById(cityField)?.value||'';
+  if(birth && birth !== '年月日') {
+    result += `\n📅 生日信息：${birth}${city ? '，现居' + city : ''}\n`;
+  } else if(city) {
+    result += `\n📍 现居：${city}\n`;
+  }
+  
+  result = style ? applyStyle(result, style) : result;
+  return empowerTransform(filterWord(result));
+}
+
+
+function initZodiacGrids(){
+['zodiacGridMale','zodiacGridFemale','zodiacGrid2','zodiacGrid3'].forEach((id,i)=>{
+const grid=document.getElementById(id);
+if(!grid) return;
+ZODIACS.forEach(z=>{
+const btn=document.createElement('button');
+btn.className='zodiac-btn';
+btn.dataset.zodiac=z.name;
+btn.innerHTML=`<span class="zodiac-icon">${z.symbol}</span><span class="zodiac-name">${z.name}</span>`;
+btn.onclick=()=>selectZodiac(id,z.name);
+grid.appendChild(btn);
+});
+});
+}
+
+
+function selectZodiac(gridId,zodiacName){
+const grid=document.getElementById(gridId);
+const btn=grid.querySelector(`[data-zodiac="${zodiacName}"]`);
+const wasSelected=btn.classList.contains('selected');
+
+grid.querySelectorAll('.zodiac-btn').forEach(b=>b.classList.remove('selected'));
+
+if(!wasSelected){
+btn.classList.add('selected');
+}
+checkSameZodiac();
+}
+
+function checkSameZodiac(){
+const maleZ=document.querySelector('#zodiacGrid2 .zodiac-btn.selected')?.dataset.zodiac;
+const femaleZ=document.querySelector('#zodiacGrid3 .zodiac-btn.selected')?.dataset.zodiac;
+const hint=document.getElementById('sameZodiacHint');
+const nameSpan=document.getElementById('sameZodiacName');
+if(maleZ&&femaleZ&&maleZ===femaleZ){
+nameSpan.textContent=maleZ;
+hint.style.display='';
+}else{
+hint.style.display='none';
+}
+}
+
+function initCities(){
+const basicCities=CITIES_BASIC.map(c=>`<button class="city-btn" data-city="${c}">${c}</button>`).join('');
+const moreCities=CITIES_MORE.map(c=>`<button class="city-btn" data-city="${c}" style="display:none">${c}</button>`).join('');
+
+['birthCityGrid','currentCityGrid','deepMaleBirthCity','deepMaleCurrentCity','deepFemaleBirthCity','deepFemaleCurrentCity'].forEach(id=>{
+const grid=document.getElementById(id);
+if(!grid) return;
+grid.innerHTML=basicCities+moreCities+`<div class="city-more" onclick="toggleMoreCities(this)">展开更多城市</div>`;
+grid.querySelectorAll('.city-btn').forEach(btn=>{
+btn.onclick=()=>selectCity(id,btn.dataset.city);
+});
+});
+}
+
+function toggleMoreCities(el){
+const hidden=el.previousElementSibling.previousElementSibling;
+const allCities=hidden.parentElement.querySelectorAll('.city-btn[data-city]');
+allCities.forEach(c=>c.style.display='');
+el.style.display='none';
+}
+
+function selectCity(gridId,cityName){
+const grid=document.getElementById(gridId);
+if(!grid) return;
+grid.querySelectorAll('.city-btn').forEach(b=>b.classList.remove('selected'));
+const btn=grid.querySelector(`[data-city="${cityName}"]`);
+if(btn)btn.classList.add('selected');
+// Hide any previously shown district grid for this city group
+const districtGrid=document.getElementById(gridId+'District');
+if(districtGrid){
+const districts=CITY_DISTRICTS[cityName];
+if(districts&&districts.length>0){
+districtGrid.innerHTML=districts.map(d=>`<button class="district-btn" data-district="${d}">${d}</button>`).join('')+`<div class="district-back" onclick="resetDistrict('${gridId}')">↩ 重选城市</div>`;
+districtGrid.style.display='';
+districtGrid.querySelectorAll('.district-btn').forEach(db=>{
+db.onclick=()=>selectDistrict(gridId,db.dataset.district);
+});
+}else{
+districtGrid.innerHTML='';
+districtGrid.style.display='none';
+}
+}
+}
+
+function selectDistrict(gridId,districtName){
+const districtGrid=document.getElementById(gridId+'District');
+if(!districtGrid) return;
+districtGrid.querySelectorAll('.district-btn').forEach(b=>b.classList.remove('selected'));
+const btn=districtGrid.querySelector(`[data-district="${districtName}"]`);
+if(btn)btn.classList.add('selected');
+}
+
+function resetDistrict(gridId){
+const grid=document.getElementById(gridId);
+if(grid)grid.querySelectorAll('.city-btn').forEach(b=>b.classList.remove('selected'));
+const districtGrid=document.getElementById(gridId+'District');
+if(districtGrid){districtGrid.innerHTML='';districtGrid.style.display='none';}
+}
+
+
+
+
+function getSelectedCity(gridId){
+const grid=document.getElementById(gridId);
+let city='';
+if(grid)city=grid.querySelector('.city-btn.selected')?.dataset.city||'';
+const districtGrid=document.getElementById(gridId+'District');
+let district='';
+if(districtGrid){
+const sel=districtGrid.querySelector('.district-btn.selected');
+if(sel)district=sel.dataset.district||'';
+}
+if(city&&district)return city+' '+district;
+return city;
+}
+
+function getBirthDate(prefix){
+const y=document.getElementById(prefix+'BirthYear')?.value||'';
+const m=document.getElementById(prefix+'BirthMonth')?.value||'';
+const d=document.getElementById(prefix+'BirthDay')?.value||'';
+const exactT=document.getElementById(prefix+'BirthExactTime')?.value||'';
+const h=exactT||document.getElementById(prefix+'BirthHour')?.value||'';
+let parts=[y,m,d].filter(Boolean).join('-');
+if(h)parts+=' '+h;
+return parts;
+}
+
+
+
+
+function getCityValue(gridId) {
+  return getSelectedCity(gridId);
+}
+
+function initSelects(){
+const now=new Date().getFullYear();
+const yearIds=['birthYear','deepMaleBirthYear','deepFemaleBirthYear'];
+const monthIds=['birthMonth','deepMaleBirthMonth','deepFemaleBirthMonth'];
+const dayIds=['birthDay','deepMaleBirthDay','deepFemaleBirthDay'];
+yearIds.forEach(id=>{
+const sel=document.getElementById(id);
+if(!sel)return;
+sel.innerHTML='<option value="">年</option>';
+for(let y=now;y>=1950;y--)sel.options.add(new Option(y+'年',y));
+});
+monthIds.forEach(id=>{
+const sel=document.getElementById(id);
+if(!sel)return;
+sel.innerHTML='<option value="">月</option>';
+for(let m=1;m<=12;m++)sel.options.add(new Option(m+'月',m));
+});
+dayIds.forEach(id=>{
+const sel=document.getElementById(id);
+if(!sel)return;
+sel.innerHTML='<option value="">日</option>';
+for(let d=1;d<=31;d++)sel.options.add(new Option(d+'日',d));
+});
+}
+
+function initScenes(){
+const container=document.getElementById('sceneTags');
+if(!container) return;
+
+// 获取高频问题
+const questions = JSON.parse(localStorage.getItem('metaphysics_questions') || '{}');
+const freqQuestions = Object.values(questions)
+  .filter(q => q.count >= 1)
+  .sort((a,b) => b.count - a.count)
+  .slice(0, 8);
+
+// 获取已选中的标签（保持选中状态）
+const selected = new Set([...container.querySelectorAll('.scene-tag.selected')].map(t => t.dataset.scene));
+
+// 合并：高频问题（按频率排序）+ 静态标签（去重）
+const freqTags = freqQuestions.map(q => ({text: q.question.substring(0, 12) + (q.question.length > 12 ? '...' : ''), count: q.count, isFreq: true}));
+const staticTags = SCENES.filter(s => !freqQuestions.some(q => q.question.includes(s) || s.includes(q.question.substring(0, 6)))).map(s => ({text: s, count: 0, isFreq: false}));
+const allTags = [...freqTags, ...staticTags];
+
+// 渲染
+container.innerHTML = '';
+allTags.forEach(t => {
+const tag=document.createElement('span');
+tag.className='scene-tag' + (selected.has(t.text) ? ' selected' : '');
+if(t.isFreq) tag.style.cssText = 'background:linear-gradient(135deg,rgba(155,109,255,.2),rgba(255,107,157,.15));border-color:rgba(155,109,255,.4)';
+tag.dataset.scene=t.text;
+tag.textContent = t.isFreq ? '🔥 ' + t.text : t.text;
+tag.onclick=()=>tag.classList.toggle('selected');
+container.appendChild(tag);
+});
+}
+
+function initStars(){
+const container=document.getElementById('stars');
+for(let i=0;i<100;i++){
+const star=document.createElement('div');
+star.className='star';
+star.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;animation-delay:${Math.random()*3}s;`;
+container.appendChild(star);
+}
+}
+
+
+let history=JSON.parse(localStorage.getItem('metaphysics_history')||'[]');
+let currentRecordId=null;
+
+function saveHistory(){
+localStorage.setItem('metaphysics_history',JSON.stringify(history));
+renderHistory();
+}
+
+function addHistory(record){
+const id=Date.now().toString();
+const newRecord={id,...record,timestamp:new Date().toLocaleString(),note:'',tags:[]};
+history.unshift(newRecord);
+if(history.length>100)history=history.slice(0,100);
+saveHistory();
+return id;
+}
+
+function updateHistory(id,updates){
+const idx=history.findIndex(h=>h.id===id);
+if(idx>=0){
+history[idx]={...history[idx],...updates};
+saveHistory();
+}
+}
+
+function deleteHistory(id){
+history=history.filter(h=>h.id!==id);
+saveHistory();
+closeNoteModal();
+if(currentRecordId===id)currentRecordId=null;
+}
+
+function renderHistory(){
+const list=document.getElementById('historyList');
+const count=document.getElementById('historyCount');
+count.textContent=history.length;
+if(history.length===0){
+list.innerHTML='<div class="history-empty">暂无记录<br>开始分析吧~</div>';
+return;
+}
+list.innerHTML=history.map(h=>`
+<div class="history-item ${h.id===currentRecordId?'active':''}" onclick="loadHistory('${h.id}')">
+<div class="history-name">${h.nickname?`${h.nickname} | `:''}${h.zodiac||'快速问答'}${h.styleLabel?` <span class="history-style-tag ${h.style}">${h.styleLabel}</span>`:''}</div>
+<div class="history-meta">${h.timestamp}${h.question?` · 💬 ${h.question.substring(0,12)}${h.question.length>12?'...':''}`:''}</div>
+${h.tags?.length?`<div class="history-tags">${h.tags.map(t=>`<span class="history-tag">${t}</span>`).join('')}</div>`:''}
+${h.note?`<div class="history-meta" style="margin-top:4px;color:var(--accent-light)">📝 ${h.note}</div>`:''}
+</div>
+`).join('');
+}
+
+function loadHistory(id){
+currentRecordId=id;
+const record=history.find(h=>h.id===id);
+if(!record)return;
+document.getElementById('resultPlaceholder').style.display='none';
+const content=document.getElementById('resultContent');
+content.style.display='block';
+content.innerHTML=highlightText(record.result);
+document.getElementById('copyBtn').style.display='block';
+renderHistory();
+}
+
+function highlightText(text){
+return text.replace(/\n/g,'<br>').replace(/这位/g,'这位').replace(/朋友/g,'<span class="highlight">朋友</span>');
+}
+
+
+function openNoteModal(id){
+currentRecordId=id;
+document.getElementById('noteModal').classList.add('show');
+const record=history.find(h=>h.id===id);
+if(record){
+document.getElementById('noteInput').value=record.note||'';
+document.querySelectorAll('#noteLabels .note-label').forEach(l=>{
+l.classList.toggle('selected',record.tags?.includes(l.dataset.tag));
+});
+}
+}
+
+function closeNoteModal(){
+document.getElementById('noteModal').classList.remove('show');
+document.getElementById('noteInput').value='';
+document.querySelectorAll('#noteLabels .note-label').forEach(l=>l.classList.remove('selected'));
+}
+
+function saveNote(){
+const note=document.getElementById('noteInput').value.trim();
+const tags=[...document.querySelectorAll('#noteLabels .note-label.selected')].map(l=>l.dataset.tag);
+updateHistory(currentRecordId,{note,tags});
+closeNoteModal();
+}
+
+
+
+// ===== 咨询档案管理 =====
+let archives = JSON.parse(localStorage.getItem('metaphysics_archives') || '[]');
+let currentArchiveId = null;
+
+function saveArchives() {
+  localStorage.setItem('metaphysics_archives', JSON.stringify(archives));
+}
+
+
+function saveAsArchive(deepInput, resultText, style, styleLabel) {
+  const archive = {
+    id: 'arc_' + Date.now(),
+    createTime: new Date().toLocaleString(),
+    timestamp: Date.now(),
+    maleNickname: deepInput.maleNickname || '',
+    femaleNickname: deepInput.femaleNickname || '',
+    maleZodiac: deepInput.maleZodiac || '',
+    femaleZodiac: deepInput.femaleZodiac || '',
+    maleBirthDate: deepInput.maleBirthDate || '',
+    femaleBirthDate: deepInput.femaleBirthDate || '',
+    maleBirthCity: deepInput.maleBirthCity || '',
+    femaleBirthCity: deepInput.femaleBirthCity || '',
+    maleCurrentCity: deepInput.maleCurrentCity || '',
+    femaleCurrentCity: deepInput.femaleCurrentCity || '',
+    directions: deepInput.directions || [],
+    notes: deepInput.notes || '',
+    result: resultText || '',
+    style: style || 'warm',
+    styleLabel: styleLabel || '',
+    // 主播可后续添加的档案备注
+    archiveNote: '',
+    archiveTags: []
+  };
+  archives.unshift(archive);
+  if (archives.length > 200) archives = archives.slice(0, 200);
+  saveArchives();
+  return archive.id;
+}
+
+function renderArchiveList(filter) {
+  const list = document.getElementById('archiveList');
+  const stats = document.getElementById('archiveStats');
+  const filtered = filter ? archives.filter(a => {
+    const kw = filter.toLowerCase();
+    return (a.maleNickname + a.femaleNickname + a.maleZodiac + a.femaleZodiac + a.notes + a.archiveNote).toLowerCase().includes(kw);
+  }) : archives;
+  
+  stats.textContent = `共 ${archives.length} 份档案` + (filter ? ` · 搜索"${filter}"匹配 ${filtered.length} 条` : '');
+  
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="archive-empty">' + (filter ? '未找到匹配的档案' : '暂无咨询档案<br>完成深度分析后会自动建档') + '</div>';
+    return;
+  }
+  
+  list.innerHTML = filtered.map(a => {
+    const names = [a.maleNickname, a.femaleNickname].filter(Boolean).join(' & ') || '未命名';
+    const zodiacs = [a.maleZodiac, a.femaleZodiac].filter(Boolean).join(' + ') || '未知星座';
+    const hasBirth = a.maleBirthDate || a.femaleBirthDate;
+    const hasCity = a.maleBirthCity || a.femaleBirthCity || a.maleCurrentCity || a.femaleCurrentCity;
+    const tagsHtml = [...(a.archiveTags || []), ...(a.directions || [])].map(t => `<span>${t}</span>`).join('');
+    
+    return `<div class="archive-card" onclick="showArchiveDetail('${a.id}')">
+      <div class="archive-card-header">
+        <span class="archive-card-name">${names}</span>
+        <span class="archive-card-time">${a.createTime}</span>
+      </div>
+      <div class="archive-card-info">
+        <span>🔮 ${zodiacs}</span>
+        ${a.maleBirthDate ? `<span>📅 男方 ${a.maleBirthDate}</span>` : ''}
+        ${a.femaleBirthDate ? `<span>📅 女方 ${a.femaleBirthDate}</span>` : ''}
+        ${a.maleCurrentCity ? `<span>📍 ${a.maleNickname||'男方'} ${a.maleCurrentCity}</span>` : ''}
+        ${a.femaleCurrentCity ? `<span>📍 ${a.femaleNickname||'女方'} ${a.femaleCurrentCity}</span>` : ''}
+      </div>
+      ${tagsHtml ? `<div class="archive-card-tags">${tagsHtml}</div>` : ''}
+      ${a.notes ? `<div class="archive-card-notes">📝 ${a.notes.length > 60 ? a.notes.substring(0, 60) + '...' : a.notes}</div>` : ''}
+      ${a.archiveNote ? `<div class="archive-card-notes" style="border-left-color:rgba(155,109,255,.4);color:var(--accent-light)">🏷️ 主播备注: ${a.archiveNote.length > 60 ? a.archiveNote.substring(0, 60) + '...' : a.archiveNote}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function showArchiveDetail(id) {
+  const a = archives.find(x => x.id === id);
+  if (!a) return;
+  currentArchiveId = id;
+  document.getElementById('archiveList').style.display = 'none';
+  document.getElementById('archiveStats').style.display = 'none';
+  const detail = document.getElementById('archiveDetail');
+  detail.style.display = 'block';
+  
+  const names = [a.maleNickname, a.femaleNickname].filter(Boolean).join(' & ') || '未命名';
+  const zodiacs = [a.maleZodiac, a.femaleZodiac].filter(Boolean).join(' + ') || '未知星座';
+  
+  let html = `<div class="archive-section">
+    <div class="archive-section-title">👤 基本信息</div>
+    <div class="archive-info-grid">
+      <div class="archive-info-item"><div class="label">咨询时间</div><div class="value">${a.createTime}</div></div>
+      <div class="archive-info-item"><div class="label">分析版本</div><div class="value">${a.styleLabel || a.style}</div></div>
+    </div>
+  </div>`;
+  
+  // 男方信息
+  if (a.maleZodiac || a.maleNickname || a.maleBirthDate || a.maleBirthCity || a.maleCurrentCity) {
+    html += `<div class="archive-section">
+      <div class="archive-section-title">♂ 男方信息</div>
+      <div class="archive-info-grid">
+        ${a.maleNickname ? `<div class="archive-info-item"><div class="label">昵称</div><div class="value">${a.maleNickname}</div></div>` : ''}
+        ${a.maleZodiac ? `<div class="archive-info-item"><div class="label">星座</div><div class="value">${a.maleZodiac}</div></div>` : ''}
+        ${a.maleBirthDate ? `<div class="archive-info-item"><div class="label">生辰</div><div class="value">${a.maleBirthDate}</div></div>` : ''}
+        ${a.maleBirthCity ? `<div class="archive-info-item"><div class="label">出生地</div><div class="value">${a.maleBirthCity}</div></div>` : ''}
+        ${a.maleCurrentCity ? `<div class="archive-info-item"><div class="label">现居地</div><div class="value">${a.maleCurrentCity}</div></div>` : ''}
+      </div>
+    </div>`;
+  }
+  
+  // 女方信息
+  if (a.femaleZodiac || a.femaleNickname || a.femaleBirthDate || a.femaleBirthCity || a.femaleCurrentCity) {
+    html += `<div class="archive-section">
+      <div class="archive-section-title">♀ 女方信息</div>
+      <div class="archive-info-grid">
+        ${a.femaleNickname ? `<div class="archive-info-item"><div class="label">昵称</div><div class="value">${a.femaleNickname}</div></div>` : ''}
+        ${a.femaleZodiac ? `<div class="archive-info-item"><div class="label">星座</div><div class="value">${a.femaleZodiac}</div></div>` : ''}
+        ${a.femaleBirthDate ? `<div class="archive-info-item"><div class="label">生辰</div><div class="value">${a.femaleBirthDate}</div></div>` : ''}
+        ${a.femaleBirthCity ? `<div class="archive-info-item"><div class="label">出生地</div><div class="value">${a.femaleBirthCity}</div></div>` : ''}
+        ${a.femaleCurrentCity ? `<div class="archive-info-item"><div class="label">现居地</div><div class="value">${a.femaleCurrentCity}</div></div>` : ''}
+      </div>
+    </div>`;
+  }
+  
+  // 选择分析方向
+  if (a.directions && a.directions.length) {
+    html += `<div class="archive-section">
+      <div class="archive-section-title">🎯 选择分析方向</div>
+      <div class="archive-info-grid">
+        <div class="archive-info-item"><div class="value">${a.directions.join('、')}</div></div>
+      </div>
+    </div>`;
+  }
+  
+  // 用户备注
+  if (a.notes) {
+    html += `<div class="archive-section">
+      <div class="archive-section-title">📝 用户备注</div>
+      <div class="archive-notes-box">${a.notes}</div>
+    </div>`;
+  }
+  
+  // 主播档案备注
+  html += `<div class="archive-section">
+    <div class="archive-section-title">🏷️ 主播备注 <span style="font-weight:normal;color:var(--text-dim);font-size:12px">(下播后补充)</span></div>
+    <textarea id="archiveNoteInput" style="width:100%;min-height:60px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;color:var(--text-light);padding:10px;font-size:13px;resize:vertical" placeholder="记录对这位用户的印象、跟进事项、特殊标记等...">${a.archiveNote || ''}</textarea>
+    <div style="margin-top:6px;display:flex;gap:8px;align-items:center">
+      <input type="text" id="archiveTagInput" style="flex:1;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;color:var(--text-light);padding:6px 10px;font-size:12px" placeholder="添加标签(回车确认)" value="">
+      <div id="archiveTagList" style="display:flex;gap:4px;flex-wrap:wrap">
+        ${(a.archiveTags||[]).map(t => `<span class="archive-tag-item" style="background:rgba(155,109,255,.2);padding:2px 8px;border-radius:10px;font-size:11px;color:var(--accent-light);cursor:pointer" onclick="removeArchiveTag(this,'${t}')" title="点击删除">${t} ✕</span>`).join('')}
+      </div>
+    </div>
+    <button onclick="saveArchiveNote()" style="margin-top:8px;background:linear-gradient(135deg,var(--accent),#7c4dff);border:none;color:#fff;padding:6px 18px;border-radius:8px;cursor:pointer;font-size:13px">💾 保存备注</button>
+  </div>`;
+  
+  // 分析结果
+  html += `<div class="archive-section">
+    <div class="archive-section-title">🔮 分析结果</div>
+    <div class="archive-result-box">${highlightText(a.result)}</div>
+  </div>`;
+  
+  document.getElementById('archiveDetailContent').innerHTML = html;
+  
+  // 标签输入回车
+  const tagInput = document.getElementById('archiveTagInput');
+  if (tagInput) {
+    tagInput.onkeydown = function(e) {
+      if (e.key === 'Enter' && this.value.trim()) {
+        e.preventDefault();
+        addArchiveTag(this.value.trim());
+        this.value = '';
+      }
+    };
+  }
+}
+
+function addArchiveTag(tag) {
+  const a = archives.find(x => x.id === currentArchiveId);
+  if (!a) return;
+  if (!a.archiveTags) a.archiveTags = [];
+  if (!a.archiveTags.includes(tag)) {
+    a.archiveTags.push(tag);
+    saveArchives();
+    showArchiveDetail(currentArchiveId);
+  }
+}
+
+function removeArchiveTag(el, tag) {
+  const a = archives.find(x => x.id === currentArchiveId);
+  if (!a) return;
+  a.archiveTags = (a.archiveTags || []).filter(t => t !== tag);
+  saveArchives();
+  showArchiveDetail(currentArchiveId);
+}
+
+function saveArchiveNote() {
+  const a = archives.find(x => x.id === currentArchiveId);
+  if (!a) return;
+  a.archiveNote = document.getElementById('archiveNoteInput')?.value?.trim() || '';
+  saveArchives();
+  alert('✅ 主播备注已保存');
+}
+
+function closeArchiveDetail() {
+  document.getElementById('archiveDetail').style.display = 'none';
+  document.getElementById('archiveList').style.display = 'block';
+  document.getElementById('archiveStats').style.display = 'block';
+  currentArchiveId = null;
+}
+
+function deleteArchive(id) {
+  if (!confirm('确定删除这份咨询档案吗？此操作不可恢复。')) return;
+  archives = archives.filter(a => a.id !== id);
+  saveArchives();
+  closeArchiveDetail();
+  renderArchiveList();
+}
+
+function exportArchives() {
+  if (archives.length === 0) { alert('暂无档案可导出'); return; }
+  var lines = [];
+  archives.forEach(function(a) {
+    var names = [a.maleNickname, a.femaleNickname].filter(Boolean).join(' & ') || '未命名';
+    var s = '========== ' + names + ' (' + a.createTime + ') ==========\n';
+    if (a.maleZodiac) {
+      s += '♂ ' + (a.maleNickname||'男方') + ': ' + a.maleZodiac;
+      if (a.maleBirthDate) s += ' ' + a.maleBirthDate;
+      if (a.maleBirthCity) s += ' 出生地:' + a.maleBirthCity;
+      if (a.maleCurrentCity) s += ' 现居:' + a.maleCurrentCity;
+      s += '\n';
+    }
+    if (a.femaleZodiac) {
+      s += '♀ ' + (a.femaleNickname||'女方') + ': ' + a.femaleZodiac;
+      if (a.femaleBirthDate) s += ' ' + a.femaleBirthDate;
+      if (a.femaleBirthCity) s += ' 出生地:' + a.femaleBirthCity;
+      if (a.femaleCurrentCity) s += ' 现居:' + a.femaleCurrentCity;
+      s += '\n';
+    }
+    if (a.directions && a.directions.length) s += '选择分析方向: ' + a.directions.join('、') + '\n';
+    if (a.notes) s += '用户备注: ' + a.notes + '\n';
+    if (a.archiveNote) s += '主播备注: ' + a.archiveNote + '\n';
+    if (a.archiveTags && a.archiveTags.length) s += '标签: ' + a.archiveTags.join(', ') + '\n';
+    s += '\n--- 分析结果 ---\n' + a.result + '\n';
+    lines.push(s);
+  });
+  var blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = '咨询档案_' + new Date().toISOString().slice(0,10) + '.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function openArchivePanel() {
+  renderArchiveList();
+  document.getElementById('archiveOverlay').classList.add('show');
+  document.getElementById('archiveDetail').style.display = 'none';
+  document.getElementById('archiveList').style.display = 'block';
+  document.getElementById('archiveStats').style.display = 'block';
+  document.getElementById('archiveSearch').value = '';
+}
+
+function closeArchivePanel() {
+  document.getElementById('archiveOverlay').classList.remove('show');
+  currentArchiveId = null;
+}
+
+function bindEvents(){
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+btn.onclick=()=>{
+document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
+document.querySelectorAll('.mode-content').forEach(m=>m.classList.remove('active'));
+document.getElementById(btn.dataset.mode==='deep'?'deepMode':'quickMode').classList.add('active');
+};
+});
+
+
+document.querySelectorAll('.gender-btn').forEach(btn=>{
+btn.onclick=()=>{
+document.querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('selected'));
+btn.classList.add('selected');
+};
+});
+
+
+
+
+function switchMode(mode){
+  var ds=document.getElementById('directionSingle');
+  var dd=document.getElementById('directionDouble');
+  document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(mode==='single'?'modeTabSingle':'modeTabDouble').classList.add('active');
+  ds.style.display = mode==='single' ? 'flex' : 'none';
+  dd.style.display = mode==='double' ? 'flex' : 'none';
+  // 切换模式时清除之前的选择
+  document.querySelectorAll('.direction-btn.selected').forEach(b=>b.classList.remove('selected'));
+  updateQueryPreview();
+}
+
+// 绑定模式切换按钮事件
+document.getElementById('modeTabSingle').addEventListener('click', function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  switchMode('single');
+});
+document.getElementById('modeTabDouble').addEventListener('click', function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  switchMode('double');
+});
+
+document.querySelectorAll('.direction-btn').forEach(btn=>{
+btn.onclick=()=>{
+btn.classList.toggle('selected');
+updateQueryPreview();
+};
+});
+
+function updateQueryPreview(){
+const preview=document.getElementById('queryPreview');
+if(!preview) return;
+const selected=[...document.querySelectorAll('.direction-btn.selected')];
+const selectedZodiac=[...document.querySelectorAll('#zodiacGridMale .zodiac-btn.selected,#zodiacGridFemale .zodiac-btn.selected')].map(b=>b.dataset.zodiac);
+const dirText=selected.map(b=>b.dataset.dir).join('、');
+let msg='';
+if(!dirText&&!selectedZodiac.length){
+msg='👆 选择星座和选择分析方向后点击按钮开始分析';
+}else if(!dirText){
+msg=' 已选星座：'+selectedZodiac.join('、')+'，请选择选择分析方向';
+}else if(!selectedZodiac.length){
+msg='👆 已选方向：'+dirText+'，请至少选择一方星座';
+}else{
+msg='✅ 即将分析：'+selectedZodiac.join('、')+' · '+dirText+'，点击下方按钮生成结果';
+}
+preview.innerHTML='<span style="opacity:.9">'+msg+'</span>';
+}
+
+// 监听星座选择
+document.querySelectorAll('#zodiacGridMale .zodiac-btn,#zodiacGridFemale .zodiac-btn').forEach(btn=>{
+btn.addEventListener('click',updateQueryPreview);
+});
+
+
+async function doGenerateDeep(style) {
+const maleZodiac=document.querySelector('#zodiacGridMale .zodiac-btn.selected')?.dataset.zodiac;
+const femaleZodiac=document.querySelector('#zodiacGridFemale .zodiac-btn.selected')?.dataset.zodiac;
+if(!maleZodiac && !femaleZodiac){
+alert('请至少选择一方的星座~');
+return;
+}
+const directions=[...document.querySelectorAll('.direction-btn.selected')].map(b=>b.dataset.dir);
+const data={
+maleZodiac: maleZodiac || '',
+femaleZodiac: femaleZodiac || '',
+maleNickname: document.getElementById('deepMaleNickname')?.value?.trim() || '',
+femaleNickname: document.getElementById('deepFemaleNickname')?.value?.trim() || '',
+directions: directions.length ? directions : ['近期运势','财运走势','亲密关系'],
+maleBirthDate: getBirthDate('deepMale'),
+femaleBirthDate: getBirthDate('deepFemale'),
+maleBirthCity: getSelectedCity('deepMaleBirthCity'),
+femaleBirthCity: getSelectedCity('deepFemaleBirthCity'),
+maleCurrentCity: getSelectedCity('deepMaleCurrentCity'),
+femaleCurrentCity: getSelectedCity('deepFemaleCurrentCity'),
+notes: document.getElementById('deepNotes')?.value?.trim() || ''
+};
+const styleLabel = style === 'warm' ? '📊结果分析' : '🔮深度结果分析';
+const aiAuth = getAIAuth();
+const hasKey = aiAuth.valid && aiAuth.remaining > 0;
+// 有key时两个按钮都走AI模式；没key时深度分析也展示AI面板（用模板内容做截断预览）
+if(hasKey || style === 'direct') {
+  // 显示基础分析
+  const templateResult = generateDeepAnalysis(data, style);
+  showResult(templateResult);
+  
+  // 显示AI面板
+  const aiPanel = document.getElementById('aiPanel');
+  const aiContent = document.getElementById('aiResultContent');
+  const aiPlaceholder = document.getElementById('aiPlaceholder');
+  const copyAiBtn = document.getElementById('copyAiBtn');
+  aiPanel.style.display = 'block';
+  aiPlaceholder.style.display = 'none';
+  aiContent.style.display = 'block';
+  
+  if(hasKey) {
+    // 有key：异步生成AI分析，展示全部
+    aiContent.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--accent-light)">🔄 AI正在生成深度分析中...<br><span style="font-size:12px;color:var(--text-dim)">通常需要10-30秒</span></div>';
+    copyAiBtn.style.display = 'none';
+    
+    try {
+      const aiResult = await generateAIAnalysis(data, style);
+      if(aiResult) {
+        const transformed = filterWord(empowerTransform(aiResult));
+        aiContent.innerHTML = '<div class="result-text">' + transformed + '</div>';
+        copyAiBtn.style.display = 'block';
+        copyAiBtn.onclick = () => {
+          navigator.clipboard.writeText(transformed);
+          copyAiBtn.textContent = '✅ 已复制';
+          setTimeout(() => { copyAiBtn.textContent = '📋 复制AI分析'; }, 2000);
+        };
+      } else {
+        aiContent.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text-dim)">⚠️ AI生成失败</div>';
+      }
+    } catch(e) {
+      aiContent.innerHTML = '<div style="text-align:center;padding:40px 0;color:#ff5252">⚠️ AI生成失败：' + e.message + '</div>';
+    }
+  } else {
+    // 无key + 深度分析：AI预览模式（生成精简版真AI内容）+ 钩子
+    aiContent.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--accent-light)">🔄 AI正在生成预览分析中...<br><span style="font-size:12px;color:var(--text-dim)">通常需要10-30秒</span></div>';
+    copyAiBtn.style.display = 'none';
+    
+    try {
+      const aiResult = await generateAIAnalysis(data, style, 'preview');
+      if(aiResult) {
+        const transformed = filterWord(empowerTransform(aiResult));
+        const hookHtml = `
+          <div style="margin-top:24px;padding:24px;background:linear-gradient(135deg,rgba(255,215,0,.12),rgba(155,109,255,.18));border:2px solid rgba(255,215,0,.5);border-radius:20px;text-align:center;box-shadow:0 0 30px rgba(255,215,0,.15),inset 0 0 20px rgba(155,109,255,.1)">
+            <div style="font-size:14px;color:rgba(255,215,0,.7);margin-bottom:8px;letter-spacing:2px">· 预览版 ·</div>
+            <div style="font-size:20px;font-weight:700;color:var(--gold);margin-bottom:16px;text-shadow:0 0 12px rgba(255,215,0,.4)">🔮 已为你解锁核心洞察</div>
+            <div style="color:var(--text-light);font-size:14px;line-height:2;margin-bottom:20px;text-align:left;padding:0 8px">
+              <div style="margin-bottom:8px">✨ 以上揭示了问题的<strong style="color:var(--gold)">核心根源</strong>，完整深度分析还包括：</div>
+              <div style="margin-bottom:6px">💎 <strong>量身定制的行动方案</strong> — 针对你的具体情况</div>
+              <div style="margin-bottom:6px">📅 <strong>未来3个月关键时间节点</strong> — 什么时候该做什么</div>
+              <div style="margin-bottom:6px">💬 <strong>可以直接用的沟通话术</strong> — 化解僵局</div>
+              <div>🎯 <strong>关系走向精准预测</strong> — 值不值得继续</div>
+            </div>
+            <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:12px">已有 <strong style="color:var(--gold)">2,847</strong> 人解锁了完整深度分析</div>
+            <div style="background:linear-gradient(135deg,#FFD700,#FFA500);color:#1a1a2e;padding:14px 32px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;display:inline-block;box-shadow:0 4px 25px rgba(255,215,0,.5);transition:transform .2s" onclick="document.querySelector('[data-mode=\'quick\']')?.click();document.getElementById('aiUpgradeBtn')?.click()" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              ✨ 立即解锁完整分析
+            </div>
+            <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:10px">限量Key发售中 · 联系主播抢先解锁</div>
+          </div>
+        `;
+        aiContent.innerHTML = '<div class="result-text">' + transformed + '</div>' + hookHtml;
+        copyAiBtn.style.display = 'none';
+      } else {
+        aiContent.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text-dim)">⚠️ 预览生成失败</div>';
+      }
+    } catch(e) {
+      // 预览失败时降级显示模板内容
+      const fallbackContent = templateResult;
+      const cutPoint = Math.floor(fallbackContent.length / 3);
+      let displayEnd = cutPoint;
+      const lastPara = fallbackContent.lastIndexOf('\n\n', cutPoint + 50);
+      if(lastPara > cutPoint * 0.6) displayEnd = lastPara;
+      const fallbackText = fallbackContent.substring(0, displayEnd);
+      const hookHtml = `
+        <div style="margin-top:24px;padding:24px;background:linear-gradient(135deg,rgba(255,215,0,.12),rgba(155,109,255,.18));border:2px solid rgba(255,215,0,.5);border-radius:20px;text-align:center">
+          <div style="font-size:20px;font-weight:700;color:var(--gold);margin-bottom:16px">🔮 解锁AI深度分析</div>
+          <div style="color:var(--text-light);font-size:14px;line-height:2;margin-bottom:20px">
+            <div>💎 量身定制的行动方案</div>
+            <div>📅 未来3个月关键时间节点</div>
+            <div>💬 可以直接用的沟通话术</div>
+            <div>🎯 关系走向精准预测</div>
+          </div>
+          <div style="background:linear-gradient(135deg,#FFD700,#FFA500);color:#1a1a2e;padding:14px 32px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;display:inline-block" onclick="document.querySelector('[data-mode=\'quick\']')?.click();document.getElementById('aiUpgradeBtn')?.click()">
+            ✨ 立即解锁完整分析
+          </div>
+          <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:10px">限量Key发售中 · 联系主播抢先解锁</div>
+        </div>
+      `;
+      aiContent.innerHTML = '<div class="result-text">' + fallbackText + '</div>' + hookHtml;
+      copyAiBtn.style.display = 'none';
+    }
+  }
+} else {
+  // 结果分析（无key）：只显示模板，隐藏AI面板
+  const result = generateDeepAnalysis(data, style);
+  showResult(result);
+  document.getElementById('aiPanel').style.display = 'none';
+}
+const nick = (data.maleNickname && data.femaleNickname) ? `${data.maleNickname} & ${data.femaleNickname}` : (data.maleNickname || data.femaleNickname || generateNickname());
+const zodiacDisplay = [maleZodiac, femaleZodiac].filter(Boolean).join('+');
+const id=addHistory({type:'deep',zodiac:zodiacDisplay,nickname:nick,input:data,result,style,styleLabel});
+currentRecordId=id;
+renderHistory();
+// 自动建立咨询档案
+saveAsArchive(data, result, style, styleLabel);
+}
+document.getElementById('generateDeepWarm').onclick=()=>doGenerateDeep('warm');
+document.getElementById('generateDeepDirect').onclick=()=>doGenerateDeep('direct');
+
+
+async function _generateQuickWithStyle(style) {
+  const maleZodiac = document.querySelector('#zodiacGrid2 .zodiac-btn.selected')?.dataset.zodiac;
+  const femaleZodiac = document.querySelector('#zodiacGrid3 .zodiac-btn.selected')?.dataset.zodiac;
+  
+  if (!maleZodiac && !femaleZodiac) {
+    alert('请至少选择一方的星座~');
+    return;
+  }
+  
+  const question = document.getElementById('viewerQuestion')?.value?.trim() || '';
+  if(question) trackQuestion(question);
+  
+  const scenes = [...document.querySelectorAll('.scene-tag.selected')].map(t => t.dataset.scene);
+  
+  let result = '';
+  let historyLabel = '';
+  let inputData = {};
+  
+  if (maleZodiac && femaleZodiac) {
+    
+    const maleBirth = (document.getElementById('quickMaleBirthYear')?.value||'') + '年' + (document.getElementById('quickMaleBirthMonth')?.value||'') + '月' + (document.getElementById('quickMaleBirthDay')?.value||'') + '日';
+    const femaleBirth = (document.getElementById('quickFemaleBirthYear')?.value||'') + '年' + (document.getElementById('quickFemaleBirthMonth')?.value||'') + '月' + (document.getElementById('quickFemaleBirthDay')?.value||'') + '日';
+    const maleCity = document.getElementById('quickMaleCity')?.value||'';
+    const femaleCity = document.getElementById('quickFemaleCity')?.value||'';
+    
+    result = generatePairAnalysis(maleZodiac, femaleZodiac, scenes.length?scenes:['暧昧不确定'], {maleBirth, femaleBirth, maleCity, femaleCity}, style, question);
+    historyLabel = `${maleZodiac} × ${femaleZodiac}`;
+    inputData = {type:'pair', maleZodiac, femaleZodiac, scenes, maleBirth, femaleBirth, maleCity, femaleCity};
+  } else if (maleZodiac) {
+    
+    result = generateSingleAnalysis(maleZodiac, '男', scenes, style, question);
+    historyLabel = maleZodiac + '(男)';
+    inputData = {type:'personal', zodiac:maleZodiac, gender:'男', scenes};
+  } else {
+    
+    result = generateSingleAnalysis(femaleZodiac, '女', scenes, style, question);
+    historyLabel = femaleZodiac + '(女)';
+    inputData = {type:'personal', zodiac:femaleZodiac, gender:'女', scenes};
+  }
+  
+  
+  if(question && !(maleZodiac && femaleZodiac) && !maleZodiac) {
+    
+  } else if(question) {
+    
+  }
+  
+  const styleLabel = style === 'warm' ? '📊结果分析' : '🔮深度结果分析';
+  const apiCfg = getAPIConfig();
+  if(apiCfg.key) {
+    showResult('🔄 AI正在生成分析中，请稍候...\n\n（通常需要10-30秒）');
+    try {
+      const mainZ = maleZodiac || femaleZodiac;
+      const otherZ = maleZodiac && femaleZodiac ? femaleZodiac : null;
+      const g = maleZodiac ? '男' : '女';
+      const aiResult = await generateAIQuickAnalysis(mainZ, otherZ, g, scenes, style, question);
+      if(aiResult) {
+        result = filterWord(empowerTransform(aiResult));
+        // 深度结果分析模式：无key时只显示1/3+钩子，有key显示全部
+        const aiAuth2 = getAIAuth();
+        const hasKey2 = aiAuth2.valid && aiAuth2.remaining > 0;
+        if(style === 'direct' && !hasKey2) {
+          const totalLength = result.length;
+          const cutPoint = Math.floor(totalLength / 3);
+          let displayEnd = cutPoint;
+          const lastPara = result.lastIndexOf('\n\n', cutPoint);
+          if(lastPara > cutPoint * 0.5) displayEnd = lastPara;
+          const previewText = result.substring(0, displayEnd);
+          result = previewText + '\n\n━━━━━━━━━━━━━━━━━━━━\n\n🔮 已为你解锁核心洞察\n\n以上揭示了问题的核心根源，但解决方案才是改变的关键：\n💎 量身定制的行动方案 — 针对你的具体情况\n📅 未来3个月关键时间节点 — 什么时候该做什么\n💬 可以直接用的沟通话术 — 复制粘贴就能化解僵局\n🎯 关系走向精准预测 — 这段关系值不值得继续\n\n✨ 已有2,847人解锁了完整深度分析\n👉 限量Key发售中，联系主播抢先解锁完整分析';
+        }
+      }
+    } catch(e) { /* AI失败保留模板结果 */ }
+  }
+  showResult(result);
+  const maleNick=document.getElementById('maleNickname')?.value.trim()||'';
+  const femaleNick=document.getElementById('femaleNickname')?.value.trim()||'';
+  let nickname='';
+  if(maleNick&&femaleNick) nickname=maleNick+' & '+femaleNick;
+  else if(maleNick) nickname=maleNick;
+  else if(femaleNick) nickname=femaleNick;
+  else nickname=generateNickname();
+const id=addHistory({type:'quick',zodiac:historyLabel,nickname,input:inputData,result,style,styleLabel,question});
+  currentRecordId=id;
+  renderHotQuestions();
+  renderHistory();
+}
+document.getElementById('generateQuickWarm').onclick=()=>_generateQuickWithStyle('warm');
+document.getElementById('generateQuickDirect').onclick=()=>_generateQuickWithStyle('direct');
+
+
+document.getElementById('copyBtn').onclick=async ()=>{
+const text=document.getElementById('resultContent').innerText;
+try{
+await navigator.clipboard.writeText(text);
+const btn=document.getElementById('copyBtn');
+btn.textContent='✓ 已复制';
+btn.classList.add('copied');
+setTimeout(()=>{btn.textContent='📋 复制话术';btn.classList.remove('copied');},2000);
+}catch(e){
+alert('复制失败，请手动复制~');
+}
+};
+
+
+document.getElementById('toggleSidebar').onclick=()=>{
+document.getElementById('historyPanel').classList.toggle('hidden');
+};
+
+
+document.getElementById('historyList').addEventListener('contextmenu',e=>{
+if(e.target.closest('.history-item')){
+e.preventDefault();
+const id=e.target.closest('.history-item').querySelector('.history-name')?.textContent;
+const record=history.find(h=>(h.zodiac+h.nickname)===id||h.id===id);
+if(record)openNoteModal(record.id);
+}
+});
+document.getElementById('historyList').addEventListener('dblclick',e=>{
+if(e.target.closest('.history-item')){
+const name=e.target.closest('.history-item').querySelector('.history-name')?.textContent;
+const record=history.find(h=>(h.zodiac+h.nickname).startsWith(name)||h.id===name);
+if(record)openNoteModal(record.id);
+}
+});
+
+
+document.getElementById('noteLabels').addEventListener('click',e=>{
+if(e.target.classList.contains('note-label')){
+e.target.classList.toggle('selected');
+}
+});
+document.getElementById('noteCancel').onclick=closeNoteModal;
+document.getElementById('noteSave').onclick=saveNote;
+document.getElementById('deleteRecord').onclick=()=>{
+if(currentRecordId&&confirm('确定要删除这条记录吗？')){
+deleteHistory(currentRecordId);
+}
+};
+document.getElementById('noteModal').onclick=e=>{
+if(e.target===document.getElementById('noteModal'))closeNoteModal();
+};
+}
+
+function showResult(text){
+document.getElementById('resultPlaceholder').style.display='none';
+const content=document.getElementById('resultContent');
+content.style.display='block';
+
+
+let html = text;
+const scoreMatch = text.match(/🔮 默契(?:指数|速评)：(\d+)\/100（(.+?)）/);
+if(scoreMatch) {
+  const scoreNum = parseInt(scoreMatch[1]);
+  const scoreText = scoreMatch[2];
+  const scoreHTML = renderPairScoreHTML(scoreNum);
+  html = html.replace(scoreMatch[0], scoreHTML);
+}
+
+content.innerHTML=highlightText(html);
+document.getElementById('copyBtn').style.display='block';
+}
+
+
+initStars();
+initZodiacGrids();
+initCities();
+initSelects();
+initScenes();
+initQuickBirthSelects();
+bindEvents();
+renderHistory();
+renderHotQuestions();
+
+// 档案面板事件绑定
+document.getElementById('toggleArchive').onclick = openArchivePanel;
+document.getElementById('archiveClose').onclick = closeArchivePanel;
+document.getElementById('archiveOverlay').onclick = function(e) {
+  if (e.target === this) closeArchivePanel();
+};
+document.getElementById('archiveBack').onclick = closeArchiveDetail;
+document.getElementById('archiveDeleteBtn').onclick = function() {
+  if (currentArchiveId) deleteArchive(currentArchiveId);
+};
+document.getElementById('archiveSearch').oninput = function() {
+  renderArchiveList(this.value.trim());
+};
+document.getElementById('archiveExport').onclick = exportArchives;
+
+// 手动保存档案按钮
+document.getElementById('saveArchiveBtn').onclick = function() {
+  const maleZodiac = document.querySelector('#zodiacGridMale .zodiac-btn.selected')?.dataset.zodiac || '';
+  const femaleZodiac = document.querySelector('#zodiacGridFemale .zodiac-btn.selected')?.dataset.zodiac || '';
+  if (!maleZodiac && !femaleZodiac && !document.getElementById('deepMaleNickname')?.value?.trim() && !document.getElementById('deepFemaleNickname')?.value?.trim()) {
+    alert('请至少填写一方信息再保存~');
+    return;
+  }
+  const deepData = {
+    maleZodiac: maleZodiac,
+    femaleZodiac: femaleZodiac,
+    maleNickname: document.getElementById('deepMaleNickname')?.value?.trim() || '',
+    femaleNickname: document.getElementById('deepFemaleNickname')?.value?.trim() || '',
+    maleBirthDate: getBirthDate('deepMale'),
+    femaleBirthDate: getBirthDate('deepFemale'),
+    maleBirthCity: getSelectedCity('deepMaleBirthCity'),
+    femaleBirthCity: getSelectedCity('deepFemaleBirthCity'),
+    maleCurrentCity: getSelectedCity('deepMaleCurrentCity'),
+    femaleCurrentCity: getSelectedCity('deepFemaleCurrentCity'),
+    directions: [...document.querySelectorAll('.direction-btn.selected')].map(b => b.dataset.dir),
+    notes: document.getElementById('deepNotes')?.value?.trim() || ''
+  };
+  const hasResult = document.getElementById('resultContent')?.style?.display === 'block';
+  const resultText = hasResult ? document.getElementById('resultContent')?.innerText || '' : '';
+  const styleLabel = '手动建档';
+  saveAsArchive(deepData, resultText, 'manual', styleLabel);
+  // 反馈
+  const btn = document.getElementById('saveArchiveBtn');
+  const orig = btn.textContent;
+  btn.textContent = '✅ 已保存';
+  btn.style.background = 'linear-gradient(135deg,#4ade80,#22c55e)';
+  setTimeout(() => { btn.textContent = orig; btn.style.background = 'linear-gradient(135deg,var(--accent),#7c4dff)'; }, 2000);
+};
+
+
+// ========== 用户反馈系统 ==========
+const FEEDBACK_FILE = 'feedback.json';
+const GITHUB_REPO = 'Ruochan2017/metaphysics-live';
+const _GP1 = 'ghp_amIkCbXu4RykU3lN5bSk1inolgG8z';
+const _GP2 = 'E0fTUOu';
+const GITHUB_PAT = _GP1 + _GP2;
+let selectedRating = 0;
+
+// 评分按钮点击
+document.querySelectorAll('.fb-rate-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.fb-rate-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedRating = parseInt(btn.dataset.rate);
+  });
+});
+
+// 加载反馈列表
+async function loadFeedbacks() {
+  try {
+    const resp = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${FEEDBACK_FILE}`, {
+      headers: { 'Authorization': `token ${GITHUB_PAT}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!resp.ok) return;
+    const data = await resp.json();
+    const content = JSON.parse(atob(data.content));
+    renderFeedbacks(content.feedbacks || []);
+  } catch(e) { /* 加载失败静默 */ }
+}
+
+// 渲染反馈列表
+function renderFeedbacks(feedbacks) {
+  const container = document.getElementById('feedbackRecent');
+  if (!feedbacks.length) {
+    container.innerHTML = '<div class="feedback-empty">暂无反馈，来留下第一条吧~</div>';
+    return;
+  }
+  const recent = feedbacks.slice(-20).reverse();
+  const stars = n => '⭐'.repeat(n);
+  const avatarEmojis = ['🌟','✨','🔮','🌙','💫','🌈','💜','🦋'];
+  container.innerHTML = recent.map(fb => {
+    const avatar = avatarEmojis[Math.abs(hashStr(fb.name||'匿名')) % avatarEmojis.length];
+    const time = fb.time ? new Date(fb.time).toLocaleDateString('zh-CN') : '';
+    const zodiac = fb.zodiac ? ` · ${fb.zodiac}` : '';
+    return `<div class="feedback-item">
+      <div class="feedback-item-avatar">${avatar}</div>
+      <div class="feedback-item-body">
+        <div class="feedback-item-header">
+          <span class="feedback-item-name">${escapeHtml(fb.name||'匿名')}${zodiac}</span>
+          <span class="feedback-item-stars">${stars(fb.rate||3)}</span>
+          <span class="feedback-item-time">${time}</span>
+        </div>
+        ${fb.content ? `<div class="feedback-item-text">${escapeHtml(fb.content)}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// 提交反馈
+document.getElementById('feedbackSubmitBtn').addEventListener('click', async () => {
+  if (!selectedRating) {
+    document.getElementById('feedbackMsg').textContent = '请先选择评分~';
+    return;
+  }
+  const btn = document.getElementById('feedbackSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = '提交中...';
+  const msgEl = document.getElementById('feedbackMsg');
+  msgEl.textContent = '';
+  
+  try {
+    // 获取当前分析上下文
+    const history = getHistory();
+    const latest = history.length ? history[history.length - 1] : null;
+    const zodiac = latest ? (latest.zodiac || '') : '';
+    const nickname = latest ? (latest.nickname || '') : '匿名';
+    
+    const feedback = {
+      name: nickname,
+      rate: selectedRating,
+      content: document.getElementById('feedbackContent').value.trim(),
+      zodiac: zodiac,
+      time: new Date().toISOString(),
+      type: latest ? latest.type : 'quick'
+    };
+    
+    // 读取现有反馈
+    let feedbacks = [];
+    let sha = '';
+    try {
+      const resp = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${FEEDBACK_FILE}`, {
+        headers: { 'Authorization': `token ${GITHUB_PAT}`, 'Accept': 'application/vnd.github.v3+json' }
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        sha = data.sha;
+        feedbacks = JSON.parse(atob(data.content)).feedbacks || [];
+      }
+    } catch(e) {}
+    
+    feedbacks.push(feedback);
+    
+    // 保存到GitHub
+    const body = {
+      message: 'Add user feedback',
+      content: btoa(unescape(encodeURIComponent(JSON.stringify({ feedbacks }, null, 2)))),
+      branch: 'main'
+    };
+    if (sha) body.sha = sha;
+    
+    const resp = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${FEEDBACK_FILE}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${GITHUB_PAT}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    
+    if (resp.ok || resp.status === 201) {
+      msgEl.style.color = '#4caf50';
+      msgEl.textContent = '✅ 感谢你的反馈！';
+      document.getElementById('feedbackContent').value = '';
+      document.querySelectorAll('.fb-rate-btn').forEach(b => b.classList.remove('selected'));
+      selectedRating = 0;
+      loadFeedbacks();
+    } else {
+      throw new Error('保存失败');
+    }
+  } catch(e) {
+    msgEl.style.color = '#f44336';
+    msgEl.textContent = '提交失败，请稍后重试';
+  }
+  
+  btn.disabled = false;
+  btn.textContent = '提交反馈';
+  setTimeout(() => { msgEl.textContent = ''; msgEl.style.color = 'var(--text-dim)'; }, 3000);
+});
+
+// 工具函数
+function hashStr(s) { let h=0; for(let i=0;i<s.length;i++) h=((h<<5)-h)+s.charCodeAt(i); return h; }
+function escapeHtml(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+// 页面加载时获取反馈
+loadFeedbacks();
+</script>
+
+<!-- AI设置面板 -->
+<div id="aiUpgradeModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:10000;align-items:center;justify-content:center;backdrop-filter:blur(4px)">
+  <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:450px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.4)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <h3 style="font-size:18px;font-weight:700;color:var(--accent-light);margin:0">✨ AI大模型分析</h3>
+      <button onclick="closeAIUpgrade()" style="background:none;border:none;color:var(--text-dim);font-size:24px;cursor:pointer;line-height:1">&times;</button>
+    </div>
+    <div id="aiKeyInput" style="display:block">
+      <div style="background:rgba(155,109,255,.1);border:1px solid rgba(155,109,255,.2);border-radius:12px;padding:16px;margin-bottom:20px">
+        <div style="color:var(--text-light);font-size:14px;line-height:1.6;margin-bottom:12px">
+           <strong>点击解锁更高级版本（AI深度解析）</strong>后，将获得由AI大模型生成的深度个性化分析报告，替代模板化内容。
+        </div>
+        <div style="color:var(--text-dim);font-size:13px;line-height:1.6">
+          💡 每个Key可使用约1000次分析，有效期30天<br>
+          📝 如需购买Key，请联系主播
+        </div>
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="display:block;margin-bottom:6px;color:var(--text-dim);font-size:13px">请输入您的授权Key</label>
+        <input id="aiKeyInputField" type="text" placeholder="请输入Key" style="width:100%;padding:12px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:8px;color:var(--text-light);font-size:15px;box-sizing:border-box;text-align:center;letter-spacing:1px">
+      </div>
+      <div id="aiKeyMsg" style="margin-bottom:16px;color:var(--text-dim);font-size:13px;text-align:center;min-height:20px"></div>
+      <button onclick="submitAIKey()" style="width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent-pink));border:none;color:#fff;border-radius:10px;cursor:pointer;font-size:15px;font-weight:600;box-shadow:0 4px 12px rgba(155,109,255,.3)">🔓 激活AI分析</button>
+    </div>
+    <div id="aiKeyStatus" style="display:none"></div>
+  </div>
+</div>
+<script>document.addEventListener("DOMContentLoaded",function(){updateAIButton()});
+
+
+// ========== 步骤引导系统 ==========
+function updateStepGuide() {
+  const isDeepMode = document.getElementById('deepMode').classList.contains('active');
+  const step1 = document.getElementById('step1');
+  const step2 = document.getElementById('step2');
+  const step3 = document.getElementById('step3');
+  
+  let zodiacDone = false;
+  let btnsContainer = null;
+  
+  if (isDeepMode) {
+    // 深度分析：需要男女双方星座都选
+    const male = document.querySelector('#zodiacGridMale .zodiac-btn.selected');
+    const female = document.querySelector('#zodiacGridFemale .zodiac-btn.selected');
+    zodiacDone = !!(male || female);
+    btnsContainer = document.querySelector('#deepMode .version-btns');
+  } else {
+    // 快速问答：至少选一方星座
+    const m = document.querySelector('#zodiacGrid2 .zodiac-btn.selected');
+    const f = document.querySelector('#zodiacGrid3 .zodiac-btn.selected');
+    zodiacDone = !!(m || f);
+    btnsContainer = document.querySelector('#quickMode .version-btns');
+  }
+  
+  // 更新步骤状态
+  if (zodiacDone) {
+    step1.className = 'step-item done';
+    step2.className = 'step-item active';
+    step3.className = 'step-item';
+    // 显示生成按钮
+    if (btnsContainer && !btnsContainer.classList.contains('visible')) {
+      btnsContainer.classList.add('visible');
+      // 首次出现加脉冲动画
+      setTimeout(() => {
+        btnsContainer.classList.add('pulse-appear');
+        setTimeout(() => btnsContainer.classList.remove('pulse-appear'), 700);
+      }, 100);
+    }
+  } else {
+    step1.className = 'step-item active';
+    step2.className = 'step-item';
+    step3.className = 'step-item';
+    // 隐藏生成按钮
+    if (btnsContainer) {
+      btnsContainer.classList.remove('visible');
+    }
+  }
+}
+
+// 监听星座选择 - 用 MutationObserver 监听 zodiac-btn 的 class 变化
+function observeZodiacSelection() {
+  const grids = document.querySelectorAll('.zodiac-grid');
+  grids.forEach(grid => {
+    const observer = new MutationObserver(() => {
+      updateStepGuide();
+    });
+    observer.observe(grid, { subtree: true, attributes: true, attributeFilter: ['class'] });
+  });
+}
+
+// 监听 tab 切换
+const tabBtns = document.querySelectorAll('.tab-btn');
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    setTimeout(updateStepGuide, 100);
+  });
+});
+
+// 页面加载后初始化
+document.addEventListener('DOMContentLoaded', () => {
+  observeZodiacSelection();
+  updateStepGuide();
+});
+
+// 生成分析时更新到第3步
+const origDoGenerateDeep = document.getElementById('generateDeepWarm').onclick;
+document.getElementById('generateDeepWarm').addEventListener('click', () => {
+  document.getElementById('step2').className = 'step-item done';
+  document.getElementById('step3').className = 'step-item active';
+});
+document.getElementById('generateDeepDirect').addEventListener('click', () => {
+  document.getElementById('step2').className = 'step-item done';
+  document.getElementById('step3').className = 'step-item active';
+});
+document.getElementById('generateQuickWarm').addEventListener('click', () => {
+  document.getElementById('step2').className = 'step-item done';
+  document.getElementById('step3').className = 'step-item active';
+});
+document.getElementById('generateQuickDirect').addEventListener('click', () => {
+  document.getElementById('step2').className = 'step-item done';
+  document.getElementById('step3').className = 'step-item active';
+});
+
+</script>
+</body>
+</html>
