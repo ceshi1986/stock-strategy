@@ -115,6 +115,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
 .key-mode-paid{background:rgba(245,158,11,.15);color:#f59e0b}
 .key-mode-own{background:rgba(59,130,246,.15);color:var(--accent2)}
 .key-remaining{font-size:12px;color:var(--text2);margin-top:4px}
+
+/* Pay Modal */
+.pay-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:10000;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.pay-overlay.show{display:flex}
+.pay-card{background:#0f1520;border:1px solid rgba(59,130,246,.2);border-radius:16px;padding:28px;max-width:360px;width:90%;position:relative;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.pay-close{position:absolute;top:12px;right:16px;background:none;border:none;color:#888;font-size:24px;cursor:pointer;line-height:1}
+.pay-close:hover{color:#fff}
+.pay-title{text-align:center;font-size:18px;font-weight:700;color:#60a5fa;margin-bottom:20px}
+.pay-qr-wrap{text-align:center;margin-bottom:20px}
+.pay-qr-wrap img{max-width:220px;width:100%;border-radius:12px;background:#fff;padding:8px}
+.pay-steps{list-style:none;padding:0;margin:0 0 20px}
+.pay-steps li{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;font-size:13px;color:#ccc;line-height:1.6}
+.pay-steps .step-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:rgba(59,130,246,.2);color:#60a5fa;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.pay-steps strong{color:#60a5fa}
+.pay-disclaimer{font-size:10px;color:#555;line-height:1.6;text-align:center;border-top:1px solid rgba(255,255,255,.05);padding-top:14px}
 </style>
 </head>
 <body>
@@ -687,7 +702,16 @@ function saveOwnKey() {
 }
 
 function showBuyTip() {
-  showToast('请通过网站底部联系方式购买');
+  showPayModal('策略分析');
+}
+
+function showPayModal(productName) {
+  var modal = document.getElementById('payModal');
+  if (modal) modal.style.display = 'flex';
+}
+function closePayModal() {
+  var modal = document.getElementById('payModal');
+  if (modal) modal.style.display = 'none';
 }
 
 // Determine which key to use and perform AI analysis
@@ -1145,5 +1169,31 @@ async function refreshAll(){
   initKeyState();
 })();
 </script>
+
+<!-- Pay Modal -->
+<div id="payModal" class="pay-overlay" onclick="if(event.target===this)closePayModal()">
+  <div class="pay-card">
+    <button class="pay-close" onclick="closePayModal()">&times;</button>
+    <div class="pay-title">微信支付 · 19.9元</div>
+    <div class="pay-qr-wrap">
+      <img src="qrcode_pay.jpg" alt="微信收款码" />
+    </div>
+    <ol class="pay-steps">
+      <li><span class="step-num">1</span><span>截图扫码支付 <strong>19.9 元</strong></span></li>
+      <li><span class="step-num">2</span><span>添加微信 <strong>hui_297652</strong>，发送付款截图</span></li>
+      <li><span class="step-num">3</span><span>获取专属Key，输入上方即可解锁</span></li>
+    </ol>
+    <div class="pay-disclaimer">
+      本服务为AI数据分析工具，仅供学习研究参考<br>
+      不构成任何投资建议、投注建议或其他专业建议<br>
+      付费即视为同意服务协议，Key激活后不支持退款
+    </div>
+  </div>
+</div>
+<!-- Footer Disclaimer -->
+<div style="text-align:center;padding:20px 16px 30px;font-size:11px;color:#666;line-height:1.8">
+  ⚠️ 免责声明：本站为AI数据分析工具，所有内容仅供学习研究参考，不构成任何投资建议、投注建议或其他专业决策建议。
+  数据来源于公开信息，分析结果不代表未来表现。付费即视为同意服务协议，Key激活后不支持退款。
+</div>
 </body>
 </html>
