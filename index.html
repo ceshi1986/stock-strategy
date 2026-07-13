@@ -551,10 +551,10 @@ async function verifyKey() {
   document.getElementById('keyStatus').style.borderColor = 'rgba(59,130,246,.3)';
   
   try {
-    const res = await fetch(FC_BACKEND + '/verify-key', {
+    const res = await fetch(FC_BACKEND, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({key: key})
+      body: JSON.stringify({action: 'key_validate', key: key})
     });
     const data = await res.json();
     if (data.success) {
@@ -642,10 +642,11 @@ ${stockData.turnover ? '换手率：' + stockData.turnover + '%' : ''}
 // Analyze using paid key (via FC backend)
 async function analyzeWithPaidKey(userPrompt) {
   try {
-    const res = await fetch(FC_BACKEND + '/analyze', {
+    const res = await fetch(FC_BACKEND, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
+        action: 'analyze',
         key: keyState.paidKey,
         system_prompt: STRATEGY_SYSTEM_PROMPT,
         user_prompt: userPrompt
