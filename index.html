@@ -156,12 +156,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
 
 <div class="key-section" id="keySection">
   <div class="key-section-title">🔑 AI深度分析 Key</div>
-  <div class="key-input-row">
+  <div class="key-input-row" id="keyInputRow">
     <input id="paidKeyInput" placeholder="输入购买的Key" onkeydown="if(event.key==='Enter')verifyKey()">
     <button class="btn btn-sm" onclick="verifyKey()">验证</button>
   </div>
   <div class="key-status" id="keyStatus"></div>
-  <div class="key-guide">
+  <div class="key-guide" id="keyGuide">
     💡 推荐：购买专属Key（<strong>19.9元/50次分析</strong>），无需注册配置，开箱即用
     <div class="key-guide-actions">
       <button class="btn-buy" onclick="showBuyTip()">🛒 联系购买</button>
@@ -272,8 +272,8 @@ const STOCK_NAME_MAP = {
   '兴业银锡':'sz000426','多氟多':'sz002407'
 };
 
-// 解析用户输入（支持代码或名称）
-function resolveStockInput(input){
+// 解析用户输入（支持代码或名称）- 返回 Promise
+async function resolveStockInput(input){
   input = input.trim();
   if(!input) return null;
   // 如果是纯数字代码
@@ -285,13 +285,59 @@ function resolveStockInput(input){
   }
   // 如果已有sh/sz/bj前缀
   if(/^(sh|sz|bj)\d{6}$/i.test(input)) return input.toLowerCase();
-  // 按名称查找
+  // 按名称查找（本地字典）
   if(STOCK_NAME_MAP[input]) return STOCK_NAME_MAP[input];
   // 模糊匹配名称
   const matched = Object.keys(STOCK_NAME_MAP).find(name => name.includes(input) || input.includes(name));
   if(matched) return STOCK_NAME_MAP[matched];
-  // 尝试直接作为代码
-  return input;
+  // 本地匹配不到，调用腾讯搜索接口自动识别
+  try {
+    const code = await searchStockByAPI(input);
+    if(code) return code;
+  } catch(e) { console.log('股票搜索失败:', e); }
+  // 都不行就返回 null
+  return null;
+}
+
+// 通过腾讯接口搜索股票代码
+function searchStockByAPI(keyword){
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    const timeout = setTimeout(() => {
+      cleanup();
+      resolve(null);
+    }, 5000);
+    function cleanup(){
+      clearTimeout(timeout);
+      if(script.parentNode) script.parentNode.removeChild(script);
+    }
+    script.src = `https://smartbox.gtimg.cn/s3/?v=2&q=${encodeURIComponent(keyword)}&t=all`;
+    script.onload = () => {
+      cleanup();
+      try {
+        // v_hint 格式: "sz~000426~兴业银锡~xyyx~GP-A^..."
+        if(typeof v_hint === 'string' && v_hint){
+          const items = v_hint.split('^');
+          for(const item of items){
+            const parts = item.split('~');
+            if(parts.length >= 3){
+              const market = parts[0]; // sh/sz/bj
+              const code = parts[1];
+              const type = parts[4] || '';
+              // 只取A股（GP-A类型）
+              if(type === 'GP-A' && (market === 'sh' || market === 'sz' || market === 'bj')){
+                resolve(market + code);
+                return;
+              }
+            }
+          }
+        }
+      } catch(e) {}
+      resolve(null);
+    };
+    script.onerror = () => { cleanup(); resolve(null); };
+    document.head.appendChild(script);
+  });
 }
 
 let currentStockData = null;
@@ -475,7 +521,7 @@ function renderQuote(data){
 async function searchStock(){
   const input=document.getElementById('stockInput').value.trim();
   if(!input){showToast('请输入股票代码或名称');return}
-  const code=resolveStockInput(input);
+  const code=await resolveStockInput(input);
   if(!code){showToast('无法识别，请重新输入');return}
   document.getElementById('quoteResult').innerHTML='<div class="loading">正在获取 '+input+' 行情</div>';
   const data=await fetchViaProxy(code);
@@ -525,6 +571,8 @@ function initKeyState() {
     keyState.mode = 'paid';
     document.getElementById('paidKeyInput').value = savedPaidKey;
     showKeyStatus('verified', '✅ 已验证 | 剩余 ' + (savedRemaining >= 10000 ? (savedRemaining/10000).toFixed(0) + '万' : savedRemaining) + ' tokens');
+    document.getElementById('keyInputRow').style.display = 'none';
+    document.getElementById('keyGuide').style.display = 'none';
   }
   
   if (savedOwnKey) {
@@ -566,6 +614,8 @@ async function verifyKey() {
       localStorage.setItem('stock_paid_key', key);
       localStorage.setItem('stock_paid_remaining', String(data.remaining));
       showKeyStatus('verified', '✅ 已验证 | 剩余 ' + (data.remaining >= 10000 ? (data.remaining/10000).toFixed(0) + '万' : data.remaining) + ' tokens');
+      document.getElementById('keyInputRow').style.display = 'none';
+      document.getElementById('keyGuide').style.display = 'none';
       showToast('Key验证成功！');
       updateKeyModeUI();
     } else {
@@ -750,7 +800,7 @@ function showNoKeyPrompt() {
 async function analyzeStock(){
   const input=document.getElementById('strategyInput').value.trim();
   if(!input){showToast('请输入股票代码或名称');return}
-  const code=resolveStockInput(input);
+  const code=await resolveStockInput(input);
   if(!code){showToast('无法识别，请重新输入');return}
   document.getElementById('strategyResult').innerHTML='<div class="loading">正在获取 '+input+' 行情数据</div>';
   
