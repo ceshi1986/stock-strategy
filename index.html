@@ -268,7 +268,8 @@ const STOCK_NAME_MAP = {
   '立讯精密':'sz002475','歌尔股份':'sz002241','蓝思科技':'sz300433',
   '中芯国际':'sh688981','北方华创':'sz002371','韦尔股份':'sh603501',
   '片仔癀':'sh600436','云南白药':'sz000538','同仁堂':'sh600085',
-  '汾酒':'sh600809','山西汾酒':'sh600809','洋河股份':'sz002304'
+  '汾酒':'sh600809','山西汾酒':'sh600809','洋河股份':'sz002304',
+  '兴业银锡':'sz000426','多氟多':'sz002407'
 };
 
 // 解析用户输入（支持代码或名称）
@@ -523,7 +524,7 @@ function initKeyState() {
     keyState.verified = true;
     keyState.mode = 'paid';
     document.getElementById('paidKeyInput').value = savedPaidKey;
-    showKeyStatus('verified', '✅ 已验证 | 剩余 ' + savedRemaining + ' 次');
+    showKeyStatus('verified', '✅ 已验证 | 剩余 ' + (savedRemaining >= 10000 ? (savedRemaining/10000).toFixed(0) + '万' : savedRemaining) + ' tokens');
   }
   
   if (savedOwnKey) {
@@ -564,7 +565,7 @@ async function verifyKey() {
       keyState.mode = 'paid';
       localStorage.setItem('stock_paid_key', key);
       localStorage.setItem('stock_paid_remaining', String(data.remaining));
-      showKeyStatus('verified', '✅ 已验证 | 剩余 ' + data.remaining + ' 次分析');
+      showKeyStatus('verified', '✅ 已验证 | 剩余 ' + (data.remaining >= 10000 ? (data.remaining/10000).toFixed(0) + '万' : data.remaining) + ' tokens');
       showToast('Key验证成功！');
       updateKeyModeUI();
     } else {
@@ -658,7 +659,7 @@ async function analyzeWithPaidKey(userPrompt) {
       if (typeof data.remaining === 'number') {
         keyState.remaining = data.remaining;
         localStorage.setItem('stock_paid_remaining', String(data.remaining));
-        showKeyStatus('verified', '✅ 已验证 | 剩余 ' + data.remaining + ' 次分析');
+        showKeyStatus('verified', '✅ 已验证 | 剩余 ' + (data.remaining >= 10000 ? (data.remaining/10000).toFixed(0) + '万' : data.remaining) + ' tokens');
       }
       return {content: data.content, source: 'paid'};
     } else {
