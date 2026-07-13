@@ -130,13 +130,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
 .pay-steps .step-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:rgba(59,130,246,.2);color:#60a5fa;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
 .pay-steps strong{color:#60a5fa}
 .pay-disclaimer{font-size:10px;color:#555;line-height:1.6;text-align:center;border-top:1px solid rgba(255,255,255,.05);padding-top:14px}
-.pk-pay-btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;background:linear-gradient(135deg,#4ade80,#22c55e);color:#000;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:16px;transition:all .2s;letter-spacing:1px}
-.pk-pay-btn:hover{transform:scale(1.02);box-shadow:0 4px 20px rgba(74,222,128,.4)}
-.pk-pay-btn:disabled{opacity:0.7;cursor:not-allowed;transform:none}
-.pk-key-display{background:#1a1a2e;border:2px solid #4ade80;border-radius:12px;padding:16px;margin:16px 0;text-align:center}
-.pk-key-value{font-family:'Courier New',monospace;font-size:16px;font-weight:700;color:#4ade80;letter-spacing:1px;user-select:all;word-break:break-all;padding:8px;background:rgba(74,222,128,0.1);border-radius:6px;margin:8px 0}
-.pk-copy-btn{display:block;margin:8px auto 0;background:linear-gradient(135deg,#4ade80,#22c55e);color:#000;border:none;border-radius:8px;padding:10px 24px;font-size:14px;font-weight:600;cursor:pointer}
-.pk-copy-btn:hover{box-shadow:0 4px 16px rgba(74,222,128,.3)}
 </style>
 </head>
 <body>
@@ -712,84 +705,27 @@ function showBuyTip() {
   showPayModal('策略分析');
 }
 
-const _PK=["META-1784000000000-RMNNGFDA","META-1784000001000-XASG2HT4","META-1784000002000-FZCVOIYJ","META-1784000003000-2GTSM2DT","META-1784000004000-6H1T1WEU","META-1784000005000-M9HRAVPC","META-1784000006000-VXC9BV8Q","META-1784000007000-0H0M45KU","META-1784000008000-CFVM87AJ","META-1784000009000-SM6HHLLH","META-1784000010000-083WFCBN","META-1784000011000-K0BZDA0T","META-1784000012000-KTHC3ISB","META-1784000013000-8HK0J5EX","META-1784000014000-LED98DC6","META-1784000015000-U7R15MQG","META-1784000016000-LESKD2RL","META-1784000017000-NU9CG0C0","META-1784000018000-R2L2L7UA","META-1784000019000-8J57CBM3","META-1784000020000-BUZLEXAU","META-1784000021000-3O0RUDK5","META-1784000022000-ZAISZ8TS","META-1784000023000-5MBK92S8","META-1784000024000-71GF2SJC","META-1784000025000-INIMO1ZX","META-1784000026000-7HRTHJP4","META-1784000027000-TCBWJR5D","META-1784000028000-U69JBK0K","META-1784000029000-SW36KLM3"];
 
-function _getNextKey() {
-  var used = JSON.parse(localStorage.getItem('_pk_used') || '[]');
-  for (var i = 0; i < _PK.length; i++) {
-    if (used.indexOf(i) === -1) {
-      used.push(i);
-      localStorage.setItem('_pk_used', JSON.stringify(used));
-      return _PK[i];
-    }
-  }
-  return null;
-}
 function showPayModal(productName) {
   var modal = document.getElementById('payModal');
   if (!modal) return;
   var card = modal.querySelector('.pay-card');
   card.innerHTML = '<button class="pay-close" onclick="closePayModal()">&times;</button>' +
-    '<div class="pay-title">微信支付 · 19.9元</div>' +
-    '<div class="pay-qr-wrap"><img src="qrcode_pay.jpg" alt="微信收款码" /></div>' +
+    '<div class="pay-title">扫码添加微信 · 购买Key</div>' +
+    '<div class="pay-qr-wrap"><img src="qrcode_pay.jpg" alt="微信二维码" /></div>' +
+    '<div style="text-align:center;margin-bottom:16px;font-size:13px;color:#8899aa">微信号：hui_297652 <span onclick="navigator.clipboard.writeText(\'hui_297652\');this.textContent=\'已复制✓\';setTimeout(()=>this.textContent=\'复制\',1500)" style="cursor:pointer;color:#4ade80;font-size:12px;margin-left:4px">复制</span></div>' +
     '<ol class="pay-steps">' +
-    '<li><span class="step-num">①</span><span>打开微信扫一扫，扫描上方二维码</span></li>' +
-    '<li><span class="step-num">②</span><span>支付 <strong>19.9 元</strong></span></li>' +
-    '<li><span class="step-num">③</span><span>点击下方「我已支付」按钮，立即获取Key</span></li>' +
+    '<li><span class="step-num">①</span><span>打开微信扫一扫，扫描二维码添加好友</span></li>' +
+    '<li><span class="step-num">②</span><span>微信转账 <strong>19.9 元</strong></span></li>' +
+    '<li><span class="step-num">③</span><span>获取专属Key，输入网站即可解锁</span></li>' +
     '</ol>' +
-    '<button class="pk-pay-btn" id="pkPayBtn" onclick="_handlePayClick()">✅ 我已支付 · 立即获取Key</button>' +
+    '<div style="text-align:center;font-size:20px;font-weight:700;color:#60a5fa;margin-bottom:16px">¥19.9 <span style="font-size:13px;font-weight:400;color:#8899aa">/ 单站</span></div>' +
     '<div class="pay-disclaimer">' +
     '本服务为AI数据分析工具，仅供学习研究参考<br>' +
-    '不构成任何投资建议、投注建议或其他专业建议<br>' +
+    '不构成任何投资建议、投注建议或其他专业决策建议<br>' +
     '付费即视为同意服务协议，Key激活后不支持退款' +
     '</div>';
   modal.style.display = 'flex';
-}
-function _handlePayClick() {
-  var btn = document.getElementById('pkPayBtn');
-  if (!btn || btn.disabled) return;
-  btn.disabled = true;
-  btn.textContent = '验证中...';
-  btn.style.opacity = '0.7';
-  setTimeout(function() {
-    var key = _getNextKey();
-    var card = document.getElementById('payModal').querySelector('.pay-card');
-    if (!key) {
-      card.innerHTML = '<button class="pay-close" onclick="closePayModal()">&times;</button>' +
-        '<div style="text-align:center;padding:30px 0;font-size:18px;color:#f87171">⚠️ 当前批次已售罄，请稍后再来</div>';
-      return;
-    }
-    card.innerHTML = '<button class="pay-close" onclick="closePayModal()">&times;</button>' +
-      '<div style="text-align:center;font-size:28px;margin-bottom:8px">🎉 支付成功</div>' +
-      '<div class="pk-key-display">' +
-      '<div style="font-size:13px;color:#aaa;margin-bottom:4px">您的专属Key</div>' +
-      '<div class="pk-key-value" id="pkKeyValue">' + key + '</div>' +
-      '</div>' +
-      '<button class="pk-copy-btn" onclick="_copyKey()">📋 复制Key</button>' +
-      '<div style="text-align:center;font-size:12px;color:#888;margin-top:12px">将上方Key粘贴到验证框即可解锁全部功能</div>' +
-      '<div class="pay-disclaimer" style="margin-top:16px">' +
-      '本服务为AI数据分析工具，仅供学习研究参考<br>' +
-      '不构成任何投资建议、投注建议或其他专业建议<br>' +
-      '付费即视为同意服务协议，Key激活后不支持退款' +
-      '</div>';
-  }, 2000);
-}
-function _copyKey() {
-  var el = document.getElementById('pkKeyValue');
-  if (!el) return;
-  var text = el.textContent;
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(text).then(function() { _showCopyOk(); });
-  } else {
-    var ta = document.createElement('textarea');
-    ta.value = text; document.body.appendChild(ta);
-    ta.select(); document.execCommand('copy');
-    document.body.removeChild(ta); _showCopyOk();
-  }
-}
-function _showCopyOk() {
-  var btn = document.querySelector('.pk-copy-btn');
-  if (btn) { btn.textContent = '✅ 已复制！'; setTimeout(function(){ btn.textContent = '📋 复制Key'; }, 2000); }
 }
 function closePayModal() {
   var modal = document.getElementById('payModal');
