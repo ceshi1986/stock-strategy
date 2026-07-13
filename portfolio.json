@@ -62,10 +62,10 @@
     },
     {
       "date": "2026-07-14",
-      "totalValue": 50000.0,
+      "totalValue": 49770.0,
       "cash": 34813.0,
-      "positionsValue": 15187.0,
-      "return": 0.0
+      "positionsValue": 14957.0,
+      "return": -0.46
     }
   ],
   "stats": {
