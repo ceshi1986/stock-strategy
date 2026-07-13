@@ -705,13 +705,15 @@ async function analyzeWithPaidKey(userPrompt) {
     });
     const data = await res.json();
     if (data.success) {
-      // Update remaining count
-      if (typeof data.remaining === 'number') {
-        keyState.remaining = data.remaining;
-        localStorage.setItem('stock_paid_remaining', String(data.remaining));
-        showKeyStatus('verified', '✅ 已验证 | 剩余 ' + (data.remaining >= 10000 ? (data.remaining/10000).toFixed(0) + '万' : data.remaining) + ' tokens');
+      // Update remaining count (兼容 analysis/token_remaining 字段名)
+      const remaining = data.remaining || data.token_remaining;
+      if (typeof remaining === 'number') {
+        keyState.remaining = remaining;
+        localStorage.setItem('stock_paid_remaining', String(remaining));
+        const el = document.getElementById('keyStatus');
+        if(el) el.innerHTML = '✅ 已验证 | 剩余 ' + (remaining >= 10000 ? (remaining/10000).toFixed(0) + '万' : remaining) + ' tokens';
       }
-      return {content: data.content, source: 'paid'};
+      return {content: data.content || data.analysis || data.result || data.answer || '', source: 'paid'};
     } else {
       throw new Error('API返回失败');
     }
@@ -758,6 +760,7 @@ async function analyzeWithOwnKey(apiKey, userPrompt) {
 // Render AI analysis result as markdown-like HTML
 function renderAIContent(content, source) {
   // Simple markdown-like rendering
+  if (!content) return '<div class="card"><div style="color:var(--text2);font-size:13px">AI分析结果暂无内容</div></div>';
   let html = content
     .replace(/\n/g, '\n')
     .replace(/### (.+)/g, '<h4 style="color:var(--accent2);margin:12px 0 6px;font-size:14px">$1</h4>')
@@ -945,13 +948,27 @@ async function analyzeStock(){
 }
 
 // Portfolio rendering
-function renderPortfolio(){
+async function renderPortfolio(){
   const p=PORTFOLIO;
   const cash=p.state.cash;
+  
+  // 获取所有持仓的实时行情
+  const priceMap={};
+  for(const pos of p.state.positions){
+    try{
+      const quote=await fetchViaProxy(pos.code);
+      if(quote&&quote.price) priceMap[pos.code]=quote.price;
+    }catch(e){console.log('获取行情失败:',pos.code,e);}
+  }
+  
   let posVal=0;
-  p.state.positions.forEach(pos=>{posVal+=pos.shares*pos.costPrice});
-  const total=p.meta.initialCapital;
-  const ret=((total-total)/total*100);
+  p.state.positions.forEach(pos=>{
+    const curPrice=priceMap[pos.code]||pos.costPrice;
+    posVal+=pos.shares*curPrice;
+  });
+  const total=cash+posVal;
+  const initial=p.meta.initialCapital;
+  const ret=((total-initial)/initial*100);
   
   document.getElementById('totalValue').textContent=fmt(total);
   document.getElementById('totalReturn').innerHTML=`<span class="${colorClass(ret)}">${sign(ret)}${fmt(ret)}%</span>`;
@@ -961,8 +978,11 @@ function renderPortfolio(){
   // Positions
   let posHtml='';
   p.state.positions.forEach(pos=>{
-    const pnl=0;
-    const pnlPct=0;
+    const curPrice=priceMap[pos.code]||pos.costPrice;
+    const marketVal=pos.shares*curPrice;
+    const costTotal=pos.shares*pos.costPrice;
+    const pnl=marketVal-costTotal;
+    const pnlPct=((curPrice-pos.costPrice)/pos.costPrice*100);
     posHtml+=`
     <div class="position-card" onclick="document.getElementById('strategyInput').value='${pos.code}';switchTab(1);analyzeStock()">
       <div class="position-top">
@@ -972,7 +992,9 @@ function renderPortfolio(){
       <div class="position-detail">
         <div><span>持仓</span><strong>${pos.shares}股</strong></div>
         <div><span>成本价</span><strong>¥${fmt(pos.costPrice)}</strong></div>
-        <div><span>市值</span><strong>¥${fmt(pos.shares*pos.costPrice)}</strong></div>
+        <div><span>现价</span><strong>¥${fmt(curPrice)}</strong></div>
+        <div><span>市值</span><strong>¥${fmt(marketVal)}</strong></div>
+        <div><span>盈亏</span><strong class="${colorClass(pnl)}">¥${fmt(pnl)}</strong></div>
       </div>
     </div>`;
   });
@@ -1019,9 +1041,9 @@ function renderPortfolio(){
   document.getElementById('snapshotBar').innerHTML=barHtml||'<div style="color:var(--text2);font-size:12px;width:100%;text-align:center">暂无数据</div>';
 }
 
-function refreshAll(){
+async function refreshAll(){
   showToast('数据已刷新');
-  renderPortfolio();
+  await renderPortfolio();
 }
 
 // Init
