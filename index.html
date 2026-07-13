@@ -81,8 +81,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
 .advice-buy{background:rgba(231,76,60,.1);border-left:3px solid var(--up)}
 .advice-sell{background:rgba(39,174,96,.1);border-left:3px solid var(--down)}
 .advice-hold{background:rgba(59,130,246,.1);border-left:3px solid var(--accent2)}
-.snapshot-bar{display:flex;gap:4px;height:40px;align-items:flex-end;margin-top:8px}
-.snapshot-bar div{flex:1;background:var(--accent);border-radius:2px 2px 0 0;min-height:4px;transition:.3s}
+.snapshot-bar{width:100%;min-height:140px;margin-top:8px}
+.snapshot-bar svg{width:100%;height:140px;display:block}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);padding:10px 20px;border-radius:8px;font-size:13px;z-index:999;opacity:0;transition:.3s;pointer-events:none}
 .toast.show{opacity:1}
 .refresh-btn{position:fixed;bottom:20px;right:20px;width:48px;height:48px;border-radius:50%;background:var(--accent);border:none;color:#fff;font-size:20px;cursor:pointer;box-shadow:0 4px 12px rgba(59,130,246,.4);z-index:100;display:flex;align-items:center;justify-content:center}
@@ -217,7 +217,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
 <div class="card">
 <div class="card-title">收益走势</div>
 <div class="snapshot-bar" id="snapshotBar"></div>
-<p style="font-size:11px;color:var(--text2);margin-top:8px;text-align:center">每日总资产(归一化)</p>
+<p style="font-size:11px;color:var(--text2);margin-top:4px;text-align:center" id="chartHint">每日总资产</p>
 </div>
 <div class="card">
 <div class="card-title">交易日志</div>
@@ -246,6 +246,34 @@ const PORTFOLIO = {
   dailySnapshots:[{date:"2026-07-10",totalValue:50000,cash:34813,positionsValue:15187,return:0}],
   stats:{totalTrades:0,winTrades:0,lossTrades:0,winRate:0,maxDrawdown:0,currentStreak:0}
 };
+
+// 从portfolio.json加载数据，失败用硬编码回退
+async function loadPortfolioData(){
+  try{
+    const r=await fetch('portfolio.json?t='+Date.now());
+    if(r.ok){Object.assign(PORTFOLIO,await r.json());}
+  }catch(e){
+    const s=localStorage.getItem('portfolio_data');
+    if(s){try{Object.assign(PORTFOLIO,JSON.parse(s));}catch(e2){}}
+  }
+}
+
+// 保存投资组合到localStorage
+function savePortfolio(){
+  localStorage.setItem('portfolio_data',JSON.stringify(PORTFOLIO));
+  // 记录每日快照
+  const today=new Date().toISOString().slice(0,10);
+  const snaps=PORTFOLIO.dailySnapshots;
+  if(!snaps.find(s=>s.date===today)&&snaps.length>=1){
+    const cash=PORTFOLIO.state.cash;
+    let pv=0;
+    PORTFOLIO.state.positions.forEach(p=>pv+=p.shares*p.costPrice);
+    const tv=cash+pv;
+    const init=PORTFOLIO.meta.initialCapital;
+    snaps.push({date:today,totalValue:tv,cash:cash,positionsValue:pv,return:+((tv-init)/init*100).toFixed(2)});
+    savePortfolio();
+  }
+}
 
 // 股票名称→代码映射表
 const STOCK_NAME_MAP = {
@@ -1032,15 +1060,76 @@ async function renderPortfolio(){
     <div class="data-item"><div class="data-label">亏损次数</div><div class="data-value down">${s.lossTrades}</div></div>
   `;
   
-  // Snapshot bar
-  const snaps=p.dailySnapshots;
-  const maxVal=Math.max(...snaps.map(s=>s.totalValue));
-  let barHtml='';
-  snaps.forEach(s=>{
-    const h=Math.max(4,Math.round(s.totalValue/maxVal*40));
-    barHtml+=`<div style="height:${h}px" title="${s.date}: ¥${fmt(s.totalValue)}"></div>`;
-  });
-  document.getElementById('snapshotBar').innerHTML=barHtml||'<div style="color:var(--text2);font-size:12px;width:100%;text-align:center">暂无数据</div>';
+  // 收益走势 SVG折线图
+  const snaps=p.dailySnapshots.slice().sort((a,b)=>a.date.localeCompare(b.date));
+  const W=360,H=130,PAD=35;
+  if(snaps.length<1){
+    document.getElementById('snapshotBar').innerHTML='<div style="color:var(--text2);font-size:12px;text-align:center;padding:40px 0">暂无走势数据</div>';
+  }else if(snaps.length===1){
+    const s=snaps[0],init=p.meta.initialCapital;
+    const ret=((s.totalValue-init)/init*100).toFixed(2);
+    const clr=ret>=0?'var(--up)':'var(--down)';
+    document.getElementById('snapshotBar').innerHTML=`<div style="text-align:center;padding:24px 0">
+      <div style="font-size:24px;font-weight:700;color:${clr}">¥${fmt(s.totalValue)}</div>
+      <div style="font-size:13px;color:${clr};margin-top:4px">${ret>=0?'+':''}${ret}% (${s.date}起)</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:12px">数据积累2天后显示走势图</div>
+    </div>`;
+  }else{
+    const vals=snaps.map(s=>s.totalValue);
+    const mn=Math.min(...vals),mx=Math.max(...vals);
+    const rng=mx-mn||1;
+    const step=(W-2*PAD)/(snaps.length-1);
+    const pts=snaps.map((s,i)=>{
+      const x=PAD+i*step;
+      const y=12+(mx-s.totalValue)/rng*(H-28);
+      return{x,y,s};
+    });
+    let svg=`<svg viewBox="0 0 ${W} ${H}">`;
+    svg+=`<defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">`;
+    svg+=`<stop offset="0%" stop-color="#3b82f6" stop-opacity="0.3"/>`;
+    svg+=`<stop offset="100%" stop-color="#3b82f6" stop-opacity="0.02"/>`;
+    svg+=`</linearGradient></defs>`;
+    // 水平参考线
+    for(let i=0;i<=3;i++){
+      const y=12+i*(H-28)/3;
+      const val=mx-(mx-mn)*i/3;
+      svg+=`<line x1="${PAD}" y1="${y}" x2="${W-PAD}" y2="${y}" stroke="rgba(148,163,184,0.15)" stroke-dasharray="2"/>`;
+      svg+=`<text x="${PAD-4}" y="${y+3}" text-anchor="end" font-size="7" fill="#64748b">¥${Math.round(val)}</text>`;
+    }
+    // 填充区
+    let areaPath=`M ${pts[0].x} ${H-16} `;
+    pts.forEach(pt=>areaPath+=`L ${pt.x} ${pt.y} `);
+    areaPath+=`L ${pts[pts.length-1].x} ${H-16} Z`;
+    svg+=`<path d="${areaPath}" fill="url(#sg)"/>`;
+    // 折线
+    let linePath=`M ${pts[0].x} ${pts[0].y}`;
+    for(let i=1;i<pts.length;i++) linePath+=` L ${pts[i].x} ${pts[i].y}`;
+    const first=pts[0],last=pts[pts.length-1];
+    const trendUp=last.s.totalValue>=first.s.totalValue;
+    svg+=`<path d="${linePath}" fill="none" stroke="${trendUp?'#e74c3c':'#27ae60'}" stroke-width="1.8" stroke-linejoin="round"/>`;
+    // 数据点
+    pts.forEach((pt,i)=>{
+      svg+=`<circle cx="${pt.x}" cy="${pt.y}" r="3" fill="${trendUp?'#e74c3c':'#27ae60'}" stroke="#1e293b" stroke-width="1"><title>${pt.s.date}: ¥${fmt(pt.s.totalValue)}</title></circle>`;
+    });
+    // X轴日期标签
+    const labelIdx=snaps.length<=5?pts.map((_,i)=>i):[0,Math.floor(pts.length/2),pts.length-1];
+    labelIdx.forEach(i=>{
+      svg+=`<text x="${pts[i].x}" y="${H-4}" text-anchor="middle" font-size="7" fill="#64748b">${snaps[i].date.slice(5)}</text>`;
+    });
+    svg+=`</svg>`;
+    document.getElementById('snapshotBar').innerHTML=svg;
+  }
+  // 更新图表提示
+  const hint=document.getElementById('chartHint');
+  if(hint){
+    if(snaps.length>=2){
+      const first=snaps[0],last=snaps[snaps.length-1];
+      const totalRet=((last.totalValue-first.totalValue)/first.totalValue*100).toFixed(2);
+      hint.textContent=`${snaps.length}天 | 累计${totalRet>=0?'+':''}${totalRet}%`;
+    }else{
+      hint.textContent='每日总资产';
+    }
+  }
 }
 
 async function refreshAll(){
@@ -1049,8 +1138,12 @@ async function refreshAll(){
 }
 
 // Init
-renderPortfolio();
-initKeyState();
+(async()=>{
+  await loadPortfolioData();
+  savePortfolio();
+  renderPortfolio();
+  initKeyState();
+})();
 </script>
 </body>
 </html>

@@ -1,0 +1,15 @@
+{
+  "meta":{"initialCapital":50000,"startDate":"2026-07-10","strategyName":"趋势追踪v2.0"},
+  "state":{"cash":34813.0,"positions":[
+    {"code":"sz000858","name":"五粮液","shares":100,"costPrice":73.69,"buyDate":"2026-07-10","sector":"消费"},
+    {"code":"sz000568","name":"泸州老窖","shares":100,"costPrice":78.18,"buyDate":"2026-07-10","sector":"消费"}
+  ],"lastUpdate":"2026-07-10"},
+  "trades":[
+    {"date":"2026-07-10","time":"16:51:20","code":"sz000858","name":"五粮液","action":"buy","price":73.69,"shares":100,"amount":7369,"pnl":0,"reason":"技术买入: 买入信号4.5个，卖出信号0个；强势上涨(+3.94%)；大振幅收阳(振幅5.11%)；大阳线(实体3.64%)；放量上涨(资金流入)；价格位于日内高位(多头发力)"},
+    {"date":"2026-07-10","time":"16:51:20","code":"sz000568","name":"泸州老窖","action":"buy","price":78.18,"shares":100,"amount":7818,"pnl":0,"reason":"技术买入: 买入信号4.5个，卖出信号0个；强势上涨(+4.37%)；大振幅收阳(振幅5.57%)；大阳线(实体4.25%)；放量上涨(资金流入)；价格位于日内高位(多头发力)"}
+  ],
+  "dailySnapshots":[
+    {"date":"2026-07-10","totalValue":50000,"cash":34813,"positionsValue":15187,"return":0}
+  ],
+  "stats":{"totalTrades":2,"winTrades":0,"lossTrades":0,"winRate":0,"maxDrawdown":0,"currentStreak":0}
+}
