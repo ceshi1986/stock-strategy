@@ -62,10 +62,10 @@
     },
     {
       "date": "2026-07-14",
-      "totalValue": 49770.0,
+      "totalValue": 49918.0,
       "cash": 34813.0,
-      "positionsValue": 14957.0,
-      "return": -0.46
+      "positionsValue": 15105.0,
+      "return": -0.16
     }
   ],
   "stats": {
@@ -73,7 +73,7 @@
     "winTrades": 0,
     "lossTrades": 0,
     "winRate": 0.0,
-    "maxDrawdown": 0,
+    "maxDrawdown": -0.16,
     "currentStreak": 0
   }
 }
