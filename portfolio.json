@@ -83,13 +83,13 @@
   "dailySnapshots": [
     {
       "date": "2026-07-15",
-      "totalValue": 45677.0,
+      "totalValue": 45622.0,
       "cash": 29360.9,
-      "positionsValue": 9231.0,
+      "positionsValue": 9176.0,
       "fundValue": 7085.1,
-      "return": -8.65,
+      "return": -8.76,
       "marketStatus": "down",
-      "positionRatio": 35.7
+      "positionRatio": 35.6
     }
   ],
   "stats": {
@@ -97,7 +97,7 @@
     "winTrades": 0,
     "lossTrades": 4,
     "winRate": 0.0,
-    "maxDrawdown": -8.65,
+    "maxDrawdown": -8.76,
     "currentStreak": 0
   }
 }
