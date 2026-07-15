@@ -5,16 +5,36 @@
     "strategyName": "投资人完整策略v3.0"
   },
   "state": {
-    "cash": 29393.9,
+    "cash": 5005.9,
     "positions": [
       {
-        "code": "sz002594",
-        "name": "比亚迪",
+        "code": "sh600183",
+        "name": "生益科技",
         "shares": 100,
-        "costPrice": 92.24,
-        "highestPrice": 92.24,
-        "buyDate": "2026-07-15",
-        "sector": "新能源车",
+        "costPrice": 156.6,
+        "highestPrice": 156.6,
+        "buyDate": "2026-07-10",
+        "sector": "PCB覆铜板",
+        "longTermBullish": true
+      },
+      {
+        "code": "sh600487",
+        "name": "亨通光电",
+        "shares": 200,
+        "costPrice": 75.74,
+        "highestPrice": 75.74,
+        "buyDate": "2026-07-10",
+        "sector": "光纤光缆",
+        "longTermBullish": true
+      },
+      {
+        "code": "sz002407",
+        "name": "多氟多",
+        "shares": 100,
+        "costPrice": 71.01,
+        "highestPrice": 71.01,
+        "buyDate": "2026-07-10",
+        "sector": "氟化工",
         "longTermBullish": true
       }
     ],
@@ -24,118 +44,19 @@
         "name": "AI智能基金",
         "shares": 3300,
         "costNav": 2.147,
-        "buyDate": "2026-07-10",
-        "currentNav": 2.147
+        "buyDate": "2026-07-10"
       }
     ],
     "lastUpdate": "2026-07-15"
   },
-  "trades": [
-    {
-      "date": "2026-07-10",
-      "time": "16:51:20",
-      "code": "sz000858",
-      "name": "五粮液",
-      "action": "buy",
-      "price": 73.69,
-      "shares": 100,
-      "amount": 7369,
-      "pnl": 0,
-      "reason": "技术买入: 买入信号4.5个，卖出信号0个；强势上涨(+3.94%)；大振幅收阳(振幅5.11%)；大阳线(实体3.64%)；放量上涨(资金流入)；价格位于日内高位(多头发力)"
-    },
-    {
-      "date": "2026-07-10",
-      "time": "16:51:20",
-      "code": "sz000568",
-      "name": "泸州老窖",
-      "action": "buy",
-      "price": 78.18,
-      "shares": 100,
-      "amount": 7818,
-      "pnl": 0,
-      "reason": "技术买入: 买入信号4.5个，卖出信号0个；强势上涨(+4.37%)；大振幅收阳(振幅5.57%)；大阳线(实体4.25%)；放量上涨(资金流入)；价格位于日内高位(多头发力)"
-    },
-    {
-      "date": "2026-07-15",
-      "time": "13:42:08",
-      "code": "sh600183",
-      "name": "生益科技",
-      "action": "sell",
-      "price": 156.18,
-      "shares": 100,
-      "amount": 15618.0,
-      "pnl": -42.0,
-      "reason": "跌破20日线：现价156.18<MA20=163.86，MA20向下"
-    },
-    {
-      "date": "2026-07-15",
-      "time": "13:42:08",
-      "code": "sh600487",
-      "name": "亨通光电",
-      "action": "sell",
-      "price": 72.7,
-      "shares": 200,
-      "amount": 14540.0,
-      "pnl": -608.0,
-      "reason": "跌破20日线：现价72.70<MA20=96.52，MA20向下"
-    },
-    {
-      "date": "2026-07-15",
-      "time": "13:42:08",
-      "code": "sz002407",
-      "name": "多氟多",
-      "action": "sell",
-      "price": 34.54,
-      "shares": 100,
-      "amount": 3454.0,
-      "pnl": -3647.0,
-      "reason": "趋势股止损：亏-51.4%，保留30%"
-    },
-    {
-      "date": "2026-07-15",
-      "time": "13:42:08",
-      "code": "sz002594",
-      "name": "比亚迪",
-      "action": "buy",
-      "price": 92.24,
-      "shares": 100,
-      "amount": 9224.0,
-      "pnl": 0,
-      "reason": "资金轮动：释放资金33612.00元→最强标的"
-    }
-  ],
-  "dailySnapshots": [
-    {
-      "date": "2026-07-10",
-      "totalValue": 50000,
-      "cash": 34813,
-      "positionsValue": 15187,
-      "return": 0
-    },
-    {
-      "date": "2026-07-14",
-      "totalValue": 49918.0,
-      "cash": 34813.0,
-      "positionsValue": 15105.0,
-      "return": -0.16
-    },
-    {
-      "date": "2026-07-15",
-      "totalValue": 45703.0,
-      "cash": 29393.9,
-      "positionsValue": 9224.0,
-      "fundValue": 7085.1,
-      "return": -8.59,
-      "marketStatus": "down",
-      "positionRatio": 35.7
-    }
-  ],
+  "trades": [],
+  "dailySnapshots": [],
   "stats": {
-    "totalTrades": 6,
+    "totalTrades": 0,
     "winTrades": 0,
-    "lossTrades": 6,
+    "lossTrades": 0,
     "winRate": 0.0,
-    "maxDrawdown": -8.59,
+    "maxDrawdown": 0,
     "currentStreak": 0
   }
 }
