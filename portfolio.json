@@ -2,29 +2,52 @@
   "meta": {
     "initialCapital": 50000,
     "startDate": "2026-07-10",
-    "strategyName": "趋势追踪v2.0"
+    "strategyName": "投资人完整策略v3.0"
   },
   "state": {
-    "cash": 34813.0,
+    "cash": 5005.9,
     "positions": [
       {
-        "code": "sz000858",
-        "name": "五粮液",
+        "code": "sh600183",
+        "name": "生益科技",
         "shares": 100,
-        "costPrice": 73.69,
+        "costPrice": 156.6,
+        "highestPrice": 156.6,
         "buyDate": "2026-07-10",
-        "sector": "消费"
+        "sector": "PCB覆铜板",
+        "longTermBullish": true
       },
       {
-        "code": "sz000568",
-        "name": "泸州老窖",
-        "shares": 100,
-        "costPrice": 78.18,
+        "code": "sh600487",
+        "name": "亨通光电",
+        "shares": 200,
+        "costPrice": 75.74,
+        "highestPrice": 75.74,
         "buyDate": "2026-07-10",
-        "sector": "消费"
+        "sector": "光纤光缆",
+        "longTermBullish": true
+      },
+      {
+        "code": "sz002407",
+        "name": "多氟多",
+        "shares": 100,
+        "costPrice": 71.01,
+        "highestPrice": 71.01,
+        "buyDate": "2026-07-10",
+        "sector": "氟化工",
+        "longTermBullish": true
       }
     ],
-    "lastUpdate": "2026-07-14"
+    "funds": [
+      {
+        "code": "FUND_AI",
+        "name": "AI智能基金",
+        "shares": 3300,
+        "costNav": 2.147,
+        "buyDate": "2026-07-10"
+      }
+    ],
+    "lastUpdate": "2026-07-15"
   },
   "trades": [
     {
