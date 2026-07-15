@@ -1,103 +1,24 @@
 {
   "meta": {
     "initialCapital": 50000,
-    "startDate": "2026-07-10",
-    "strategyName": "投资人完整策略v3.0"
+    "startDate": "2026-07-16",
+    "strategyName": "投资人完整策略v3.0",
+    "note": "独立虚拟盘，与实盘完全隔离，纯按策略规则自动选股交易"
   },
   "state": {
-    "cash": 29360.9,
-    "positions": [
-      {
-        "code": "sz002594",
-        "name": "比亚迪",
-        "shares": 100,
-        "costPrice": 92.31,
-        "highestPrice": 92.31,
-        "buyDate": "2026-07-15",
-        "sector": "新能源车",
-        "longTermBullish": true
-      }
-    ],
-    "funds": [
-      {
-        "code": "FUND_AI",
-        "name": "AI智能基金",
-        "shares": 3300,
-        "costNav": 2.147,
-        "buyDate": "2026-07-10",
-        "currentNav": 2.147
-      }
-    ],
-    "lastUpdate": "2026-07-15"
+    "cash": 50000.0,
+    "positions": [],
+    "funds": [],
+    "lastUpdate": "2026-07-16"
   },
-  "trades": [
-    {
-      "date": "2026-07-15",
-      "time": "13:44:41",
-      "code": "sh600183",
-      "name": "生益科技",
-      "action": "sell",
-      "price": 155.84,
-      "shares": 100,
-      "amount": 15584.0,
-      "pnl": -76.0,
-      "reason": "跌破20日线：现价155.84<MA20=163.84，MA20向下"
-    },
-    {
-      "date": "2026-07-15",
-      "time": "13:44:41",
-      "code": "sh600487",
-      "name": "亨通光电",
-      "action": "sell",
-      "price": 72.71,
-      "shares": 200,
-      "amount": 14542.0,
-      "pnl": -606.0,
-      "reason": "跌破20日线：现价72.71<MA20=96.52，MA20向下"
-    },
-    {
-      "date": "2026-07-15",
-      "time": "13:44:41",
-      "code": "sz002407",
-      "name": "多氟多",
-      "action": "sell",
-      "price": 34.6,
-      "shares": 100,
-      "amount": 3460.0,
-      "pnl": -3641.0,
-      "reason": "跌破20日线：现价34.60<MA20=43.62，MA20向下"
-    },
-    {
-      "date": "2026-07-15",
-      "time": "13:44:41",
-      "code": "sz002594",
-      "name": "比亚迪",
-      "action": "buy",
-      "price": 92.31,
-      "shares": 100,
-      "amount": 9231.0,
-      "pnl": 0,
-      "reason": "资金轮动：释放资金33586.00元→最强标的"
-    }
-  ],
-  "dailySnapshots": [
-    {
-      "date": "2026-07-15",
-      "totalValue": 45622.0,
-      "cash": 29360.9,
-      "positionsValue": 9176.0,
-      "fundValue": 7085.1,
-      "return": -8.76,
-      "marketStatus": "down",
-      "positionRatio": 35.6
-    }
-  ],
+  "trades": [],
+  "dailySnapshots": [],
   "stats": {
-    "totalTrades": 4,
+    "totalTrades": 0,
     "winTrades": 0,
-    "lossTrades": 4,
+    "lossTrades": 0,
     "winRate": 0.0,
-    "maxDrawdown": -8.76,
+    "maxDrawdown": 0.0,
     "currentStreak": 0
   }
 }
