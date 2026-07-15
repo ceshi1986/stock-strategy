@@ -6,15 +6,21 @@
     "note": "独立虚拟盘，与实盘完全隔离，纯按策略规则自动选股交易"
   },
   "state": {
-    "cash": 50000.0,
-    "positions": [],
+    "cash": 34813.0,
+    "positions": [
+      {"code": "sz000858", "name": "五粮液", "shares": 100, "costPrice": 73.69, "highestPrice": 73.69, "buyDate": "2026-07-10", "sector": "白酒", "longTermBullish": false},
+      {"code": "sz000568", "name": "泸州老窖", "shares": 100, "costPrice": 78.18, "highestPrice": 78.18, "buyDate": "2026-07-10", "sector": "白酒", "longTermBullish": false}
+    ],
     "funds": [],
     "lastUpdate": "2026-07-16"
   },
-  "trades": [],
+  "trades": [
+    {"date": "2026-07-10", "time": "16:51:20", "code": "sz000858", "name": "五粮液", "action": "buy", "price": 73.69, "shares": 100, "amount": 7369, "pnl": 0, "reason": "技术买入"},
+    {"date": "2026-07-10", "time": "16:51:20", "code": "sz000568", "name": "泸州老窖", "action": "buy", "price": 78.18, "shares": 100, "amount": 7818, "pnl": 0, "reason": "技术买入"}
+  ],
   "dailySnapshots": [],
   "stats": {
-    "totalTrades": 0,
+    "totalTrades": 2,
     "winTrades": 0,
     "lossTrades": 0,
     "winRate": 0.0,
