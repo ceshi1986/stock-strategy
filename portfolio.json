@@ -2,28 +2,127 @@
   "meta": {
     "initialCapital": 50000,
     "startDate": "2026-07-16",
-    "strategyName": "投资人完整策略v3.0",
+    "strategyName": "投资人完整策略v4.0",
     "note": "独立虚拟盘，与实盘完全隔离，纯按策略规则自动选股交易"
   },
   "state": {
-    "cash": 34813.0,
+    "cash": 27212.0,
     "positions": [
-      {"code": "sz000858", "name": "五粮液", "shares": 100, "costPrice": 73.69, "highestPrice": 73.69, "buyDate": "2026-07-10", "sector": "白酒", "longTermBullish": false},
-      {"code": "sz000568", "name": "泸州老窖", "shares": 100, "costPrice": 78.18, "highestPrice": 78.18, "buyDate": "2026-07-10", "sector": "白酒", "longTermBullish": false}
+      {
+        "code": "sz002460",
+        "name": "赣锋锂业",
+        "shares": 300,
+        "costPrice": 49.97,
+        "highestPrice": 49.97,
+        "buyDate": "2026-07-16",
+        "sector": "有色金属",
+        "longTermBullish": true
+      },
+      {
+        "code": "sz000568",
+        "name": "泸州老窖",
+        "shares": 100,
+        "costPrice": 84.18,
+        "highestPrice": 84.18,
+        "buyDate": "2026-07-16",
+        "sector": "白酒",
+        "longTermBullish": true
+      }
     ],
     "funds": [],
     "lastUpdate": "2026-07-16"
   },
   "trades": [
-    {"date": "2026-07-10", "time": "16:51:20", "code": "sz000858", "name": "五粮液", "action": "buy", "price": 73.69, "shares": 100, "amount": 7369, "pnl": 0, "reason": "技术买入"},
-    {"date": "2026-07-10", "time": "16:51:20", "code": "sz000568", "name": "泸州老窖", "action": "buy", "price": 78.18, "shares": 100, "amount": 7818, "pnl": 0, "reason": "技术买入"}
+    {
+      "date": "2026-07-10",
+      "time": "16:51:20",
+      "code": "sz000858",
+      "name": "五粮液",
+      "action": "buy",
+      "price": 73.69,
+      "shares": 100,
+      "amount": 7369,
+      "pnl": 0,
+      "reason": "技术买入"
+    },
+    {
+      "date": "2026-07-10",
+      "time": "16:51:20",
+      "code": "sz000568",
+      "name": "泸州老窖",
+      "action": "buy",
+      "price": 78.18,
+      "shares": 100,
+      "amount": 7818,
+      "pnl": 0,
+      "reason": "技术买入"
+    },
+    {
+      "date": "2026-07-16",
+      "time": "15:41:46",
+      "code": "sz000858",
+      "name": "五粮液",
+      "action": "sell",
+      "price": 73.9,
+      "shares": 100,
+      "amount": 7390.0,
+      "pnl": 21.0,
+      "reason": "跌破60日线(终极止损)：现价73.90<MA60=80.63，MA60向下"
+    },
+    {
+      "date": "2026-07-16",
+      "time": "15:41:46",
+      "code": "sz000568",
+      "name": "泸州老窖",
+      "action": "sell",
+      "price": 84.18,
+      "shares": 100,
+      "amount": 8418.0,
+      "pnl": 600.0,
+      "reason": "跌破60日线(终极止损)：现价84.18<MA60=87.68，MA60向下"
+    },
+    {
+      "date": "2026-07-16",
+      "time": "15:41:46",
+      "code": "sz002460",
+      "name": "赣锋锂业",
+      "action": "buy",
+      "price": 49.97,
+      "shares": 300,
+      "amount": 14991.0,
+      "pnl": 0,
+      "reason": "低位止跌：跳跌-1.75%，距20日高-30.5%，近5日4天跌; 恐慌洗盘：低开-1.75%，放量1.3倍"
+    },
+    {
+      "date": "2026-07-16",
+      "time": "15:41:46",
+      "code": "sz000568",
+      "name": "泸州老窖",
+      "action": "buy",
+      "price": 84.18,
+      "shares": 100,
+      "amount": 8418.0,
+      "pnl": 0,
+      "reason": "资金不闲置：有可用现金，买入最强标的"
+    }
   ],
-  "dailySnapshots": [],
+  "dailySnapshots": [
+    {
+      "date": "2026-07-16",
+      "totalValue": 50621.0,
+      "cash": 27212.0,
+      "positionsValue": 23409.0,
+      "fundValue": 0.0,
+      "return": 1.24,
+      "marketStatus": "down",
+      "positionRatio": 46.2
+    }
+  ],
   "stats": {
-    "totalTrades": 2,
-    "winTrades": 0,
-    "lossTrades": 0,
-    "winRate": 0.0,
+    "totalTrades": 6,
+    "winTrades": 2,
+    "lossTrades": 4,
+    "winRate": 33.33,
     "maxDrawdown": 0.0,
     "currentStreak": 0
   }
