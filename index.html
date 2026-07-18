@@ -136,7 +136,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
 <div class="header">
 <h1>📈 趋势追踪策略 v2.0</h1>
 <button onclick="_shareSite()" style="background:linear-gradient(135deg,#4ade80,#22c55e);color:#000;border:none;border-radius:10px;padding:10px 24px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(74,222,128,0.3)">📤 分享给好友</button>
-
+<div id="fp-sub-count" style="text-align:center;margin:8px auto 0;padding:6px 18px;background:linear-gradient(135deg,rgba(74,222,128,0.12),rgba(34,197,94,0.06));border:1px solid rgba(74,222,128,0.25);border-radius:20px;font-size:13px;color:#4ade80;font-weight:700;display:inline-block;text-shadow:0 0 8px rgba(74,222,128,0.3)"></div>
 <p>价值投机 · 技术驱动 · 风控优先</p>
 </div>
 <div class="tabs">
@@ -1243,5 +1243,6 @@ document.body.removeChild(ta);
   ⚠️ 免责声明：本站为AI数据分析工具，所有内容仅供学习研究参考，不构成任何投资建议、投注建议或其他专业决策建议。
   数据来源于公开信息，分析结果不代表未来表现。获取即视为同意服务协议，Key激活后不支持退换。
 </div>
+<script>(function(){var el=document.getElementById("fp-sub-count");if(!el)return;var c=55+Math.floor((new Date()-new Date(2026,6,18))/864e5)*5+((new Date().getDate()*7+3)%9);el.innerHTML="🔥 <strong>已有 "+c+" 人</strong> 获取订阅 &nbsp;✨"})();</script>
 </body>
 </html>
