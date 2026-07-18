@@ -135,6 +135,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
 <body>
 <div class="header">
 <h1>📈 趋势追踪策略 v2.0</h1>
+<button onclick="_shareSite()" style="background:linear-gradient(135deg,#4ade80,#22c55e);color:#000;border:none;border-radius:10px;padding:10px 24px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(74,222,128,0.3)">📤 分享给好友</button>
+
 <p>价值投机 · 技术驱动 · 风控优先</p>
 </div>
 <div class="tabs">
@@ -172,14 +174,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hira
 <div class="key-section" id="keySection">
   <div class="key-section-title">🔑 AI深度分析 Key</div>
   <div class="key-input-row" id="keyInputRow">
-    <input id="paidKeyInput" placeholder="输入购买的Key" onkeydown="if(event.key==='Enter')verifyKey()">
+    <input id="paidKeyInput" placeholder="输入获取的Key" onkeydown="if(event.key==='Enter')verifyKey()">
     <button class="btn btn-sm" onclick="verifyKey()">验证</button>
   </div>
   <div class="key-status" id="keyStatus"></div>
   <div class="key-guide" id="keyGuide">
-    💡 推荐：购买专属Key（<strong>19.9元/50次分析</strong>），无需注册配置，开箱即用
+    💡 推荐：获取专属Key，无需注册配置，开箱即用
     <div class="key-guide-actions">
-      <button class="btn-buy" onclick="showBuyTip()">🛒 联系购买</button>
+      <button class="btn-buy" onclick="showBuyTip()">🛒 联系获取</button>
       <button class="btn-own-key" id="toggleOwnKeyBtn" onclick="toggleOwnKey()">已有API Key？用自己的 →</button>
     </div>
   </div>
@@ -664,7 +666,7 @@ async function verifyKey() {
       showToast('Key验证成功！');
       updateKeyModeUI();
     } else {
-      showKeyStatus('error', '❌ Key无效或已用尽，请检查或重新购买');
+      showKeyStatus('error', '❌ Key无效或已用尽，请检查或重新获取');
       keyState.verified = false;
       keyState.mode = 'none';
     }
@@ -711,19 +713,18 @@ function showPayModal(productName) {
   if (!modal) return;
   var card = modal.querySelector('.pay-card');
   card.innerHTML = '<button class="pay-close" onclick="closePayModal()">&times;</button>' +
-    '<div class="pay-title">扫码添加微信 · 购买Key</div>' +
+    '<div class="pay-title">扫码添加微信 · 获取Key</div>' +
     '<div class="pay-qr-wrap"><img src="qrcode_pay.jpg" alt="微信二维码" /></div>' +
     '<div style="text-align:center;margin-bottom:16px;font-size:13px;color:#8899aa">微信号：hui_297652 <span onclick="navigator.clipboard.writeText(\'hui_297652\');this.textContent=\'已复制✓\';setTimeout(()=>this.textContent=\'复制\',1500)" style="cursor:pointer;color:#4ade80;font-size:12px;margin-left:4px">复制</span></div>' +
     '<ol class="pay-steps">' +
     '<li><span class="step-num">①</span><span>打开微信扫一扫，扫描二维码添加好友</span></li>' +
-    '<li><span class="step-num">②</span><span>微信转账 <strong>19.9 元</strong></span></li>' +
+    '<li><span class="step-num">②</span><span>说明需求，商定获取方案</span></li>' +
     '<li><span class="step-num">③</span><span>获取专属Key，输入网站即可解锁</span></li>' +
     '</ol>' +
-    '<div style="text-align:center;font-size:20px;font-weight:700;color:#60a5fa;margin-bottom:16px">¥19.9 <span style="font-size:13px;font-weight:400;color:#8899aa">/ 单站</span></div>' +
     '<div class="pay-disclaimer">' +
     '本服务为AI数据分析工具，仅供学习研究参考<br>' +
     '不构成任何投资建议、投注建议或其他专业决策建议<br>' +
-    '付费即视为同意服务协议，Key激活后不支持退款' +
+    '获取即视为同意服务协议，Key激活后不支持退换' +
     '</div>';
   modal.style.display = 'flex';
 }
@@ -864,7 +865,7 @@ function showNoKeyPrompt() {
       请选择以下方式解锁AI深度分析功能：
     </div>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <button class="btn-buy" style="padding:10px 20px;font-size:14px" onclick="showBuyTip()">🛒 购买Key · 19.9元/50次</button>
+      <button class="btn-buy" style="padding:10px 20px;font-size:14px" onclick="showBuyTip()">🛒 获取Key</button>
       <button class="btn-own-key" style="padding:10px 20px;font-size:14px" onclick="switchTab(1);document.getElementById('ownKeyPanel').classList.add('show');document.getElementById('toggleOwnKeyBtn').textContent='收起 ↑'">🔧 我有DeepSeek Key</button>
     </div>
   </div>`;
@@ -1186,6 +1187,51 @@ async function refreshAll(){
   renderPortfolio();
   initKeyState();
 })();
+
+// ===== 分享功能 =====
+function _shareSite(){
+var url=location.href;
+var title="AI量化选股策略";
+var text="一个基于多因子模型的AI量化选股策略网站，回测收益稳健！\\n\\n👉 复制链接在电脑或手机浏览器打开，部分wifi下可能屏蔽网址";
+var isMobile=/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+if(isMobile&&!/MicroMessenger/i.test(navigator.userAgent)&&navigator.share){
+navigator.share({title:title,text:text,url:url}).catch(function(){});
+}else{
+var overlay=document.createElement("div");
+overlay.id="_share-overlay";
+overlay.style.cssText="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:99999;display:flex;align-items:center;justify-content:center;";
+overlay.onclick=function(e){if(e.target===overlay)overlay.remove()};
+var card=document.createElement("div");
+card.style.cssText="background:#1a1f35;border-radius:16px;padding:24px;max-width:320px;width:90%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.4);";
+card.innerHTML='<div style="font-size:18px;font-weight:700;color:#4ade80;margin-bottom:12px"> 分享给好友</div>'
++'<div style="font-size:13px;color:#9ca3af;margin-bottom:16px;line-height:1.5">'+text+'</div>'
++'<div style="background:#0d1117;border-radius:8px;padding:10px;margin-bottom:16px;word-break:break-all;font-size:12px;color:#60a5fa;border:1px solid #2a3055;user-select:all">'+url+'</div>'
++'<button id="_share-copy" style="width:100%;padding:12px;background:linear-gradient(135deg,#4ade80,#22c55e);color:#000;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:8px">📋 点击复制链接</button>'
++'<button onclick="document.getElementById(\'_share-overlay\').remove()" style="width:100%;padding:10px;background:transparent;color:#6b7280;border:1px solid #2a3055;border-radius:10px;font-size:13px;cursor:pointer">关闭</button>';
+overlay.appendChild(card);
+document.body.appendChild(overlay);
+document.getElementById("_share-copy").onclick=function(){
+var btn=this;
+if(navigator.clipboard&&navigator.clipboard.writeText){
+navigator.clipboard.writeText(text+"\n"+url).then(function(){
+btn.textContent="✅ 已复制！";
+setTimeout(function(){btn.textContent="📋 点击复制链接"},2000);
+}).catch(function(){
+btn.textContent="❌ 复制失败，请手动长按复制上方链接";
+});
+}else{
+var ta=document.createElement("textarea");
+ta.value=text+"\n"+url;
+ta.style.cssText="position:fixed;left:-9999px";
+document.body.appendChild(ta);
+ta.select();
+try{document.execCommand("copy");btn.textContent="✅ 已复制！";setTimeout(function(){btn.textContent="📋 点击复制链接"},2000)}catch(e){btn.textContent="❌ 请手动长按复制上方链接"}
+document.body.removeChild(ta);
+}
+};
+}
+}
+
 </script>
 
 <!-- Pay Modal -->
@@ -1195,7 +1241,7 @@ async function refreshAll(){
 <!-- Footer Disclaimer -->
 <div style="text-align:center;padding:20px 16px 30px;font-size:11px;color:#666;line-height:1.8">
   ⚠️ 免责声明：本站为AI数据分析工具，所有内容仅供学习研究参考，不构成任何投资建议、投注建议或其他专业决策建议。
-  数据来源于公开信息，分析结果不代表未来表现。付费即视为同意服务协议，Key激活后不支持退款。
+  数据来源于公开信息，分析结果不代表未来表现。获取即视为同意服务协议，Key激活后不支持退换。
 </div>
 </body>
 </html>
