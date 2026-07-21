@@ -6,31 +6,31 @@
     "note": "独立虚拟盘，与实盘完全隔离，纯按策略规则自动选股交易"
   },
   "state": {
-    "cash": 27212.0,
+    "cash": 6523.0,
     "positions": [
-      {
-        "code": "sz002460",
-        "name": "赣锋锂业",
-        "shares": 300,
-        "costPrice": 49.97,
-        "highestPrice": 49.97,
-        "buyDate": "2026-07-16",
-        "sector": "有色金属",
-        "longTermBullish": true
-      },
       {
         "code": "sz000568",
         "name": "泸州老窖",
-        "shares": 100,
-        "costPrice": 84.18,
-        "highestPrice": 84.18,
+        "shares": 400,
+        "costPrice": 84.96,
+        "highestPrice": 85.22,
         "buyDate": "2026-07-16",
         "sector": "白酒",
+        "longTermBullish": true
+      },
+      {
+        "code": "sz002594",
+        "name": "比亚迪",
+        "shares": 100,
+        "costPrice": 94.3,
+        "highestPrice": 94.3,
+        "buyDate": "2026-07-21",
+        "sector": "新能源车",
         "longTermBullish": true
       }
     ],
     "funds": [],
-    "lastUpdate": "2026-07-16"
+    "lastUpdate": "2026-07-21"
   },
   "trades": [
     {
@@ -104,6 +104,66 @@
       "amount": 8418.0,
       "pnl": 0,
       "reason": "资金不闲置：有可用现金，买入最强标的"
+    },
+    {
+      "date": "2026-07-21",
+      "time": "15:00:18",
+      "code": "sz002460",
+      "name": "赣锋锂业",
+      "action": "sell",
+      "price": 47.69,
+      "shares": 100,
+      "amount": 4769.0,
+      "pnl": -228.0,
+      "reason": "单日暴跌：-4.89%（阈值-3%）"
+    },
+    {
+      "date": "2026-07-21",
+      "time": "15:00:18",
+      "code": "sz002460",
+      "name": "赣锋锂业",
+      "action": "sell",
+      "price": 47.69,
+      "shares": 100,
+      "amount": 4769.0,
+      "pnl": -228.0,
+      "reason": "跌破20日线：现价46.11<MA20=59.06，MA20向下（趋势股止损联动：保留30%轻仓，实际卖50%）"
+    },
+    {
+      "date": "2026-07-21",
+      "time": "15:00:18",
+      "code": "sz002460",
+      "name": "赣锋锂业",
+      "action": "sell",
+      "price": 47.69,
+      "shares": 100,
+      "amount": 4769.0,
+      "pnl": -228.0,
+      "reason": "跌破60日线(终极止损)：现价46.11<MA60=70.41，MA60向下（趋势股止损联动：保留30%轻仓，实际卖100%）"
+    },
+    {
+      "date": "2026-07-21",
+      "time": "15:00:18",
+      "code": "sz000568",
+      "name": "泸州老窖",
+      "action": "buy",
+      "price": 85.22,
+      "shares": 300,
+      "amount": 25566.0,
+      "pnl": 0,
+      "reason": "跳涨加仓：开盘跳涨1.26%（阈值0.3%）"
+    },
+    {
+      "date": "2026-07-21",
+      "time": "15:00:18",
+      "code": "sz002594",
+      "name": "比亚迪",
+      "action": "buy",
+      "price": 94.3,
+      "shares": 100,
+      "amount": 9430.0,
+      "pnl": 0,
+      "reason": "资金轮动：综合评分0.4771，买入最强标的"
     }
   ],
   "dailySnapshots": [
@@ -116,13 +176,23 @@
       "return": 1.24,
       "marketStatus": "down",
       "positionRatio": 46.2
+    },
+    {
+      "date": "2026-07-21",
+      "totalValue": 50041.0,
+      "cash": 6523.0,
+      "positionsValue": 43518.0,
+      "fundValue": 0.0,
+      "return": 0.08,
+      "marketStatus": "down",
+      "positionRatio": 86.96
     }
   ],
   "stats": {
-    "totalTrades": 6,
+    "totalTrades": 11,
     "winTrades": 2,
-    "lossTrades": 4,
-    "winRate": 33.33,
+    "lossTrades": 3,
+    "winRate": 40.0,
     "maxDrawdown": 0.0,
     "currentStreak": 0
   }
