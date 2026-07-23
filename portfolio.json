@@ -6,31 +6,21 @@
     "note": "独立虚拟盘，与实盘完全隔离，纯按策略规则自动选股交易"
   },
   "state": {
-    "cash": 8859.0,
+    "cash": 4899.0,
     "positions": [
-      {
-        "code": "sz002594",
-        "name": "比亚迪",
-        "shares": 100,
-        "costPrice": 94.3,
-        "highestPrice": 94.3,
-        "buyDate": "2026-07-21",
-        "sector": "新能源车",
-        "longTermBullish": true
-      },
       {
         "code": "sh601899",
         "name": "紫金矿业",
-        "shares": 1000,
-        "costPrice": 32.22,
-        "highestPrice": 32.22,
+        "shares": 1400,
+        "costPrice": 32.46,
+        "highestPrice": 33.06,
         "buyDate": "2026-07-22",
         "sector": "有色金属",
         "longTermBullish": true
       }
     ],
     "funds": [],
-    "lastUpdate": "2026-07-22"
+    "lastUpdate": "2026-07-23"
   },
   "trades": [
     {
@@ -188,6 +178,30 @@
       "amount": 32220.0,
       "pnl": 0,
       "reason": "资金轮动：综合评分0.4157，买入最强标的"
+    },
+    {
+      "date": "2026-07-23",
+      "time": "14:43:25",
+      "code": "sz002594",
+      "name": "比亚迪",
+      "action": "sell",
+      "price": 92.64,
+      "shares": 100,
+      "amount": 9264.0,
+      "pnl": -166.0,
+      "reason": "跌破60日线(终极止损)：现价91.57<MA60=92.38，MA60向下（趋势股止损联动：保留30%轻仓，实际卖100%）"
+    },
+    {
+      "date": "2026-07-23",
+      "time": "14:43:25",
+      "code": "sh601899",
+      "name": "紫金矿业",
+      "action": "buy",
+      "price": 33.06,
+      "shares": 400,
+      "amount": 13224.0,
+      "pnl": 0,
+      "reason": "跳涨加仓：开盘跳涨1.99%（阈值0.3%）"
     }
   ],
   "dailySnapshots": [
@@ -220,13 +234,23 @@
       "return": 0.49,
       "marketStatus": "down",
       "positionRatio": 82.37
+    },
+    {
+      "date": "2026-07-23",
+      "totalValue": 51183.0,
+      "cash": 4899.0,
+      "positionsValue": 46284.0,
+      "fundValue": 0.0,
+      "return": 2.37,
+      "marketStatus": "down",
+      "positionRatio": 90.43
     }
   ],
   "stats": {
-    "totalTrades": 13,
+    "totalTrades": 15,
     "winTrades": 3,
-    "lossTrades": 3,
-    "winRate": 50.0,
+    "lossTrades": 4,
+    "winRate": 42.86,
     "maxDrawdown": 0.0,
     "currentStreak": 0
   }
