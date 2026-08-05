@@ -13,14 +13,14 @@
         "name": "紫金矿业",
         "shares": 1500,
         "costPrice": 32.26,
-        "highestPrice": 33.06,
+        "highestPrice": 34.09,
         "buyDate": "2026-07-22",
         "sector": "有色金属",
         "longTermBullish": true
       }
     ],
     "funds": [],
-    "lastUpdate": "2026-08-04"
+    "lastUpdate": "2026-08-05"
   },
   "trades": [
     {
@@ -362,6 +362,16 @@
       "return": -0.23,
       "marketStatus": "down",
       "positionRatio": 96.5
+    },
+    {
+      "date": "2026-08-05",
+      "totalValue": 52883.0,
+      "cash": 1748.0,
+      "positionsValue": 51135.0,
+      "fundValue": 0.0,
+      "return": 5.77,
+      "marketStatus": "down",
+      "positionRatio": 96.69
     }
   ],
   "stats": {
