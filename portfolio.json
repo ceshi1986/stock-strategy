@@ -6,13 +6,13 @@
     "note": "独立虚拟盘，与实盘完全隔离，纯按策略规则自动选股交易"
   },
   "state": {
-    "cash": 1748.0,
+    "cash": 5067.0,
     "positions": [
       {
         "code": "sh601899",
         "name": "紫金矿业",
-        "shares": 1500,
-        "costPrice": 32.26,
+        "shares": 1400,
+        "costPrice": 32.53,
         "highestPrice": 35.4,
         "buyDate": "2026-07-22",
         "sector": "有色金属",
@@ -20,7 +20,7 @@
       }
     ],
     "funds": [],
-    "lastUpdate": "2026-09-03"
+    "lastUpdate": "2026-09-04"
   },
   "trades": [
     {
@@ -250,6 +250,30 @@
       "amount": 3200.0,
       "pnl": 0,
       "reason": "恐慌洗盘：低开-1.79%，放量58373.3倍"
+    },
+    {
+      "date": "2026-09-04",
+      "time": "14:43:25",
+      "code": "sh601899",
+      "name": "紫金矿业",
+      "action": "sell",
+      "price": 33.19,
+      "shares": 500,
+      "amount": 16595.0,
+      "pnl": 465.0,
+      "reason": "跌破20日线：现价33.31<MA20=33.61，MA20向下（趋势股止损联动：保留30%轻仓，实际卖33%）"
+    },
+    {
+      "date": "2026-09-04",
+      "time": "14:43:25",
+      "code": "sh601899",
+      "name": "紫金矿业",
+      "action": "buy",
+      "price": 33.19,
+      "shares": 400,
+      "amount": 13276.0,
+      "pnl": 0,
+      "reason": "跳涨加仓：开盘跳涨0.91%（阈值0.3%）"
     }
   ],
   "dailySnapshots": [
@@ -552,13 +576,23 @@
       "return": 3.37,
       "marketStatus": "neutral",
       "positionRatio": 96.62
+    },
+    {
+      "date": "2026-09-04",
+      "totalValue": 51533.0,
+      "cash": 5067.0,
+      "positionsValue": 46466.0,
+      "fundValue": 0.0,
+      "return": 3.07,
+      "marketStatus": "down",
+      "positionRatio": 90.17
     }
   ],
   "stats": {
-    "totalTrades": 19,
-    "winTrades": 3,
+    "totalTrades": 21,
+    "winTrades": 4,
     "lossTrades": 5,
-    "winRate": 37.5,
+    "winRate": 44.44,
     "maxDrawdown": 0.0,
     "currentStreak": 0
   }
