@@ -12,7 +12,7 @@
         "code": "sh601899",
         "name": "紫金矿业",
         "shares": 1400,
-        "costPrice": 32.53,
+        "costPrice": 31.19,
         "highestPrice": 35.4,
         "buyDate": "2026-07-22",
         "sector": "有色金属",
@@ -20,7 +20,7 @@
       }
     ],
     "funds": [],
-    "lastUpdate": "2026-09-25"
+    "lastUpdate": "2026-09-28"
   },
   "trades": [
     {
@@ -274,6 +274,42 @@
       "amount": 13276.0,
       "pnl": 0,
       "reason": "跳涨加仓：开盘跳涨0.91%（阈值0.3%）"
+    },
+    {
+      "date": "2026-09-28",
+      "time": "14:43:20",
+      "code": "sh601899",
+      "name": "紫金矿业",
+      "action": "sell",
+      "price": 29.41,
+      "shares": 200,
+      "amount": 5882.0,
+      "pnl": -624.0,
+      "reason": "单日暴跌：-4.46%（阈值-3%）"
+    },
+    {
+      "date": "2026-09-28",
+      "time": "14:43:20",
+      "code": "sh601899",
+      "name": "紫金矿业",
+      "action": "sell",
+      "price": 29.41,
+      "shares": 400,
+      "amount": 11764.0,
+      "pnl": -1248.0,
+      "reason": "跌破20日线：现价30.01<MA20=32.59，MA20向下（趋势股止损联动：保留30%轻仓，实际卖33%）"
+    },
+    {
+      "date": "2026-09-28",
+      "time": "14:43:20",
+      "code": "sh601899",
+      "name": "紫金矿业",
+      "action": "buy",
+      "price": 29.41,
+      "shares": 600,
+      "amount": 17646.0,
+      "pnl": 0,
+      "reason": "恐慌洗盘：低开-1.34%，放量68957.8倍"
     }
   ],
   "dailySnapshots": [
@@ -686,13 +722,23 @@
       "return": -5.84,
       "marketStatus": "neutral",
       "positionRatio": 89.24
+    },
+    {
+      "date": "2026-09-28",
+      "totalValue": 46241.0,
+      "cash": 5067.0,
+      "positionsValue": 41174.0,
+      "fundValue": 0.0,
+      "return": -7.52,
+      "marketStatus": "down",
+      "positionRatio": 89.04
     }
   ],
   "stats": {
-    "totalTrades": 21,
+    "totalTrades": 24,
     "winTrades": 4,
-    "lossTrades": 5,
-    "winRate": 44.44,
+    "lossTrades": 7,
+    "winRate": 36.36,
     "maxDrawdown": 0.0,
     "currentStreak": 0
   }
