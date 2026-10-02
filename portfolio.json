@@ -6,21 +6,41 @@
     "note": "独立虚拟盘，与实盘完全隔离，纯按策略规则自动选股交易"
   },
   "state": {
-    "cash": 16983.0,
+    "cash": 1346.0,
     "positions": [
       {
         "code": "sh601899",
         "name": "紫金矿业",
-        "shares": 1000,
+        "shares": 700,
         "costPrice": 31.19,
         "highestPrice": 35.4,
         "buyDate": "2026-07-22",
         "sector": "有色金属",
         "longTermBullish": true
+      },
+      {
+        "code": "sh688008",
+        "name": "澜起科技",
+        "shares": 100,
+        "costPrice": 202.31,
+        "highestPrice": 202.31,
+        "buyDate": "2026-10-02",
+        "sector": "",
+        "longTermBullish": false
+      },
+      {
+        "code": "sz002460",
+        "name": "赣锋锂业",
+        "shares": 100,
+        "costPrice": 43.43,
+        "highestPrice": 43.43,
+        "buyDate": "2026-10-02",
+        "sector": "",
+        "longTermBullish": false
       }
     ],
     "funds": [],
-    "lastUpdate": "2026-10-01"
+    "lastUpdate": "2026-10-02"
   },
   "trades": [
     {
@@ -322,6 +342,42 @@
       "amount": 11916.0,
       "pnl": -560.0,
       "reason": "跌破20日线：现价29.79<MA20=31.92，MA20向下（趋势股止损联动：保留30%轻仓，实际卖29%）"
+    },
+    {
+      "date": "2026-10-02",
+      "time": "14:43:25",
+      "code": "sh601899",
+      "name": "紫金矿业",
+      "action": "sell",
+      "price": 29.79,
+      "shares": 300,
+      "amount": 8937.0,
+      "pnl": -420.0,
+      "reason": "跌破20日线：现价29.79<MA20=31.92，MA20向下（趋势股止损联动：保留30%轻仓，实际卖30%）"
+    },
+    {
+      "date": "2026-10-02",
+      "time": "14:43:25",
+      "code": "sh688008",
+      "name": "澜起科技",
+      "action": "buy",
+      "price": 202.31,
+      "shares": 100,
+      "amount": 20231.0,
+      "pnl": 0,
+      "reason": "资金轮动：综合评分0.4137，买入最强标的"
+    },
+    {
+      "date": "2026-10-02",
+      "time": "14:43:25",
+      "code": "sz002460",
+      "name": "赣锋锂业",
+      "action": "buy",
+      "price": 43.43,
+      "shares": 100,
+      "amount": 4343.0,
+      "pnl": 0,
+      "reason": "资金不闲置：有可用现金，买入最强标的"
     }
   ],
   "dailySnapshots": [
@@ -764,13 +820,23 @@
       "return": -6.45,
       "marketStatus": "down",
       "positionRatio": 63.69
+    },
+    {
+      "date": "2026-10-02",
+      "totalValue": 46773.0,
+      "cash": 1346.0,
+      "positionsValue": 45427.0,
+      "fundValue": 0.0,
+      "return": -6.45,
+      "marketStatus": "down",
+      "positionRatio": 97.12
     }
   ],
   "stats": {
-    "totalTrades": 25,
+    "totalTrades": 28,
     "winTrades": 4,
-    "lossTrades": 8,
-    "winRate": 33.33,
+    "lossTrades": 9,
+    "winRate": 30.77,
     "maxDrawdown": 0.0,
     "currentStreak": 0
   }
