@@ -6,12 +6,12 @@
     "note": "独立虚拟盘，与实盘完全隔离，纯按策略规则自动选股交易"
   },
   "state": {
-    "cash": 1346.0,
+    "cash": 2961.0,
     "positions": [
       {
         "code": "sh601899",
         "name": "紫金矿业",
-        "shares": 700,
+        "shares": 500,
         "costPrice": 31.19,
         "highestPrice": 35.4,
         "buyDate": "2026-07-22",
@@ -24,23 +24,23 @@
         "shares": 100,
         "costPrice": 202.31,
         "highestPrice": 202.31,
-        "buyDate": "2026-10-02",
+        "buyDate": "2026-10-05",
         "sector": "",
         "longTermBullish": false
       },
       {
         "code": "sz002460",
         "name": "赣锋锂业",
-        "shares": 100,
+        "shares": 200,
         "costPrice": 43.43,
         "highestPrice": 43.43,
-        "buyDate": "2026-10-02",
+        "buyDate": "2026-10-05",
         "sector": "",
         "longTermBullish": false
       }
     ],
     "funds": [],
-    "lastUpdate": "2026-10-02"
+    "lastUpdate": "2026-10-05"
   },
   "trades": [
     {
@@ -376,6 +376,66 @@
       "price": 43.43,
       "shares": 100,
       "amount": 4343.0,
+      "pnl": 0,
+      "reason": "资金不闲置：有可用现金，买入最强标的"
+    },
+    {
+      "date": "2026-10-05",
+      "time": "14:43:24",
+      "code": "sh601899",
+      "name": "紫金矿业",
+      "action": "sell",
+      "price": 29.79,
+      "shares": 200,
+      "amount": 5958.0,
+      "pnl": -280.0,
+      "reason": "跌破20日线：现价29.79<MA20=31.92，MA20向下（趋势股止损联动：保留30%轻仓，实际卖29%）"
+    },
+    {
+      "date": "2026-10-05",
+      "time": "14:43:24",
+      "code": "sh688008",
+      "name": "澜起科技",
+      "action": "sell",
+      "price": 202.31,
+      "shares": 100,
+      "amount": 20231.0,
+      "pnl": 0.0,
+      "reason": "单日暴跌：-4.84%（阈值-3%）"
+    },
+    {
+      "date": "2026-10-05",
+      "time": "14:43:24",
+      "code": "sz002460",
+      "name": "赣锋锂业",
+      "action": "sell",
+      "price": 43.43,
+      "shares": 100,
+      "amount": 4343.0,
+      "pnl": 0.0,
+      "reason": "跌破20日线：现价43.43<MA20=46.64，MA20向下（非趋势股止损联动：清仓）"
+    },
+    {
+      "date": "2026-10-05",
+      "time": "14:43:24",
+      "code": "sh688008",
+      "name": "澜起科技",
+      "action": "buy",
+      "price": 202.31,
+      "shares": 100,
+      "amount": 20231.0,
+      "pnl": 0,
+      "reason": "资金轮动：综合评分0.4137，买入最强标的"
+    },
+    {
+      "date": "2026-10-05",
+      "time": "14:43:24",
+      "code": "sz002460",
+      "name": "赣锋锂业",
+      "action": "buy",
+      "price": 43.43,
+      "shares": 200,
+      "amount": 8686.0,
       "pnl": 0,
       "reason": "资金不闲置：有可用现金，买入最强标的"
     }
@@ -830,13 +890,23 @@
       "return": -6.45,
       "marketStatus": "down",
       "positionRatio": 97.12
+    },
+    {
+      "date": "2026-10-05",
+      "totalValue": 46773.0,
+      "cash": 2961.0,
+      "positionsValue": 43812.0,
+      "fundValue": 0.0,
+      "return": -6.45,
+      "marketStatus": "down",
+      "positionRatio": 93.67
     }
   ],
   "stats": {
-    "totalTrades": 28,
+    "totalTrades": 33,
     "winTrades": 4,
-    "lossTrades": 9,
-    "winRate": 30.77,
+    "lossTrades": 12,
+    "winRate": 25.0,
     "maxDrawdown": 0.0,
     "currentStreak": 0
   }
