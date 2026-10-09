@@ -33,14 +33,14 @@
         "name": "赣锋锂业",
         "shares": 300,
         "costPrice": 43.43,
-        "highestPrice": 44.13,
+        "highestPrice": 45.45,
         "buyDate": "2026-10-07",
         "sector": "",
         "longTermBullish": false
       }
     ],
     "funds": [],
-    "lastUpdate": "2026-10-08"
+    "lastUpdate": "2026-10-09"
   },
   "trades": [
     {
@@ -1050,6 +1050,16 @@
       "return": -7.47,
       "marketStatus": "neutral",
       "positionRatio": 90.11
+    },
+    {
+      "date": "2026-10-09",
+      "totalValue": 47253.0,
+      "cash": 4576.0,
+      "positionsValue": 42677.0,
+      "fundValue": 0.0,
+      "return": -5.49,
+      "marketStatus": "neutral",
+      "positionRatio": 90.32
     }
   ],
   "stats": {
