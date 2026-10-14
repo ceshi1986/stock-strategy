@@ -6,31 +6,21 @@
     "note": "独立虚拟盘，与实盘完全隔离，纯按策略规则自动选股交易"
   },
   "state": {
-    "cash": 4021.0,
+    "cash": 5129.0,
     "positions": [
       {
         "code": "sh601899",
         "name": "紫金矿业",
-        "shares": 1200,
-        "costPrice": 30.55,
+        "shares": 1300,
+        "costPrice": 30.34,
         "highestPrice": 35.4,
         "buyDate": "2026-07-22",
         "sector": "有色金属",
         "longTermBullish": true
-      },
-      {
-        "code": "sz002460",
-        "name": "赣锋锂业",
-        "shares": 100,
-        "costPrice": 41.91,
-        "highestPrice": 41.91,
-        "buyDate": "2026-10-13",
-        "sector": "",
-        "longTermBullish": false
       }
     ],
     "funds": [],
-    "lastUpdate": "2026-10-13"
+    "lastUpdate": "2026-10-14"
   },
   "trades": [
     {
@@ -620,6 +610,42 @@
       "amount": 4191.0,
       "pnl": 0,
       "reason": "资金轮动：综合评分0.5206，买入最强标的"
+    },
+    {
+      "date": "2026-10-14",
+      "time": "14:43:26",
+      "code": "sh601899",
+      "name": "紫金矿业",
+      "action": "sell",
+      "price": 30.0,
+      "shares": 400,
+      "amount": 12000.0,
+      "pnl": -220.0,
+      "reason": "跌破20日线：现价30.40<MA20=31.33，MA20向下（趋势股止损联动：保留30%轻仓，实际卖33%）"
+    },
+    {
+      "date": "2026-10-14",
+      "time": "14:43:26",
+      "code": "sz002460",
+      "name": "赣锋锂业",
+      "action": "sell",
+      "price": 41.08,
+      "shares": 100,
+      "amount": 4108.0,
+      "pnl": -83.0,
+      "reason": "单日暴跌：-4.01%（阈值-3%）"
+    },
+    {
+      "date": "2026-10-14",
+      "time": "14:43:26",
+      "code": "sh601899",
+      "name": "紫金矿业",
+      "action": "buy",
+      "price": 30.0,
+      "shares": 500,
+      "amount": 15000.0,
+      "pnl": 0,
+      "reason": "恐慌洗盘：低开-1.26%，放量42008.0倍"
     }
   ],
   "dailySnapshots": [
@@ -1142,13 +1168,23 @@
       "return": -10.57,
       "marketStatus": "down",
       "positionRatio": 91.01
+    },
+    {
+      "date": "2026-10-14",
+      "totalValue": 44129.0,
+      "cash": 5129.0,
+      "positionsValue": 39000.0,
+      "fundValue": 0.0,
+      "return": -11.74,
+      "marketStatus": "down",
+      "positionRatio": 88.38
     }
   ],
   "stats": {
-    "totalTrades": 49,
+    "totalTrades": 52,
     "winTrades": 4,
-    "lossTrades": 22,
-    "winRate": 15.38,
+    "lossTrades": 24,
+    "winRate": 14.29,
     "maxDrawdown": 0.0,
     "currentStreak": 0
   }
