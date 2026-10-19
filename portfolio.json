@@ -20,7 +20,7 @@
       }
     ],
     "funds": [],
-    "lastUpdate": "2026-10-16"
+    "lastUpdate": "2026-10-19"
   },
   "trades": [
     {
@@ -1198,6 +1198,16 @@
       "return": -12.5,
       "marketStatus": "neutral",
       "positionRatio": 88.28
+    },
+    {
+      "date": "2026-10-19",
+      "totalValue": 43934.0,
+      "cash": 5129.0,
+      "positionsValue": 38805.0,
+      "fundValue": 0.0,
+      "return": -12.13,
+      "marketStatus": "neutral",
+      "positionRatio": 88.33
     }
   ],
   "stats": {
